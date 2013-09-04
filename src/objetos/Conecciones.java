@@ -4,6 +4,8 @@
  */
 package objetos;
 
+import java.sql.Connection;
+
 /**
  *
  * @author mauro
@@ -13,5 +15,10 @@ package objetos;
  * 
  */
 public class Conecciones {
+    private Connection con;
+
+    public Conecciones() {
+        
+    }
     
 }

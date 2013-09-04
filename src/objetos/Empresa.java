@@ -11,5 +11,27 @@ package objetos;
  * 
  */
 public class Empresa {
+    private Depositos deposito;
+    private Sucursales sucursales;
+
+    public Empresa() {
+    }
+
+    public Depositos getDeposito() {
+        return deposito;
+    }
+
+    public void setDeposito(Depositos deposito) {
+        this.deposito = deposito;
+    }
+
+    public Sucursales getSucursales() {
+        return sucursales;
+    }
+
+    public void setSucursales(Sucursales sucursales) {
+        this.sucursales = sucursales;
+    }
+    
     
 }

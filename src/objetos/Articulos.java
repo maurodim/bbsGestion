@@ -10,4 +10,5 @@ package objetos;
  */
 public class Articulos {
     
+    
 }

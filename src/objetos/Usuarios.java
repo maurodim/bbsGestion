@@ -4,6 +4,13 @@
  */
 package objetos;
 
+import interfaces.Transaccionable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author mauro
@@ -102,6 +109,33 @@ public class Usuarios {
     public void setNivelDeAutorizacion(int nivelDeAutorizacion) {
         this.nivelDeAutorizacion = nivelDeAutorizacion;
     }
-    
+    public ArrayList listarUsuario(){
+        ArrayList listadoUsuarios=new ArrayList();
+        try {
+            
+            String sql="select * from usuarios";
+            Usuarios us=null;
+            Transaccionable traUs=(Transaccionable) new Usuarios();
+            ResultSet rr=traUs.leerConjuntoDeRegistros(sql);
+            while(rr.next()){
+                us=new Usuarios();
+                us.nombre=rr.getString("nombre");
+                us.direccion=rr.getString("direccion");
+                us.localidad=rr.getString("localidad");
+                us.mail=rr.getString("mail");
+                us.numero=rr.getInt("numero");
+                us.telefono=rr.getString("telefono");
+                us.nombreDeUsuario=rr.getString("nombreDeUsuario");
+                us.clave=rr.getString("clave");
+                us.nivelDeAutorizacion=rr.getInt("nivelAutorizacion");
+                listadoUsuarios.add(us);
+                
+            }
+            rr.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listadoUsuarios;
+    }
     
 }

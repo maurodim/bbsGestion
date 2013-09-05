@@ -7,6 +7,7 @@ package objetos;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import interfaces.Transaccionable;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -79,9 +80,18 @@ public class Conecciones implements Transaccionable{
     }
 
     @Override
-    public ArrayList leerConjuntoDeRegistros(String sql) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public ResultSet leerConjuntoDeRegistros(String sql) {
+        ResultSet rs=null;
+        try {
+            this.st.execute(sql);
+            rs=this.st.getResultSet();
+        } catch (SQLException ex) {
+            Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
     }
+
+   
 
     }
     

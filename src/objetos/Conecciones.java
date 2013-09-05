@@ -34,7 +34,7 @@ public class Conecciones implements Transaccionable{
                     dataSource.setUser("root");
                     dataSource.setDatabaseName("bambugestion");
                     dataSource.setPassword("");
-                    dataSource.setServerName("localhost");
+                    dataSource.setServerName("localhost:82");
                     this.con=dataSource.getConnection();
                     Statement st=this.con.createStatement();
                  }catch(Exception ex){

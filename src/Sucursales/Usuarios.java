@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package objetos;
+package Sucursales;
 
 import interfaces.Transaccionable;
 import java.sql.ResultSet;

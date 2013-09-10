@@ -4,6 +4,9 @@
  */
 package objetos;
 
+import Sucursales.Sucursales;
+import Depositos.Depositos;
+
 /**
  *
  * @author mauro

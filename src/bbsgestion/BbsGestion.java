@@ -4,6 +4,9 @@
  */
 package bbsgestion;
 
+import Compras.Remitos;
+import interfaces.Comprobable;
+
 /**
  *
  * @author mauro
@@ -14,6 +17,8 @@ public class BbsGestion {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Comprobable comp=new Remitos();
+        Remitos rem=new Remitos();
+        comp.nuevoComprobante(rem);
     }
 }

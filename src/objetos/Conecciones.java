@@ -34,9 +34,9 @@ public class Conecciones implements Transaccionable{
                     dataSource.setUser("root");
                     dataSource.setDatabaseName("bambugestion");
                     dataSource.setPassword("");
-                    dataSource.setServerName("localhost:82");
-                    this.con=dataSource.getConnection();
-                    Statement st=this.con.createStatement();
+                    dataSource.setServerName("localhost");
+                    con=dataSource.getConnection();
+                    st=con.createStatement();
                  }catch(Exception ex){
                     
                 String cod1=String.valueOf(ex);
@@ -51,11 +51,13 @@ public class Conecciones implements Transaccionable{
     public Boolean guardarRegistro(String sql) {
         Boolean coneccion=true;
         try {
-            
-            this.st.executeQuery(sql);
+            System.out.println("SENTENCIA "+sql);
+            st.executeUpdate(sql);
+            //this.st.executeQuery(sql);
             
         } catch (SQLException ex) {
             Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex);
             coneccion=false;
         }
         return coneccion;
@@ -69,7 +71,7 @@ public class Conecciones implements Transaccionable{
         while(il.hasNext()){
             sql=(String)il.next();
             try {
-                this.st.executeUpdate(sql);
+                st.executeUpdate(sql);
             } catch (SQLException ex) {
                 Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex);
                 coneccionCorrecta=false;
@@ -83,8 +85,8 @@ public class Conecciones implements Transaccionable{
     public ResultSet leerConjuntoDeRegistros(String sql) {
         ResultSet rs=null;
         try {
-            this.st.execute(sql);
-            rs=this.st.getResultSet();
+            st.execute(sql);
+            rs=st.getResultSet();
         } catch (SQLException ex) {
             Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex);
         }

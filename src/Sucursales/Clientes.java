@@ -4,11 +4,14 @@
  */
 package Sucursales;
 
+import interfaces.Personalizable;
+import java.util.ArrayList;
+
 /**
  *
  * @author mauro
  */
-public class Clientes {
+public class Clientes implements Personalizable{
     private int numero;
     private String nombre;
     private String direccion;
@@ -93,6 +96,51 @@ public class Clientes {
 
     public void setNumeroDeCuit(String numeroDeCuit) {
         this.numeroDeCuit = numeroDeCuit;
+    }
+
+    @Override
+    public Boolean agregar(Object objeto) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean modificar(Object objeto) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean eliminar(Object objeto) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object buscarPorNumero(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object buscarPorNombre(String nombre) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object buscarPorCuit(String cuit) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList listar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList listarPorNombre(String nombre) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList listarPorCuit(String cuit) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

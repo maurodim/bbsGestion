@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author mauro
  */
-public class Clientes implements Personalizable{
+public class Clientes extends Sucursales implements Personalizable{
     private int numero;
     private String nombre;
     private String direccion;

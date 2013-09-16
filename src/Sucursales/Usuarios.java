@@ -143,5 +143,40 @@ public class Usuarios extends TipoAcceso{
         }
         return listadoUsuarios;
     }
+
+    @Override
+    public Boolean registrarIngreso(Object objeto) {
+        return super.registrarIngreso(objeto);
+    }
+
+    @Override
+    public Boolean registrarSalida(Object objeto) {
+        return super.registrarSalida(objeto);
+    }
+
+    @Override
+    public Object validarClave(String usuario, String clave) {
+        return super.validarClave(usuario, clave);
+    }
+
+    @Override
+    public Boolean modificarDatosUsuario(Object objeto) {
+        return super.modificarDatosUsuario(objeto);
+    }
+
+    @Override
+    public Boolean nuevoUsuario(Object objeto) {
+        return super.nuevoUsuario(objeto);
+    }
+
+    @Override
+    public ArrayList listarUsuarios() {
+        return super.listarUsuarios();
+    }
+
+    @Override
+    public Object cargarUsuario(Integer numeroUsuario) {
+        return super.cargarUsuario(numeroUsuario);
+    }
     
 }

@@ -11,7 +11,7 @@ import objetos.Comprobantes;
  *
  * @author mauro
  */
-public class Cajas {
+public class Cajas extends Sucursales{
     private int numero;
     private int tipoMovimiento;
     private static Double saldoInicial;

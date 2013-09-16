@@ -4,13 +4,14 @@
  */
 package Sucursales;
 
+import Administracion.Administracion;
 import Depositos.Depositos;
 
 /**
  *
  * @author mauro
  */
-public class Sucursales {
+public class Sucursales extends Administracion{
     private int numero;
     private String descripcion;
     private String direccion;

@@ -4,6 +4,7 @@
  */
 package Compras;
 
+import Administracion.TipoComprobante;
 import interfaces.Comprobable;
 import interfaces.Transaccionable;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import objetos.Conecciones;
  *
  * @author mauro
  */
-public class Remitos implements Comprobable{
+public class Remitos extends TipoComprobante{
     private Integer numeroId;
     private Integer idProveedor;
     private Date fechaComprobante;

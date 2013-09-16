@@ -14,6 +14,8 @@ import Sucursales.Sucursales;
 public class Administracion {
     private Depositos deposito;
     private Sucursales sucursal;
+    private TipoComprobante tipoDeComprobante;
+    
 
     public Administracion(Depositos deposito, Sucursales sucursal) {
         this.deposito = deposito;

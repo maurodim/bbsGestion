@@ -5,7 +5,9 @@
 package bbsgestion;
 
 import Compras.Remitos;
+import Sucursales.Usuarios;
 import interfaces.Comprobable;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,8 +19,8 @@ public class BbsGestion {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Comprobable comp=new Remitos();
-        Remitos rem=new Remitos();
-        comp.nuevoComprobante(rem);
+        ArrayList usuariosList=new ArrayList();
+        Usuarios usuarios=new Usuarios();
+        usuariosList=usuarios.listarUsuario();
     }
 }

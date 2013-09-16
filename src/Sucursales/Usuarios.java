@@ -4,19 +4,21 @@
  */
 package Sucursales;
 
+import Administracion.TipoAcceso;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objetos.Conecciones;
 
 /**
  *
  * @author mauro
  */
-public class Usuarios {
-    private int numero;
+public class Usuarios extends TipoAcceso{
+    private int numeroId;
     private String nombre;
     private String direccion;
     private String telefono;
@@ -27,23 +29,25 @@ public class Usuarios {
     private int nivelDeAutorizacion;
 
     public Usuarios(int numero) {
-        this.numero = numero;
+        this.numeroId = numero;
     }
 
     public Usuarios(String nombreDeUsuario, String clave) {
         this.nombreDeUsuario = nombreDeUsuario;
         this.clave = clave;
+        super.setNivel(1);
     }
 
     public Usuarios() {
+       
     }
 
-    public int getNumero() {
-        return numero;
+    public int getNumeroId() {
+        return numeroId;
     }
 
-    public void setNumero(int numero) {
-        this.numero = numero;
+    public void setNumeroId(int numero) {
+        this.numeroId = numero;
     }
 
     public String getNombre() {
@@ -106,8 +110,8 @@ public class Usuarios {
         return nivelDeAutorizacion;
     }
 
-    public void setNivelDeAutorizacion(int nivelDeAutorizacion) {
-        this.nivelDeAutorizacion = nivelDeAutorizacion;
+    public void setNivelDeAutorizacion() {
+        this.nivelDeAutorizacion = super.getNivel();
     }
     public ArrayList listarUsuario(){
         ArrayList listadoUsuarios=new ArrayList();
@@ -115,7 +119,7 @@ public class Usuarios {
             
             String sql="select * from usuarios";
             Usuarios us=null;
-            Transaccionable traUs=(Transaccionable) new Usuarios();
+            Transaccionable traUs=new Conecciones();
             ResultSet rr=traUs.leerConjuntoDeRegistros(sql);
             while(rr.next()){
                 us=new Usuarios();
@@ -123,11 +127,13 @@ public class Usuarios {
                 us.direccion=rr.getString("direccion");
                 us.localidad=rr.getString("localidad");
                 us.mail=rr.getString("mail");
-                us.numero=rr.getInt("numero");
+                us.numeroId=rr.getInt("numero");
                 us.telefono=rr.getString("telefono");
-                us.nombreDeUsuario=rr.getString("nombreDeUsuario");
+                us.nombreDeUsuario=rr.getString("nombreUsuario");
                 us.clave=rr.getString("clave");
-                us.nivelDeAutorizacion=rr.getInt("nivelAutorizacion");
+                us.setNivel(rr.getInt("autorizacion"));
+                us.setNivelDeAutorizacion();
+                System.err.println("USUARIOS "+us.nombre);
                 listadoUsuarios.add(us);
                 
             }

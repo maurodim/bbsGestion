@@ -62,7 +62,14 @@ public class TipoComprobante implements Comprobable {
 
     @Override
     public Boolean modificarComprobante(Object objeto) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        TipoComprobante tipoComprobante=(TipoComprobante)objeto;
+        Boolean creado=false;
+        String sql="";
+        Transaccionable tran=new Conecciones();
+       
+            if(tran.guardarRegistro(sql))creado=true;
+        
+        return creado;
     }
 
     @Override

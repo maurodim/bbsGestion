@@ -6,6 +6,7 @@ package bbsgestion;
 
 import Compras.Remitos;
 import Sucursales.Usuarios;
+import interfaceGraficas.Inicio;
 import interfaces.Comprobable;
 import java.util.ArrayList;
 
@@ -22,5 +23,8 @@ public class BbsGestion {
         ArrayList usuariosList=new ArrayList();
         Usuarios usuarios=new Usuarios();
         usuariosList=usuarios.listarUsuario();
+        Inicio in=new Inicio();
+        in.setVisible(true);
+        in.pack();
     }
 }

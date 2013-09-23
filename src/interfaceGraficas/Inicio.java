@@ -9,12 +9,25 @@ package interfaceGraficas;
  * @author mauro
  */
 public class Inicio extends javax.swing.JFrame {
+    public static Integer niv;
 
+    public void setNiv(Integer nive) {
+        niv = nive;
+        permisos(niv);
+    }
+    
+    
     /**
      * Creates new form Inicio
      */
-    public Inicio() {
+    public Inicio(Integer nivel) {
+        
         initComponents();
+        permisos(nivel);
+    }
+
+    public Inicio() {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     /**
@@ -32,6 +45,7 @@ public class Inicio extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,6 +65,15 @@ public class Inicio extends javax.swing.JFrame {
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Usuarios");
+
+        jMenuItem1.setText("Cambiar de Usuario");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem1);
+
         jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
@@ -77,10 +100,19 @@ public class Inicio extends javax.swing.JFrame {
 
     private void jDesktopPane1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jDesktopPane1ComponentShown
         Loguin log=new Loguin();
-        this.jDesktopPane1.add(log);
+        //this.jDesktopPane1.add(log);
         log.setVisible(true);
-        log.toFront();
+        //log.toFront();
+        log.pack();
+        
     }//GEN-LAST:event_jDesktopPane1ComponentShown
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        Loguin ini=new Loguin();
+        this.jDesktopPane1.add(ini);
+        ini.setVisible(true);
+        ini.toFront();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -116,12 +148,28 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
     }
+    public void permisos(Integer nivel){
+        switch (nivel){
+            case 1:
+                this.jMenu1.setEnabled(false);
+                this.jMenu2.setEnabled(false);
+                break;
+            case 2:
+                this.jMenu2.setEnabled(true);
+                this.jMenu1.setEnabled(true);
+                this.jMenu3.setEnabled(true);
+                this.jMenu4.setEnabled(true);
+                break;
+                
+        }        
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
+    public javax.swing.JDesktopPane jDesktopPane1;
+    public javax.swing.JMenu jMenu1;
+    public javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
 }

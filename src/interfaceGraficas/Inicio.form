@@ -8,11 +8,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Administracion"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu2">
           <Properties>
             <Property name="text" type="java.lang.String" value="Stock"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu3">
           <Properties>
@@ -23,6 +29,16 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Usuarios"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cambiar de Usuario"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
       </SubComponents>
     </Menu>
@@ -71,6 +87,9 @@
       <Events>
         <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="jDesktopPane1ComponentShown"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+      </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout"/>
     </Container>

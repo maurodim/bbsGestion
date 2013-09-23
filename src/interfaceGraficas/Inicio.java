@@ -164,9 +164,9 @@ public class Inicio extends javax.swing.JFrame {
         }        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JDesktopPane jDesktopPane1;
-    public javax.swing.JMenu jMenu1;
-    public javax.swing.JMenu jMenu2;
+    public static javax.swing.JDesktopPane jDesktopPane1;
+    public static javax.swing.JMenu jMenu1;
+    public static javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;

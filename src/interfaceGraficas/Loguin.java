@@ -111,7 +111,8 @@ public class Loguin extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       
+       Inicio.jMenu1.setEnabled(false);
+       Inicio.jMenu2.setEnabled(false);
        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

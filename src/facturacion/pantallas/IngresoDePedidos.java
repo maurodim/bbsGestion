@@ -6,6 +6,7 @@ package facturacion.pantallas;
 
 import facturacion.clientes.ClientesTango;
 import impresoras.Impresora;
+import interfaceGraficas.Inicio;
 import interfacesPrograma.Facturar;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
@@ -21,8 +22,7 @@ import objetos.Articulos;
 import objetos.Comprobantes;
 import tablas.MiModeloTablaBuscarCliente;
 import tablas.MiModeloTablaFacturacion;
-import visordehojaderuta.InicioVisorDeHojaDeRuta;
-import visordehojaderuta.VisorDeHojaDeRuta;
+
 
 /**
  *
@@ -40,9 +40,9 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
     private static Double montoTotal=0.00;
     private static Comprobantes comp=new Comprobantes();
     
-    public IngresoDePedidos(Object oob) {
-        cliT=(ClientesTango)oob;
-        comp.setCliente(cliT);
+    public IngresoDePedidos() {
+        //cliT=(ClientesTango)oob;
+        //comp.setCliente(cliT);
         initComponents();
         //this.jPanel2.requestFocus();
         
@@ -338,17 +338,18 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         String cadena=cliT.getCodigoCliente()+" - "+cliT.getRazonSocial()+"\n"+cliT.getDireccion();
         //comp.setCliente(cliT);
         //VisorDeHojaDeRuta
-        comp.setVendedor(VisorDeHojaDeRuta.tG.getOperador());
+        
+        //comp.setVendedor(VisorDeHojaDeRuta.tG.getOperador());
         if(this.jCheckBox1.isSelected()){
-            comp.setReparto(1);
-            comp.setEntrega(String.valueOf(this.jTextField3.getText()));
+        //    comp.setReparto(1);
+        //    comp.setEntrega(String.valueOf(this.jTextField3.getText()));
         }
         if(this.jCheckBox2.isSelected()){
-            comp.setPagado(1);
+         //   comp.setPagado(1);
         }else{
-            comp.setPagado(2);
+         //   comp.setPagado(2);
         }
-        comp.setArticulos(detalleDelPedido);
+        //comp.setArticulos(detalleDelPedido);
                 DecimalFormat fr=new DecimalFormat("00");
         Calendar c1=Calendar.getInstance();
 	Calendar c2=new GregorianCalendar();
@@ -363,7 +364,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         mes=fr.format(me);
         String fecha=dia+"/"+mes+"/"+ano;
         String fecha2=ano+"-"+mes+"-"+dia;
-        comp.setFechaComprobante(fecha2);
+        //comp.setFechaComprobante(fecha2);
         //comp.setFechaComprobante(fecha);
         int comprobanteTipo=0;
         if(cliT.getEmpresa().equals("sd")){
@@ -379,8 +380,8 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         }else{
             comprobanteTipo=4;
         }
-        comp.setTipoComprobante(comprobanteTipo);
-        comp.setMontoTotal(montoTotal);
+        //comp.setTipoComprobante(comprobanteTipo);
+        //comp.setMontoTotal(montoTotal);
         try {
             imp.imprimir(comp);
     //        this.dispose();
@@ -393,7 +394,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         verificar();
         Impresora imp=new Impresora();        
         String cadena=cliT.getCodigoCliente()+" - "+cliT.getRazonSocial()+"\n"+cliT.getDireccion();
-        comp.setArticulos(detalleDelPedido);
+        //comp.setArticulos(detalleDelPedido);
         //comp.setFechaComprobante("17/01/2013");
         int comprobanteTipo=0;
         if(cliT.getEmpresa().equals("sd")){
@@ -401,7 +402,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         }else{
             comprobanteTipo=5;
         }
-        comp.setTipoComprobante(comprobanteTipo);
+        //comp.setTipoComprobante(comprobanteTipo);
         try {
             imp.imprimir(comp);
         } catch (SQLException ex) {
@@ -411,7 +412,8 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         listadoDeBusqueda.clear();
         montoTotal=0.00;        
         SeleccionDeClientes sel=new SeleccionDeClientes();
-        InicioVisorDeHojaDeRuta.jDesktopPane1.add(sel);
+        Inicio.jDesktopPane1.add(sel);
+        //Inicio.jDesktopPane1.add(sel);
         sel.setVisible(true);
         sel.toFront();
         this.dispose();
@@ -423,7 +425,7 @@ private void cargarLista(ArrayList lista){
     while(il.hasNext()){
         art=(Articulos)il.next();
         System.out.println("DESCRIPCION "+art.getDescripcionArticulo());
-        modelo.addElement(art.getCodigo()+" "+art.getDescripcionArticulo());
+        //modelo.addElement(art.getCodigo()+" "+art.getDescripcionArticulo());
     }
     this.jList1.setModel(modelo);
 }
@@ -442,7 +444,7 @@ private void agregarRenglonTabla(){
         Iterator irP=detalleDelPedido.listIterator();
         while(irP.hasNext()){
             pedidos=(Articulos) irP.next();
-            fila[0]=pedidos.getCodigo();
+            //fila[0]=pedidos.getCodigo();
             fila[1]=pedidos.getDescripcionArticulo();
             fila[2]=pedidos.getCantidad();
             Double precioUnitario=0.00;
@@ -478,7 +480,7 @@ private void agregarRenglonTabla(){
                     precioUnitario=pedidos.getPrecioUnitario() * 1.5;
                     break;
             }
-            Double valor=(pedidos.getCantidad() * precioUnitario)*pedidos.getPesoUnitario();
+            Double valor=(pedidos.getCantidad() * precioUnitario);
             
             montoTotal=montoTotal + valor;
             fila[3]=valor;
@@ -489,7 +491,7 @@ private void agregarRenglonTabla(){
 private void montrarMonto(){
     System.err.println("DESCUENTO :"+cliT.getDescuento());
     Double total=montoTotal * cliT.getDescuento();
-    comp.setMontoTotal(total);
+    //comp.setMontoTotal(total);
     this.jLabel2.setText(String.valueOf(total));
 }
 private void verificar(){

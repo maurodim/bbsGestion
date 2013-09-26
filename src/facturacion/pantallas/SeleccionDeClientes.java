@@ -5,6 +5,7 @@
 package facturacion.pantallas;
 
 import facturacion.clientes.ClientesTango;
+import interfaceGraficas.Inicio;
 import interfacesPrograma.Busquedas;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import java.util.Iterator;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 import tablas.MiModeloTablaBuscarCliente;
-import visordehojaderuta.InicioVisorDeHojaDeRuta;
 
 /**
  *
@@ -275,8 +275,9 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
         cliT.setCondicionDeVenta(condicionVta);
         cliT.setListaDePrecios(listaDePrecio);
         System.out.println(" DESCUENTO PANTALLA CLIENTE"+desc);
-        IngresoDePedidos ing=new IngresoDePedidos(cliT);
-        InicioVisorDeHojaDeRuta.jDesktopPane1.add(ing);
+        IngresoDePedidos ing=new IngresoDePedidos();
+        Inicio.jDesktopPane1.add(ing);
+        //InicioVisorDeHojaDeRuta.jDesktopPane1.add(ing);
         ing.setVisible(true);
         ing.toFront();
         this.jTextField1.setText("");

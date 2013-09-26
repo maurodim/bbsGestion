@@ -275,18 +275,9 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
         cliT.setCondicionDeVenta(condicionVta);
         cliT.setListaDePrecios(listaDePrecio);
         System.out.println(" DESCUENTO PANTALLA CLIENTE"+desc);
-        IngresoDePedidos ing=new IngresoDePedidos();
-        Inicio.jDesktopPane1.add(ing);
-        //InicioVisorDeHojaDeRuta.jDesktopPane1.add(ing);
-        ing.setVisible(true);
-        ing.toFront();
-        this.jTextField1.setText("");
-        this.jTable1.removeAll();
-        this.jTextField2.setText("");
-        this.jTextField3.setText("");
-        this.jPanel2.setVisible(false);
-        this.jPanel3.setVisible(false);
-        this.jTextField1.requestFocus();
+        IngresoDePedidos.cliT=cliT;
+        IngresoDePedidos.jLabel6.setText(cliT.getRazonSocial());
+        IngresoDePedidos.jTextField1.requestFocus();
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 private void cargarTabla(){

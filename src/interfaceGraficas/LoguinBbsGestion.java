@@ -4,6 +4,8 @@
  */
 package interfaceGraficas;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author mauro
@@ -114,8 +116,10 @@ public class LoguinBbsGestion extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Inicio in=new Inicio(2);
+        in.setExtendedState(JFrame.MAXIMIZED_BOTH);
         in.setVisible(true);
-        in.pack();
+        
+        //in.pack();
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

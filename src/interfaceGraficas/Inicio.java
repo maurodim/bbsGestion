@@ -53,6 +53,8 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SISITEMA DE GESTION BAMBU SOFTWARE");
+        setBounds(new java.awt.Rectangle(0, 0, 0, 0));
 
         jDesktopPane1.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {

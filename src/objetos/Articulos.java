@@ -4,8 +4,13 @@
  */
 package objetos;
 
+import interfaces.Transaccionable;
 import interfacesPrograma.Facturar;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -146,6 +151,26 @@ public class Articulos implements Facturar{
     @Override
     public ArrayList listarClientes(String nombre) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object cargarPorCodigoDeBarra(String codigoDeBarra) {
+        String sql="select * from articulosdesc where codigoDeBarra like '"+codigoDeBarra+"'";
+        Transaccionable tra=new Conecciones();
+        ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+        Articulos articulo=new Articulos();
+        try {
+            while(rr.next()){
+                articulo.setCodigoAsignado(rr.getString("codArticulo"));
+                articulo.setDescripcionArticulo(rr.getString("Descripcion"));
+                articulo.setNumeroId(rr.getInt("id"));
+                
+            }
+            rr.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return articulo;
     }
     
     

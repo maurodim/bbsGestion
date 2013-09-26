@@ -46,6 +46,53 @@ public class ClientesTango implements Busquedas,Facturar{
         private Integer listaDePrecios;
         private Double descuento;
         private String condicionIva;
+        private Double coeficienteListaDeprecios;
+
+    public ClientesTango(String codigoCliente) {
+        try {
+            this.codigoCliente = codigoCliente;
+            Transaccionable tra=new Conecciones();
+                String sql="select * from listcli where COD_CLIENT like '"+codigoCliente+"%'";
+                //String sql="select pedidos_carga1.COD_CLIENT,pedidos_carga1.RAZON_SOC,pedidos_carga1.NRO_PEDIDO,pedidos_carga1.numero,pedidos_carga1.LEYENDA_2 from pedidos_carga1 where RAZON_SOC like '"+cliente+"%' group by COD_CLIENT order by RAZON_SOC";
+                ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+                while(rs.next()){
+                    
+                    
+                    this.codigoCliente=rs.getString("COD_CLIENT");
+                    this.razonSocial=rs.getString("RAZON_SOCI");
+                    this.direccion=rs.getString("DOMICILIO");
+                    this.condicionDeVenta=rs.getInt("COND_VTA");
+                    this.listaDePrecios=rs.getInt("NRO_LISTA");
+                    Double descuento=Double.parseDouble(rs.getString("PORC_DESC"));                
+                    this.descuento=descuento;
+                    this.numeroDeCuit=rs.getString("IDENTIFTRI");
+                    this.empresa=rs.getString("empresa");
+                    this.condicionIva=rs.getString("TIPO_IVA");
+                    this.telefono=rs.getString("TELEFONO_1");
+                    this.localidad=rs.getString("LOCALIDAD");
+                    this.coeficienteListaDeprecios=1.00;
+                    //cli.setNumeroPedido(rs.getString(3));
+                    //cli.setObservaciones(rs.getString(5));
+                    //System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
+                    //ped.add(cli);
+                }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesTango.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+
+    public ClientesTango() {
+    }
+    
+
+    public Double getCoeficienteListaDeprecios() {
+        return coeficienteListaDeprecios;
+    }
+
+    public void setCoeficienteListaDeprecios(Double coeficienteListaDeprecios) {
+        this.coeficienteListaDeprecios = coeficienteListaDeprecios;
+    }
 
     public String getCondicionIva() {
         return condicionIva;
@@ -399,6 +446,11 @@ public class ClientesTango implements Busquedas,Facturar{
             return null;
         }
 
+    }
+
+    @Override
+    public Object cargarPorCodigoDeBarra(String codigoDeBarra) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
         
 }

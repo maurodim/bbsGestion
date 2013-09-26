@@ -21,4 +21,6 @@ public interface Facturar {
     public Boolean guardarNuevoCliente(Object cliente);
     public Boolean modificarDatosDelCliente(Object cliente);
     public ArrayList listarClientes(String nombre);
+    public Object cargarPorCodigoDeBarra(String codigoDeBarra);
+    
 }

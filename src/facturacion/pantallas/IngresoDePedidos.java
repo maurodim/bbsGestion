@@ -46,6 +46,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         //comp.setCliente(cliT);
         initComponents();
         this.jLabel6.setText(cliT.getRazonSocial());
+        this.jTextField1.requestFocus();
         //this.jPanel2.requestFocus();
         
     }
@@ -138,6 +139,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
 
         jLabel5.setText("FECHA");
 
+        jCheckBox2.setSelected(true);
         jCheckBox2.setText("PAGADO");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -222,6 +224,11 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         });
 
         jButton4.setText("Buscar Articulo");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -324,19 +331,26 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             listadoDeBusqueda.clear();
             Facturar fart=new Articulos();
             arti=(Articulos)fart.cargarPorCodigoDeBarra(jTextField1.getText());
+            if(arti.getCodigoDeBarra().equals("")){
+                
+             jTextField1.setText("");   
+            }else{
             listadoDeBusqueda.add(arti);
             jTextField1.setText(arti.getCodigoAsignado());
             jTextField2.setText("1");
-            //listadoDeBusqueda=fart.listadoBusqueda(this.jTextField1.getText());
-            //cargarLista(listadoDeBusqueda);
+            
             this.jTextField2.requestFocus();
+            }
         }
     }//GEN-LAST:event_jTextField1KeyPressed
 
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
         int posicion=this.jList1.getSelectedIndex();
         arti=(Articulos)listadoDeBusqueda.get(posicion);
-        System.err.println("ARTICULO SELECCIONADO :"+arti.getDescripcionArticulo());
+        System.err.println("ARTICULO SELECCIONADO :"+arti.getDescripcionArticulo()+" "+arti.getCodigoDeBarra());
+        String codBar=arti.getCodigoDeBarra();
+        jTextField1.setText(codBar.trim());
+        this.jTextField2.setText("1");
         this.jTextField2.requestFocus();
         
     }//GEN-LAST:event_jList1MouseClicked
@@ -348,7 +362,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             agregarRenglonTabla();
 //                Double montoTotalX=(arti.getPrecioUnitario() * arti.getCantidad());
 //                montoTotal=montoTotal + montoTotalX;
-                 //montrarMonto();
+                 montrarMonto();
                  System.err.println("MONTO TOTAL "+montoTotal);
                 this.jButton1.setVisible(true);
             this.jTextField1.setText("");
@@ -466,6 +480,12 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Facturar fart=new Articulos();
+        listadoDeBusqueda=fart.listadoBusqueda(this.jTextField1.getText());
+        cargarLista(listadoDeBusqueda);
+    }//GEN-LAST:event_jButton4ActionPerformed
 private void cargarLista(ArrayList lista){
     DefaultListModel modelo=new DefaultListModel();
     Iterator il=lista.listIterator();
@@ -473,7 +493,7 @@ private void cargarLista(ArrayList lista){
     while(il.hasNext()){
         art=(Articulos)il.next();
         System.out.println("DESCRIPCION "+art.getDescripcionArticulo());
-        //modelo.addElement(art.getCodigo()+" "+art.getDescripcionArticulo());
+        modelo.addElement(art.getCodigoAsignado()+" "+art.getDescripcionArticulo());
     }
     this.jList1.setModel(modelo);
 }
@@ -493,11 +513,13 @@ private void agregarRenglonTabla(){
         while(irP.hasNext()){
             pedidos=(Articulos) irP.next();
             //fila[0]=pedidos.getCodigo();
+            fila[0]=pedidos.getCodigoAsignado();
             fila[1]=pedidos.getDescripcionArticulo();
             fila[2]=pedidos.getCantidad();
             Double precioUnitario=0.00;
-            precioUnitario= pedidos.getPrecioUnitario() * cliT.getCoeficienteListaDeprecios();
-            Double valor=(pedidos.getCantidad() * precioUnitario);
+            Double valor=1.00;
+            //precioUnitario= pedidos.getPrecioUnitario() * cliT.getCoeficienteListaDeprecios();
+            //Double valor=(pedidos.getCantidad() * precioUnitario);
             
             montoTotal=montoTotal + valor;
             fila[3]=valor;
@@ -507,7 +529,8 @@ private void agregarRenglonTabla(){
 }
 private void montrarMonto(){
     System.err.println("DESCUENTO :"+cliT.getDescuento());
-    Double total=montoTotal * cliT.getDescuento();
+    Double total=montoTotal;
+    //Double total=montoTotal * cliT.getDescuento();
     //comp.setMontoTotal(total);
     this.jLabel2.setText(String.valueOf(total));
 }

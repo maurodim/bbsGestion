@@ -135,7 +135,24 @@ public class Articulos implements Facturar{
 
     @Override
     public ArrayList listadoBusqueda(String criterio) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Transaccionable tra=new Conecciones();
+        ArrayList resultado=new ArrayList();
+        Articulos articulo=null;
+        String sql="select * from articulosdesc where Descripcion like '"+criterio+"%'";
+        ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rr.next()){
+                articulo=new Articulos();
+                articulo.setCodigoAsignado(rr.getString("codArticulo"));
+                articulo.setDescripcionArticulo(rr.getString("Descripcion"));
+                articulo.setNumeroId(rr.getInt("id"));
+                articulo.setCodigoDeBarra(rr.getString("codigoDeBarra"));
+                resultado.add(articulo);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
     }
 
     @Override
@@ -159,11 +176,13 @@ public class Articulos implements Facturar{
         Transaccionable tra=new Conecciones();
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         Articulos articulo=new Articulos();
+        
         try {
             while(rr.next()){
                 articulo.setCodigoAsignado(rr.getString("codArticulo"));
                 articulo.setDescripcionArticulo(rr.getString("Descripcion"));
                 articulo.setNumeroId(rr.getInt("id"));
+                articulo.setCodigoDeBarra(rr.getString("codigoDeBarra"));
                 
             }
             rr.close();

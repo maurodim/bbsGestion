@@ -52,7 +52,7 @@ public class ClientesTango implements Busquedas,Facturar{
         try {
             this.codigoCliente = codigoCliente;
             Transaccionable tra=new Conecciones();
-                String sql="select * from listcli where COD_CLIENT like '"+codigoCliente+"%'";
+                String sql="select *,(select coeficientesListas.coeficiente from coeficientesListas where coeficientesListas.id=listcli.NRO_LISTA)as coeficiente  from listcli where COD_CLIENT like '"+codigoCliente+"%'";
                 //String sql="select pedidos_carga1.COD_CLIENT,pedidos_carga1.RAZON_SOC,pedidos_carga1.NRO_PEDIDO,pedidos_carga1.numero,pedidos_carga1.LEYENDA_2 from pedidos_carga1 where RAZON_SOC like '"+cliente+"%' group by COD_CLIENT order by RAZON_SOC";
                 ResultSet rs=tra.leerConjuntoDeRegistros(sql);
                 while(rs.next()){
@@ -70,7 +70,7 @@ public class ClientesTango implements Busquedas,Facturar{
                     this.condicionIva=rs.getString("TIPO_IVA");
                     this.telefono=rs.getString("TELEFONO_1");
                     this.localidad=rs.getString("LOCALIDAD");
-                    this.coeficienteListaDeprecios=1.00;
+                    this.coeficienteListaDeprecios=rs.getDouble("coeficiente");
                     //cli.setNumeroPedido(rs.getString(3));
                     //cli.setObservaciones(rs.getString(5));
                     //System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
@@ -124,7 +124,22 @@ public class ClientesTango implements Busquedas,Facturar{
     }
 
     public void setListaDePrecios(Integer listaDePrecios) {
-        this.listaDePrecios = listaDePrecios;
+        
+        Transaccionable tra=new Conecciones();
+        String sql="select * from coeficientesListas where id="+listaDePrecios;
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                this.setCoeficienteListaDeprecios(rs.getDouble("coeficiente"));
+                
+            }
+            rs.close();
+            this.listaDePrecios = listaDePrecios;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesTango.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
+        
     }
         
         

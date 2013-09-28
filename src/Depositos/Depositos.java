@@ -5,6 +5,12 @@
 package Depositos;
 
 import Compras.Proveedores;
+import interfaces.Transaccionable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import objetos.Conecciones;
 
 /**
  *
@@ -18,6 +24,24 @@ public class Depositos {
     private Proveedores proveedores;
 
     public Depositos() {
+    }
+
+    public Depositos(int numero) {
+        this.numero = numero;
+        Transaccionable tra=new Conecciones();
+        String sql1="select * from depositos where numero ="+numero;
+        ResultSet rr=tra.leerConjuntoDeRegistros(sql1);
+        try {
+            while(rr.next()){
+                this.descripcion=rr.getString("descripcion");
+                this.direccion=rr.getString("direccion");
+                this.telefono=rr.getString("telefono");
+                
+            }
+            rr.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Depositos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Proveedores getProveedores() {

@@ -39,6 +39,10 @@ public class Cajas extends Sucursales{
     public Cajas() {
     }
 
+    public Cajas(int numero) {
+        this.numero = numero;
+    }
+
     public int getNumero() {
         return numero;
     }

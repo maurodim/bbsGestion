@@ -5,14 +5,18 @@
 package objetos;
 
 import facturacion.clientes.ClientesTango;
+import interfaceGraficas.Inicio;
+import interfaces.Transaccionable;
+import interfacesPrograma.Facturar;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  *
  * @author mauro
  */
-public class Comprobantes {
+public class Comprobantes implements Facturar{
     private int numero;
     private String descripcion;
     private int destinatarioCondicion;
@@ -26,6 +30,43 @@ public class Comprobantes {
     private int usuarioGenerador;
     private int idSucursal;
     private int idDeposito;
+    private int idCaja;
+    private Double montoBruto;
+    private Double montoIva;
+    private Double montoRet;
+
+    public int getIdCaja() {
+        return idCaja;
+    }
+
+    public void setIdCaja(int idCaja) {
+        this.idCaja = idCaja;
+    }
+
+    public Double getMontoBruto() {
+        return montoBruto;
+    }
+
+    public void setMontoBruto(Double montoBruto) {
+        this.montoBruto = montoBruto;
+    }
+
+    public Double getMontoIva() {
+        return montoIva;
+    }
+
+    public void setMontoIva(Double montoIva) {
+        this.montoIva = montoIva;
+    }
+
+    public Double getMontoRet() {
+        return montoRet;
+    }
+
+    public void setMontoRet(Double montoRet) {
+        this.montoRet = montoRet;
+    }
+    
 
     public ClientesTango getCliente() {
         return cliente;
@@ -137,6 +178,81 @@ public class Comprobantes {
 
     public void setDescargaStock(int descargaStock) {
         this.descargaStock = descargaStock;
+    }
+
+    @Override
+    public Boolean guardar(Object oob) {
+        // GUARDA EL OBJETO COMPROBANTE COMO EL O LOS MOVIMIENTOS CORRESPONDIENTES
+        // EJ: EN UNA FACTURA DE VENTA VOY A TENER MOVIMIENTO DE STOCK DESCONTANDO
+        // EN EL DEPOSITO Y DE CAJA SUMANDO EN CAJA DE LA SUCURSAL
+        /*
+         * ACA VOY A TENER QUE DISTINGUIR EL TIPO DE MOVIMIENTO, VOY A TENER QUE HACER UN 
+         * ITERATOR DE LOS ARTICULOS, PERO NO HACE FALTA PARA EL MOVIMIENTO DE CAJA PUESTO 
+         * QUE GRABO EL MONTO TOTAL.
+         * 
+         */
+        Comprobantes comp=(Comprobantes)oob;
+        Iterator iComp=comp.listadoDeArticulos.listIterator();
+        Transaccionable tra=new Conecciones();
+        Articulos articulo=new Articulos();
+        String sql="";
+        while(iComp.hasNext()){
+            articulo=(Articulos)iComp.next();
+            sql="insert into movimientosArticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario) values ("+comp.getTipoMovimiento()+","+articulo.getNumeroId()+","+articulo.getCantidad()+","+Inicio.deposito.getNumero()+","+comp.getTipoComprobante()+","+comp.getNumero()+",'"+comp.getCliente().getCodigoCliente()+"','"+comp.getFechaEmision()+"',"+comp.getUsuarioGenerador()+")";
+            tra.guardarRegistro(sql);
+        }
+        System.out.println("SE RECEPCIONO BARBARO");
+        return true;
+    }
+
+    @Override
+    public Boolean modificar(Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean nuevo(Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList listar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object leer(Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void imprimirComprobante(int tipoComprobante, Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList listadoBusqueda(String criterio) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean guardarNuevoCliente(Object cliente) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean modificarDatosDelCliente(Object cliente) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList listarClientes(String nombre) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object cargarPorCodigoDeBarra(String codigoDeBarra) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     

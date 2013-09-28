@@ -27,6 +27,16 @@ public class Usuarios extends TipoAcceso{
     private String nombreDeUsuario;
     private String clave;
     private int nivelDeAutorizacion;
+    private Sucursales sucursal;
+
+    public Sucursales getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursales sucursal) {
+        this.sucursal = sucursal;
+    }
+    
 
     public Usuarios(int numero) {
         this.numeroId = numero;
@@ -156,7 +166,22 @@ public class Usuarios extends TipoAcceso{
 
     @Override
     public Object validarClave(String usuario, String clave) {
-        return super.validarClave(usuario, clave);
+        Transaccionable tra=new Conecciones();
+        Usuarios usu=null;
+        String sql="select * from usuarios where nombreUsuario like '"+usuario+"' and clave like '"+clave+"'";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+            usu=new Usuarios();
+            usu.setNombre(rs.getString("nombre"));
+            usu.setNumero(rs.getInt("numero"));
+            usu.setSucursal(new Sucursales(rs.getInt("sucursal")));
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return usu;
     }
 
     @Override

@@ -4,6 +4,7 @@
  */
 package interfaceGraficas;
 
+import Sucursales.Usuarios;
 import javax.swing.JFrame;
 
 /**
@@ -115,12 +116,21 @@ public class LoguinBbsGestion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Usuarios usuario=new Usuarios();
+        Usuarios usuarios=new Usuarios();
+        usuarios=(Usuarios) usuario.validarClave(jTextField1.getText(),"mau");
+        if(usuarios.getNumero()> 0){
         Inicio in=new Inicio(2);
+        Inicio.niv=2;
+        Inicio.usuario=usuarios;
+        Inicio.sucursal=usuarios.getSucursal();
+        Inicio.deposito=Inicio.sucursal.getDepositos();
         in.setExtendedState(JFrame.MAXIMIZED_BOTH);
         in.setVisible(true);
         
         //in.pack();
         this.dispose();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

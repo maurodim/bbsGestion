@@ -4,6 +4,10 @@
  */
 package interfaceGraficas;
 
+import Depositos.Depositos;
+import Sucursales.Cajas;
+import Sucursales.Sucursales;
+import Sucursales.Usuarios;
 import facturacion.pantallas.IngresoDePedidos;
 
 /**
@@ -12,6 +16,11 @@ import facturacion.pantallas.IngresoDePedidos;
  */
 public class Inicio extends javax.swing.JFrame {
     public static Integer niv;
+    public static Usuarios usuario;
+    public static Sucursales sucursal;
+    public static Depositos deposito;
+    public static Cajas caja;
+    
 
     public void setNiv(Integer nive) {
         niv = nive;
@@ -46,6 +55,7 @@ public class Inicio extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -70,7 +80,16 @@ public class Inicio extends javax.swing.JFrame {
 
         jMenu3.setText("Caja");
 
+        jMenuItem5.setText("Abrir Caja");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem5);
+
         jMenuItem2.setText("Facturacion");
+        jMenuItem2.setEnabled(false);
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -144,6 +163,12 @@ public class Inicio extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+       this.jMenuItem2.setEnabled(true);
+       this.caja=new Cajas(1);
+       
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -204,5 +229,6 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     // End of variables declaration//GEN-END:variables
 }

@@ -9,6 +9,7 @@ import impresoras.Impresora;
 import interfaceGraficas.Inicio;
 import interfacesPrograma.Facturar;
 import java.awt.event.KeyEvent;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -387,8 +388,8 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formInternalFrameClosing
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        verificar();
-        Impresora imp=new Impresora();        
+        //verificar();
+        //Impresora imp=new Impresora();        
         String cadena=cliT.getCodigoCliente()+" - "+cliT.getRazonSocial()+"\n"+cliT.getDireccion();
         //comp.setCliente(cliT);
         //VisorDeHojaDeRuta
@@ -434,14 +435,26 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         }else{
             comprobanteTipo=4;
         }
+        Comprobantes comprobante=new Comprobantes();
+        comprobante.setCliente(cliT);
+        comprobante.setTipoMovimiento(1);
+        comprobante.setTipoComprobante(comprobanteTipo);
+        comprobante.setFechaEmision((Date.valueOf(fecha2)));
+        comprobante.setListadoDeArticulos(listadoDeBusqueda);
+        comprobante.setUsuarioGenerador(Inicio.usuario.getNumero());
+        comprobante.setIdSucursal(Inicio.sucursal.getNumero());
+        comprobante.setIdDeposito(Inicio.deposito.getNumero());
+        comprobante.setIdCaja(Inicio.caja.getNumero());
+        comprobante.setMontoTotal(montoTotal);
+        Facturar fat=new Comprobantes();
+        fat.guardar(comprobante);
+        /*
+         * ACA DEVO LIMPIAR TODOS LOS CAMPOS Y VARIABLES DE LA PANTALLA
+         * 
+         */
         //comp.setTipoComprobante(comprobanteTipo);
         //comp.setMontoTotal(montoTotal);
-        try {
-            imp.imprimir(comp);
-    //        this.dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(IngresoDePedidos.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

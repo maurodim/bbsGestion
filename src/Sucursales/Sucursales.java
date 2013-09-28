@@ -6,6 +6,12 @@ package Sucursales;
 
 import Administracion.Administracion;
 import Depositos.Depositos;
+import interfaces.Transaccionable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import objetos.Conecciones;
 
 /**
  *
@@ -23,6 +29,25 @@ public class Sucursales extends Administracion{
     public Sucursales() {
     }
 
+    public Sucursales(int numero) {
+        this.numero = numero;
+        Transaccionable tra=new Conecciones();
+        String sql="select * from sucursal where numero="+numero;
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                this.depositos=new Depositos(rs.getInt("deposito"));
+                this.descripcion=rs.getString("descripcion");
+                this.direccion=rs.getString("direccion");
+                this.telefono=rs.getString("telefono");
+                            
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Sucursales.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public int getNumero() {
         return numero;
     }

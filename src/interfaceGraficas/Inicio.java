@@ -10,6 +10,14 @@ import Sucursales.Sucursales;
 import Sucursales.Usuarios;
 import facturacion.pantallas.IngresoDePedidos;
 import interfacesPrograma.Cajeables;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,6 +30,8 @@ public class Inicio extends javax.swing.JFrame {
     public static Sucursales sucursal;
     public static Depositos deposito;
     public static Cajas caja;
+    public static String fechaDia;
+    public static Date fechaVal;
     
 
     public void setNiv(Integer nive) {
@@ -34,7 +44,29 @@ public class Inicio extends javax.swing.JFrame {
      * Creates new form Inicio
      */
     public Inicio(Integer nivel) {
-        
+        DecimalFormat fr=new DecimalFormat("00");
+        Calendar c1=Calendar.getInstance();
+	Calendar c2=new GregorianCalendar();
+	String dia=Integer.toString(c2.get(Calendar.DAY_OF_MONTH));
+	String mes=Integer.toString(c2.get(Calendar.MONTH));
+	String ano=Integer.toString(c2.get(Calendar.YEAR));
+	
+        int da=Integer.parseInt(dia);
+        int me=Integer.parseInt(mes);
+        me++;
+        dia=fr.format(da);
+        mes=fr.format(me);
+        fechaDia=ano+"-"+mes+"-"+dia;
+	System.err.println(fechaDia);
+        //fecha="23/12/2011";
+        String fh=ano+"-"+mes+"-"+dia;
+        SimpleDateFormat ff=new SimpleDateFormat("yyyy-mm-dd");
+        fechaVal = null;    
+        try {
+            fechaVal = ff.parse(fh);
+        } catch (ParseException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
         initComponents();
         permisos(nivel);
     }
@@ -172,14 +204,20 @@ public class Inicio extends javax.swing.JFrame {
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
        this.jMenuItem2.setEnabled(true);
+       Cajeables caj=new Cajas();
+       if(caj.VerificarCaja(usuario.getNumero(),sucursal.getNumero(),fechaDia)){
+           this.caja=(Cajas)caj.CargarCaja(usuario.getNumero(),sucursal.getNumero(),fechaDia);
+       }else{
        this.caja=new Cajas(1);
        Double saldo=Double.parseDouble(JOptionPane.showInputDialog("Ingrese Saldo Inicial","0.00"));
        System.out.println("SALDO INGRESADO "+saldo);
        this.caja.setSaldoInicial(saldo);
-       Cajeables caj=new Cajas();
-       this.caja=(Cajas) caj.AbrirCaja(caja);
-       this.sucursal.setCaja(caja);
        
+       this.caja=(Cajas) caj.AbrirCaja(caja);
+       }
+       this.sucursal.setCaja(caja);
+       this.jMenuItem5.setEnabled(false);
+       System.out.println("CAJA Nº "+caja.getNumero());
        
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 

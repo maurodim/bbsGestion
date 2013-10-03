@@ -5,6 +5,7 @@
 package interfacesPrograma;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -18,4 +19,6 @@ public interface Cajeables {
     public Object ModificarMovimiento(Integer idMovimiento);
     public Boolean EliminarMovimiento(Integer idMovimiento);
     public Object ArquearCaja(Object caja);
+    public Boolean VerificarCaja(int numeroDeUsuario,int numeroDeSucursal,String fecha);
+    public Object CargarCaja(int numeroDeUsuario, int numeroDeSucursal, String fecha);
 }

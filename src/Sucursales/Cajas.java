@@ -192,6 +192,44 @@ public class Cajas extends Sucursales implements Cajeables{
         
         return cajas;
     }
+
+    @Override
+    public Boolean VerificarCaja(int numeroDeUsuario, int numeroDeSucursal, String fecha) {
+        Boolean verifi=false;
+        String sql="select * from caja where numeroUsuario ="+numeroDeUsuario+" and numeroSucursal="+numeroDeSucursal+" and fecha like '"+fecha+"%'";
+        Transaccionable tra=new Conecciones();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+            verifi=true;
+                
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return verifi;
+    }
+
+    @Override
+    public Object CargarCaja(int numeroDeUsuario, int numeroDeSucursal, String fecha) {
+        Cajas cajas=new Cajas();
+        String sql="select * from caja where numeroUsuario ="+numeroDeUsuario+" and numeroSucursal="+numeroDeSucursal+" and fecha like '"+fecha+"%'";
+        Transaccionable tra=new Conecciones();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                cajas.numero=rs.getInt("numero");
+                cajas.saldoInicial=rs.getDouble("saldoInicial");
+                
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cajas;
+    }
     
     
 }

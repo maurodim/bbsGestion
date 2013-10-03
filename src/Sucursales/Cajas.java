@@ -20,6 +20,9 @@ public class Cajas extends Sucursales{
     private int tipoDeComprobante;
     private Double montoMovimiento;
     private Comprobantes comprobante;
+    private Double cambioEnCaja;
+    private Double saldoFinal;
+    
 
     public Comprobantes getComprobante() {
         return comprobante;

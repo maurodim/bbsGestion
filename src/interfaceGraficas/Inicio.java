@@ -9,6 +9,7 @@ import Sucursales.Cajas;
 import Sucursales.Sucursales;
 import Sucursales.Usuarios;
 import facturacion.pantallas.IngresoDePedidos;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -166,6 +167,9 @@ public class Inicio extends javax.swing.JFrame {
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
        this.jMenuItem2.setEnabled(true);
        this.caja=new Cajas(1);
+       this.caja.setSaldoInicial(Double.parseDouble(JOptionPane.showInputDialog("Ingrese Saldo Inicial","0.00")));
+       this.sucursal.setCaja(caja);
+       
        
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 

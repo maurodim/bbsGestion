@@ -195,10 +195,16 @@ public class Comprobantes implements Facturar{
         Iterator iComp=comp.listadoDeArticulos.listIterator();
         Transaccionable tra=new Conecciones();
         Articulos articulo=new Articulos();
+        Boolean verif=false;
         String sql="";
         while(iComp.hasNext()){
             articulo=(Articulos)iComp.next();
             sql="insert into movimientosArticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario) values ("+comp.getTipoMovimiento()+","+articulo.getNumeroId()+","+articulo.getCantidad()+","+Inicio.deposito.getNumero()+","+comp.getTipoComprobante()+","+comp.getNumero()+",'"+comp.getCliente().getCodigoCliente()+"','"+comp.getFechaEmision()+"',"+comp.getUsuarioGenerador()+")";
+            verif=tra.guardarRegistro(sql);
+            
+        }
+        if(verif){
+            sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja) values ("+comp.getUsuarioGenerador()+","+comp.getIdSucursal()+","+comp.getNumero()+","+comp.getTipoComprobante()+","+comp.getMontoTotal()+","+comp.getTipoMovimiento()+","+comp.getIdCaja()+")";
             tra.guardarRegistro(sql);
         }
         System.out.println("SE RECEPCIONO BARBARO");

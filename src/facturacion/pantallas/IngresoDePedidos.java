@@ -440,7 +440,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         comprobante.setTipoMovimiento(1);
         comprobante.setTipoComprobante(comprobanteTipo);
         comprobante.setFechaEmision((Date.valueOf(fecha2)));
-        comprobante.setListadoDeArticulos(listadoDeBusqueda);
+        comprobante.setListadoDeArticulos(detalleDelPedido);
         comprobante.setUsuarioGenerador(Inicio.usuario.getNumero());
         comprobante.setIdSucursal(Inicio.sucursal.getNumero());
         comprobante.setIdDeposito(Inicio.deposito.getNumero());
@@ -454,7 +454,11 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
          */
         //comp.setTipoComprobante(comprobanteTipo);
         //comp.setMontoTotal(montoTotal);
-        
+        detalleDelPedido.clear();
+        agregarRenglonTabla();
+        this.jTextField2.setText("");
+        jTextField1.setText("");
+        jTextField1.requestFocus();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

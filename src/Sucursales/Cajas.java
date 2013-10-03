@@ -4,17 +4,26 @@
  */
 package Sucursales;
 
+import interfaceGraficas.Inicio;
+import interfaces.Transaccionable;
+import interfacesPrograma.Cajeables;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import objetos.Comprobantes;
+import objetos.Conecciones;
 
 /**
  *
  * @author mauro
  */
-public class Cajas extends Sucursales{
+public class Cajas extends Sucursales implements Cajeables{
     private int numero;
     private int tipoMovimiento;
-    private static Double saldoInicial;
+    private Double saldoInicial;
     private static Date fechaInicio;
     private int numeroDeComprobante;
     private int tipoDeComprobante;
@@ -22,6 +31,22 @@ public class Cajas extends Sucursales{
     private Comprobantes comprobante;
     private Double cambioEnCaja;
     private Double saldoFinal;
+
+    public Double getCambioEnCaja() {
+        return cambioEnCaja;
+    }
+
+    public void setCambioEnCaja(Double cambioEnCaja) {
+        this.cambioEnCaja = cambioEnCaja;
+    }
+
+    public Double getSaldoFinal() {
+        return saldoFinal;
+    }
+
+    public void setSaldoFinal(Double saldoFinal) {
+        this.saldoFinal = saldoFinal;
+    }
     
 
     public Comprobantes getComprobante() {
@@ -62,12 +87,12 @@ public class Cajas extends Sucursales{
         this.tipoMovimiento = tipoMovimiento;
     }
 
-    public static Double getSaldoInicial() {
+    public Double getSaldoInicial() {
         return saldoInicial;
     }
 
-    public static void setSaldoInicial(Double saldoInicial) {
-        Cajas.saldoInicial = saldoInicial;
+    public void setSaldoInicial(Double saldoInicial) {
+        this.saldoInicial = saldoInicial;
     }
 
     public static Date getFechaInicio() {
@@ -100,6 +125,72 @@ public class Cajas extends Sucursales{
 
     public void setMontoMovimiento(Double montoMovimiento) {
         this.montoMovimiento = montoMovimiento;
+    }
+
+    @Override
+    public Object AbrirCaja(Object caja) {
+        Cajas cajaNueva=(Cajas) caja;
+        String sql="insert into caja (numeroSucursal,numeroUsuario,tipoMovimiento,saldoInicial) values ("+Inicio.sucursal.getNumero()+","+Inicio.usuario.getNumero()+",8,"+cajaNueva.saldoInicial+")";
+        Transaccionable tra=new Conecciones();
+        tra.guardarRegistro(sql);
+        sql="select LAST_INSERT_ID()";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                cajaNueva.numero=rs.getInt(1);
+                System.out.println("ID CAJA "+cajaNueva.numero);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cajaNueva;
+    }
+
+    @Override
+    public Boolean CerrarCaja(Object caja) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Double SaldoDeCaja(ArrayList listadoBilletes) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean NuevoMovimiento(Object factura) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object ModificarMovimiento(Integer idMovimiento) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean EliminarMovimiento(Integer idMovimiento) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object ArquearCaja(Object caja) {
+        Cajas cajas=(Cajas)caja;
+        Double saldoFinal=cajas.saldoInicial;
+        String sql="select movimientosCaja.monto from movimientosCaja where idCaja="+cajas.numero;
+        Transaccionable tra=new Conecciones();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                saldoFinal= saldoFinal + rs.getDouble("monto");
+                
+            }
+            rs.close();
+            cajas.saldoFinal=saldoFinal;
+        } catch (SQLException ex) {
+            Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return cajas;
     }
     
     

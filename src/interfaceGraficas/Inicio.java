@@ -9,6 +9,7 @@ import Sucursales.Cajas;
 import Sucursales.Sucursales;
 import Sucursales.Usuarios;
 import facturacion.pantallas.IngresoDePedidos;
+import interfacesPrograma.Cajeables;
 import javax.swing.JOptionPane;
 
 /**
@@ -99,6 +100,11 @@ public class Inicio extends javax.swing.JFrame {
         jMenu3.add(jMenuItem2);
 
         jMenuItem3.setText("Arqueo de Caja");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem3);
 
         jMenuItem4.setText("Cierre de Caja");
@@ -167,11 +173,21 @@ public class Inicio extends javax.swing.JFrame {
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
        this.jMenuItem2.setEnabled(true);
        this.caja=new Cajas(1);
-       this.caja.setSaldoInicial(Double.parseDouble(JOptionPane.showInputDialog("Ingrese Saldo Inicial","0.00")));
+       Double saldo=Double.parseDouble(JOptionPane.showInputDialog("Ingrese Saldo Inicial","0.00"));
+       System.out.println("SALDO INGRESADO "+saldo);
+       this.caja.setSaldoInicial(saldo);
+       Cajeables caj=new Cajas();
+       this.caja=(Cajas) caj.AbrirCaja(caja);
        this.sucursal.setCaja(caja);
        
        
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        Cajeables caj=new Cajas();
+        Cajas cajas=(Cajas)caj.ArquearCaja(caja);
+        System.out.println("SALDO DE CAJA "+cajas.getSaldoFinal());
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments

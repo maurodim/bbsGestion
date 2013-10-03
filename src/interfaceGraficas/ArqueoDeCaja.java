@@ -4,6 +4,9 @@
  */
 package interfaceGraficas;
 
+import Sucursales.Cajas;
+import interfacesPrograma.Cajeables;
+
 /**
  *
  * @author mauro
@@ -62,6 +65,8 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
 
         setClosable(true);
         setMaximizable(true);
@@ -214,21 +219,32 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
 
         jLabel11.setText("jLabel11");
 
+        jLabel12.setText("jLabel12");
+
+        jLabel13.setText("jLabel13");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -260,6 +276,10 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Double total=0.00;
         Double totalBilletes=0.00;
+        Double saldoInicial=0.00;
+        Double saldoFinal=0.00;
+        Double diferencia=0.00;
+        
         //0.10
         totalBilletes=Double.parseDouble(this.jTextField1.getText());
         totalBilletes=totalBilletes * 0.10;
@@ -310,11 +330,17 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         totalBilletes=totalBilletes * 100;
         total=total + totalBilletes;
         totalBilletes=0.00;
-        Double saldoInicial=Inicio.sucursal.getCaja().getSaldoInicial();
-        Double saldoFinal=total - saldoInicial;
+        saldoInicial=Inicio.sucursal.getCaja().getSaldoInicial();
+        saldoFinal=total - saldoInicial;
+        Cajeables caj=new Cajas();
+        Cajas cajas=new Cajas();
+        cajas=(Cajas)caj.ArquearCaja(Inicio.sucursal.getCaja());
+        Double totalMovimientos=(Double)cajas.getSaldoFinal();
+        diferencia=saldoFinal - totalMovimientos;
         this.jPanel2.setVisible(true);
-        this.jLabel11.setText("TOTAL CAJA :"+total+"\n SALDO INICIAL :"+saldoInicial+"\n SALDO CAJA :"+saldoFinal);
-        
+        this.jLabel11.setText("TOTAL CAJA :"+total);
+        this.jLabel12.setText("SALDO INICIAL :"+saldoInicial);
+        this.jLabel13.setText("SALDO CAJA :"+diferencia);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -322,6 +348,8 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

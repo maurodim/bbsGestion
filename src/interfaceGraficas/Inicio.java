@@ -187,6 +187,10 @@ public class Inicio extends javax.swing.JFrame {
         Cajeables caj=new Cajas();
         Cajas cajas=(Cajas)caj.ArquearCaja(caja);
         System.out.println("SALDO DE CAJA "+cajas.getSaldoFinal());
+        ArqueoDeCaja arq=new ArqueoDeCaja();
+        jDesktopPane1.add(arq);
+        arq.setVisible(true);
+        arq.toFront();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**

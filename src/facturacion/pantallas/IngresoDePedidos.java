@@ -346,6 +346,12 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             this.jTextField2.requestFocus();
             }
         }
+        if(evt.getKeyCode()==KeyEvent.VK_F1){
+            System.out.println("ENTRO CON F1¡¡¡¡¡");
+        Facturar fart=new Articulos();
+        listadoDeBusqueda=fart.listadoBusqueda(this.jTextField1.getText());
+        cargarLista(listadoDeBusqueda);    
+        }
     }//GEN-LAST:event_jTextField1KeyPressed
 
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
@@ -524,7 +530,7 @@ private void agregarRenglonTabla(){
             fila[1]=pedidos.getDescripcionArticulo();
             fila[2]=pedidos.getCantidad();
             Double precioUnitario=1.00;
-            Double valor=precioUnitario * pedidos.getCantidad();
+            Double valor=pedidos.getPrecioUnitarioNeto() * pedidos.getCantidad();
             //precioUnitario= pedidos.getPrecioUnitario() * cliT.getCoeficienteListaDeprecios();
             //Double valor=(pedidos.getCantidad() * precioUnitario);
             valor=valor * cliT.getCoeficienteListaDeprecios();

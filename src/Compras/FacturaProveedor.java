@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Depositos;
+package Compras;
 
+import Administracion.TipoComprobante;
 import interfaces.Comprobable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,16 +13,19 @@ import java.util.Date;
  *
  * @author mauro
  */
-public class RemitosInternos implements Comprobable{
-    private Integer numero;
+public class FacturaProveedor implements Comprobable{
     private Integer id;
+    private String numeroFactura;
     private Integer numeroProveedor;
     private String nombreProveedor;
+    private Double montoFinal;
+    private Integer idRemito;
+    private Integer idCaja;
     private Date fecha;
-    private String numeroDeFactura;
-    private Integer depositoDestino;
-    private Integer depositoOrigen;
-    private ArrayList articulos;
+    private int pagada;
+
+    public FacturaProveedor() {
+    }
 
     public Integer getId() {
         return id;
@@ -31,12 +35,13 @@ public class RemitosInternos implements Comprobable{
         this.id = id;
     }
 
-    public Integer getNumero() {
-        return numero;
+    
+    public String getNumeroFactura() {
+        return numeroFactura;
     }
 
-    public void setNumero(Integer numero) {
-        this.numero = numero;
+    public void setNumero(String numero) {
+        this.numeroFactura = numero;
     }
 
     public Integer getNumeroProveedor() {
@@ -55,6 +60,30 @@ public class RemitosInternos implements Comprobable{
         this.nombreProveedor = nombreProveedor;
     }
 
+    public Double getMontoFinal() {
+        return montoFinal;
+    }
+
+    public void setMontoFinal(Double montoFinal) {
+        this.montoFinal = montoFinal;
+    }
+
+    public Integer getIdRemito() {
+        return idRemito;
+    }
+
+    public void setIdRemito(Integer idRemito) {
+        this.idRemito = idRemito;
+    }
+
+    public Integer getIdCaja() {
+        return idCaja;
+    }
+
+    public void setIdCaja(Integer idCaja) {
+        this.idCaja = idCaja;
+    }
+
     public Date getFecha() {
         return fecha;
     }
@@ -63,48 +92,12 @@ public class RemitosInternos implements Comprobable{
         this.fecha = fecha;
     }
 
-    public String getNumeroDeFactura() {
-        return numeroDeFactura;
+    public int getPagada() {
+        return pagada;
     }
 
-    public void setNumeroDeFactura(String numeroDeFactura) {
-        this.numeroDeFactura = numeroDeFactura;
-    }
-
-    public Integer getDepositoDestino() {
-        return depositoDestino;
-    }
-
-    public void setDepositoDestino(Integer depositoDestino) {
-        this.depositoDestino = depositoDestino;
-    }
-
-    public Integer getDepositoOrigen() {
-        return depositoOrigen;
-    }
-
-    public void setDepositoOrigen(Integer depositoOrigen) {
-        this.depositoOrigen = depositoOrigen;
-    }
-
-    public ArrayList getArticulos() {
-        return articulos;
-    }
-
-    public void setArticulos(ArrayList articulos) {
-        this.articulos = articulos;
-    }
-
-    public RemitosInternos() {
-    }
-
-    public RemitosInternos(Integer numero, Integer numeroProveedor) {
-        this.numero = numero;
-        this.numeroProveedor = numeroProveedor;
-    }
-
-    public RemitosInternos(Integer id) {
-        this.id = id;
+    public void setPagada(int pagada) {
+        this.pagada = pagada;
     }
 
     @Override
@@ -146,5 +139,6 @@ public class RemitosInternos implements Comprobable{
     public ArrayList listarComprobantesPorProveedor(Integer numeroProveedor) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    
     
 }

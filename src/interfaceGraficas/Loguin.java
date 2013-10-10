@@ -4,6 +4,8 @@
  */
 package interfaceGraficas;
 
+import Sucursales.Usuarios;
+
 /**
  *
  * @author mauro
@@ -111,9 +113,31 @@ public class Loguin extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       Inicio.jMenu1.setEnabled(false);
-       Inicio.jMenu2.setEnabled(false);
+        Usuarios usuario=new Usuarios();
+        Usuarios usuarios=new Usuarios();
+        usuarios=(Usuarios) usuario.validarClave(jTextField1.getText(),new String(jPasswordField1.getPassword()));
+        if(usuarios.getNumero()> 0){
+        Inicio in=new Inicio(2);
+        Inicio.niv=usuarios.getNivel();
+        Inicio.usuario=usuarios;
+        Inicio.sucursal=usuarios.getSucursal();
+        Inicio.deposito=Inicio.sucursal.getDepositos();
+        switch (Inicio.usuario.getNivel()){
+        case 1:
+            
+            break;
+        case 2:
+            Inicio.jMenu1.setEnabled(false);
+            Inicio.jMenu2.setEnabled(false);
+            break;
+        default:
+            Inicio.jMenu1.setEnabled(false);
+            Inicio.jMenu2.setEnabled(false);
+            break;
+        
+    }
        this.dispose();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

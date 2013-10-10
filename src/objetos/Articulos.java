@@ -20,12 +20,21 @@ public class Articulos implements Facturar{
     private String codigoDeBarra;
     private String codigoAsignado;
     private Integer rubro;
+    private String nrubro;
     private Integer numeroId;
     private String descripcionArticulo;
     private Double cantidad;
     private Double precioUnitario;
     private Double precioIva;
     private Double precioUnitarioNeto;
+
+    public String getNrubro() {
+        return nrubro;
+    }
+
+    public void setNrubro(String nrubro) {
+        this.nrubro = nrubro;
+    }
 
     public Articulos() {
     }
@@ -83,6 +92,7 @@ public class Articulos implements Facturar{
     }
 
     public void setPrecioUnitario(Double precioUnitario) {
+        
         this.precioUnitario = precioUnitario;
     }
 
@@ -95,11 +105,27 @@ public class Articulos implements Facturar{
     }
 
     public Double getPrecioUnitarioNeto() {
+        
         return precioUnitarioNeto;
     }
 
     public void setPrecioUnitarioNeto(Double precioUnitarioNeto) {
-        this.precioUnitarioNeto = precioUnitarioNeto;
+        Transaccionable tra=new Conecciones();
+        String sql="select rubros.recargo from rubros where nombre like '"+this.nrubro+"%'";
+        ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+        Double rec=1.00;
+        try {
+            while(rr.next()){
+                rec=rr.getDouble("recargo");
+                
+            }
+            rr.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.precioUnitarioNeto = precioUnitarioNeto * rec;
+        System.err.println("RECIBIDO "+precioUnitarioNeto+" resultado "+this.precioUnitarioNeto+" recargo "+rec+"\n "+sql);
     }
     
 
@@ -138,15 +164,16 @@ public class Articulos implements Facturar{
         Transaccionable tra=new Conecciones();
         ArrayList resultado=new ArrayList();
         Articulos articulo=null;
-        String sql="select * from articulosdesc where Descripcion like '"+criterio+"%'";
+        String sql="select * from articulos where NOMBRE like '"+criterio+"%'";
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rr.next()){
                 articulo=new Articulos();
-                articulo.setCodigoAsignado(rr.getString("codArticulo"));
-                articulo.setDescripcionArticulo(rr.getString("Descripcion"));
-                articulo.setNumeroId(rr.getInt("id"));
-                articulo.setCodigoDeBarra(rr.getString("codigoDeBarra"));
+                articulo.setCodigoAsignado(rr.getString("ID"));
+                articulo.setDescripcionArticulo(rr.getString("NOMBRE"));
+                articulo.setNumeroId(rr.getInt("ID"));
+                articulo.setCodigoDeBarra(rr.getString("BARRAS"));
+                articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
                 resultado.add(articulo);
             }
         } catch (SQLException ex) {
@@ -172,18 +199,19 @@ public class Articulos implements Facturar{
 
     @Override
     public Object cargarPorCodigoDeBarra(String codigoDeBarra) {
-        String sql="select * from articulosdesc where codigoDeBarra like '"+codigoDeBarra+"'";
+        String sql="select * from articulos where BARRAS like '"+codigoDeBarra+"'";
         Transaccionable tra=new Conecciones();
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         Articulos articulo=new Articulos();
         
         try {
             while(rr.next()){
-                articulo.setCodigoAsignado(rr.getString("codArticulo"));
-                articulo.setDescripcionArticulo(rr.getString("Descripcion"));
-                articulo.setNumeroId(rr.getInt("id"));
-                articulo.setCodigoDeBarra(rr.getString("codigoDeBarra"));
-                
+                articulo.setCodigoAsignado(rr.getString("ID"));
+                articulo.setDescripcionArticulo(rr.getString("NOMBRE"));
+                articulo.setNumeroId(rr.getInt("ID"));
+                articulo.setCodigoDeBarra(rr.getString("BARRAS"));
+                articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
+                articulo.setNrubro(rr.getString("RUBRON"));
             }
             rr.close();
         } catch (SQLException ex) {

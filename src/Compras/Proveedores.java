@@ -248,14 +248,14 @@ public class Proveedores implements Personalizable{
                 Proveedores prov=new Proveedores();
                 prov.setNumero(rr.getInt("numero"));
                 prov.setNombre(rr.getString("nombre"));
-                prov.setDireccion(rr.getString("direccion"));
-                prov.setLocalidad(rr.getString("localidad"));
-                prov.setMail(rr.getString("mail"));
-                prov.setTelefono(rr.getString("telefono"));
-                prov.setCondicionDeIva(rr.getInt("condicionIva"));
-                prov.setNumeroDeCuit(rr.getString("numeroCuit"));
-                prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
-                prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
+                prov.setDireccion(rr.getString("DOMICILIO"));
+                prov.setLocalidad(rr.getString("LOCALIDAD"));
+                //prov.setMail(rr.getString("mail"));
+                prov.setTelefono(rr.getString("TELEFONO"));
+                //prov.setCondicionDeIva(rr.getInt("condicionIva"));
+                //prov.setNumeroDeCuit(rr.getString("numeroCuit"));
+                //prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
+                //prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
                 listado.add(prov);
             }
             rr.close();

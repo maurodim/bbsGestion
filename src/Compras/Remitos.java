@@ -15,7 +15,7 @@ import objetos.Conecciones;
  *
  * @author mauro
  */
-public class Remitos extends TipoComprobante{
+public class Remitos implements Comprobable{
     private Integer numeroId;
     private Integer idProveedor;
     private Date fechaComprobante;

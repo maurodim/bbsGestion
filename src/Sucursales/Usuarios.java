@@ -173,6 +173,7 @@ public class Usuarios extends TipoAcceso{
         try {
             while(rs.next()){
             usu=new Usuarios();
+            usu.setNivel(rs.getInt("autorizacion"));
             usu.setNombre(rs.getString("nombre"));
             usu.setNumero(rs.getInt("numero"));
             usu.setSucursal(new Sucursales(rs.getInt("sucursal")));

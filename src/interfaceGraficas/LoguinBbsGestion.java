@@ -121,7 +121,7 @@ public class LoguinBbsGestion extends javax.swing.JFrame {
         usuarios=(Usuarios) usuario.validarClave(jTextField1.getText(),new String(jPasswordField1.getPassword()));
         if(usuarios.getNumero()> 0){
         Inicio in=new Inicio(2);
-        Inicio.niv=usuarios.getNivel();
+        Inicio.niv=usuarios.getNivelDeAutorizacion();
         Inicio.usuario=usuarios;
         Inicio.sucursal=usuarios.getSucursal();
         Inicio.deposito=Inicio.sucursal.getDepositos();

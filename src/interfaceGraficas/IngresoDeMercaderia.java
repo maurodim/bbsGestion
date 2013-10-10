@@ -443,11 +443,26 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         Comprobable comp=new Remitos();
         comp.nuevoComprobante(comprobante);
         if(this.jCheckBox1.isSelected()){
-            FacturaProveedor fac=new FacturaProveedor();
-            fac.setNombreProveedor(proveedor.getNombre());
-            fac.setNumeroProveedor(proveedor.getNumero());
-            fac.setFecha(Date.valueOf(fecha2));
-            fac.setIdRemito(me);
+            
+            facturaProveedor.setNombreProveedor(proveedor.getNombre());
+            facturaProveedor.setNumeroProveedor(proveedor.getNumero());
+            facturaProveedor.setFecha(Date.valueOf(fecha2));
+            //fac.setIdRemito(me);
+            //facturaProveedor.setMontoFinal(Double.NaN);
+            Comprobable fac=new FacturaProveedor();
+            fac.nuevoComprobante(facturaProveedor);
+            if(this.jCheckBox2.isSelected()){
+                Facturar fact=new FacturaProveedor();
+                fact.guardar(fac);
+            }
+            this.jTextField1.setText("");
+            this.jTextField2.setText("");
+            this.jTextField3.setText("");
+            this.jTextField4.setText("");
+            this.jTextField5.setText("");
+            this.jTextField6.setText("");
+            this.jLabel7.setText("");
+            this.jTextField3.requestFocus();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -108,7 +108,7 @@ public class RemitosInternos implements Comprobable{
     }
 
     @Override
-    public Boolean nuevoComprobante(Object objeto) {
+    public Integer nuevoComprobante(Object objeto) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

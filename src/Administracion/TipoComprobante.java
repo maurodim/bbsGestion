@@ -43,14 +43,16 @@ public class TipoComprobante implements Comprobable {
     }
 
     @Override
-    public Boolean nuevoComprobante(Object objeto) {
+    public Integer nuevoComprobante(Object objeto) {
         TipoComprobante tipoComprobante=(TipoComprobante)objeto;
-        Boolean creado=false;
+        Integer creado=0;
         String sql="";
         Transaccionable tran=new Conecciones();
         if(tran.guardarRegistro(sql)){
             sql="";
-            if(tran.guardarRegistro(sql))creado=true;
+            if(tran.guardarRegistro(sql)){
+                //creado=devuelve el last_id;
+            };
         }
         return creado;
     }

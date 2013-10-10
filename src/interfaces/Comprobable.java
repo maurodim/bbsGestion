@@ -12,7 +12,7 @@ import java.util.Date;
  * @author mauro
  */
 public interface Comprobable {
-    public Boolean nuevoComprobante(Object objeto);
+    public Integer nuevoComprobante(Object objeto);
     public Boolean agregarItem(Object item);
     public Boolean modificarComprobante(Object objeto);
     public Boolean eliminarComprobante(Object objeto);

@@ -85,13 +85,15 @@ public class Remitos implements Comprobable{
     }
 
     @Override
-    public Boolean nuevoComprobante(Object objeto) {
+    public Integer nuevoComprobante(Object objeto) {
         //String sql="CREATE TABLE IF NOT EXISTS `movimientos25` (`numero` int(11) NOT NULL AUTO_INCREMENT,`numeroArticulo` int(11) NOT NULL,`cantidad` int(11) NOT NULL,`condicion` int(11) NOT NULL DEFAULT '0',`numeroUsuario` int(11) NOT NULL,`fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,PRIMARY KEY (`numero`)) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5";
         //String sql="insert into clientes (nombre, direccion, localidad, telefono, mail, condIva, numeroCuit) VALUES (mauro, piedras 6738, santa fe, 155451500, contacto@maurodi.com.ar, 1, 0000000000)";
         String sql="";
-        Boolean veri=false;
+        Integer veri=0;
         Transaccionable tra=new Conecciones();
-        if(tra.guardarRegistro(sql))veri=true;
+        if(tra.guardarRegistro(sql)){
+            //veri=devuelve el last_id;
+        }
         
         return veri;
     }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.Conecciones;
+import objetos.Menus;
 
 /**
  *
@@ -26,9 +27,28 @@ public class Usuarios extends TipoAcceso{
     private String localidad;
     private String nombreDeUsuario;
     private String clave;
-    private int nivelDeAutorizacion;
+    private Integer nivelDeAutorizacion;
     private Sucursales sucursal;
+    private Menus menu;
 
+    public Integer getNivelDeAutorizacion() {
+        return nivelDeAutorizacion;
+    }
+
+    public void setNivelDeAutorizacion(Integer nivelDeAutorizacion) {
+        this.nivelDeAutorizacion = nivelDeAutorizacion;
+    }
+    
+    
+    public Menus getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menus menu) {
+        this.menu = menu;
+    }
+
+    
     public Sucursales getSucursal() {
         return sucursal;
     }
@@ -116,21 +136,17 @@ public class Usuarios extends TipoAcceso{
         this.clave = clave;
     }
 
-    public int getNivelDeAutorizacion() {
-        return nivelDeAutorizacion;
-    }
-
-    public void setNivelDeAutorizacion() {
-        this.nivelDeAutorizacion = super.getNivel();
-    }
+    
     public ArrayList listarUsuario(){
         ArrayList listadoUsuarios=new ArrayList();
         try {
             
-            String sql="select * from usuarios";
+            String sql="select *,(select tipoacceso.menu1 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu1,(select tipoacceso.menu2 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu2,(select tipoacceso.menu3 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu3,(select tipoacceso.menu4 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu4,(select tipoacceso.menu5 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu5 from usuarios";
+            String sql1="";
             Usuarios us=null;
             Transaccionable traUs=new Conecciones();
             ResultSet rr=traUs.leerConjuntoDeRegistros(sql);
+            
             while(rr.next()){
                 us=new Usuarios();
                 us.nombre=rr.getString("nombre");
@@ -142,11 +158,13 @@ public class Usuarios extends TipoAcceso{
                 us.nombreDeUsuario=rr.getString("nombreUsuario");
                 us.clave=rr.getString("clave");
                 us.setNivel(rr.getInt("autorizacion"));
-                us.setNivelDeAutorizacion();
+                us.setNivelDeAutorizacion(rr.getInt("autorizacion"));
                 System.err.println("USUARIOS "+us.nombre);
+                us.setMenu(new Menus(rr.getBoolean("menu1"),rr.getBoolean("menu2"),rr.getBoolean("menu3"),rr.getBoolean("menu4"),rr.getBoolean("menu5")));
                 listadoUsuarios.add(us);
                 
             }
+            
             rr.close();
         } catch (SQLException ex) {
             Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
@@ -168,15 +186,20 @@ public class Usuarios extends TipoAcceso{
     public Object validarClave(String usuario, String clave) {
         Transaccionable tra=new Conecciones();
         Usuarios usu=null;
-        String sql="select * from usuarios where nombreUsuario like '"+usuario+"' and clave like '"+clave+"'";
+        String sql="select *,(select tipoacceso.menu1 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu1,(select tipoacceso.menu2 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu2,(select tipoacceso.menu3 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu3,(select tipoacceso.menu4 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu4,(select tipoacceso.menu5 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu5 from usuarios where nombreUsuario like '"+usuario+"' and clave like '"+clave+"'";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+       
+        
         try {
             while(rs.next()){
             usu=new Usuarios();
-            usu.setNivel(rs.getInt("autorizacion"));
+            usu.setNivelDeAutorizacion(rs.getInt("autorizacion"));
             usu.setNombre(rs.getString("nombre"));
             usu.setNumero(rs.getInt("numero"));
             usu.setSucursal(new Sucursales(rs.getInt("sucursal")));
+            
+                    usu.setMenu(new Menus(rs.getBoolean("menu1"),rs.getBoolean("menu2"),rs.getBoolean("menu3"),rs.getBoolean("menu4"),rs.getBoolean("menu5")));                    
+               
             }
             rs.close();
         } catch (SQLException ex) {
@@ -202,7 +225,33 @@ public class Usuarios extends TipoAcceso{
 
     @Override
     public Object cargarUsuario(Integer numeroUsuario) {
-        return super.cargarUsuario(numeroUsuario);
+        Transaccionable tra=new Conecciones();
+        Usuarios usu=null;
+        String sql="select *,(select tipoacceso.menu1 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu1,(select tipoacceso.menu2 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu2,(select tipoacceso.menu3 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu3,(select tipoacceso.menu4 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu4,(select tipoacceso.menu5 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu5 from usuarios where numero="+numeroUsuario;
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+       
+        
+        try {
+            while(rs.next()){
+            usu=new Usuarios();
+            usu.setNivelDeAutorizacion(rs.getInt("autorizacion"));
+            usu.setNombre(rs.getString("nombre"));
+            usu.setNumero(rs.getInt("numero"));
+            usu.setDireccion(rs.getString("direccion"));
+            usu.setClave(rs.getString("clave"));
+            usu.setTelefono(rs.getString("telefono"));
+            usu.setMail(rs.getString("mail"));
+            usu.setSucursal(new Sucursales(rs.getInt("sucursal")));
+           
+            
+                    usu.setMenu(new Menus(rs.getBoolean("menu1"),rs.getBoolean("menu2"),rs.getBoolean("menu3"),rs.getBoolean("menu4"),rs.getBoolean("menu5")));                    
+               
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return usu;
     }
     
 }

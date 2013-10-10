@@ -6,6 +6,7 @@ package Compras;
 
 import Administracion.TipoComprobante;
 import interfaces.Comprobable;
+import interfacesPrograma.Facturar;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -13,7 +14,7 @@ import java.util.Date;
  *
  * @author mauro
  */
-public class FacturaProveedor implements Comprobable{
+public class FacturaProveedor implements Comprobable,Facturar{
     private Integer id;
     private String numeroFactura;
     private Integer numeroProveedor;
@@ -101,7 +102,7 @@ public class FacturaProveedor implements Comprobable{
     }
 
     @Override
-    public Boolean nuevoComprobante(Object objeto) {
+    public Integer nuevoComprobante(Object objeto) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -137,6 +138,61 @@ public class FacturaProveedor implements Comprobable{
 
     @Override
     public ArrayList listarComprobantesPorProveedor(Integer numeroProveedor) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean guardar(Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean modificar(Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean nuevo(Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList listar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object leer(Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void imprimirComprobante(int tipoComprobante, Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList listadoBusqueda(String criterio) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean guardarNuevoCliente(Object cliente) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean modificarDatosDelCliente(Object cliente) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList listarClientes(String nombre) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object cargarPorCodigoDeBarra(String codigoDeBarra) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

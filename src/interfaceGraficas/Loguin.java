@@ -117,25 +117,16 @@ public class Loguin extends javax.swing.JInternalFrame {
         Usuarios usuarios=new Usuarios();
         usuarios=(Usuarios) usuario.validarClave(jTextField1.getText(),new String(jPasswordField1.getPassword()));
         if(usuarios.getNumero()> 0){
-        Inicio in=new Inicio(2);
-        Inicio.niv=usuarios.getNivel();
+        //Inicio in=new Inicio(2);
+        Inicio.niv=usuarios.getNivelDeAutorizacion();
         Inicio.usuario=usuarios;
         Inicio.sucursal=usuarios.getSucursal();
         Inicio.deposito=Inicio.sucursal.getDepositos();
-        switch (Inicio.usuario.getNivel()){
-        case 1:
-            
-            break;
-        case 2:
-            Inicio.jMenu1.setEnabled(false);
-            Inicio.jMenu2.setEnabled(false);
-            break;
-        default:
-            Inicio.jMenu1.setEnabled(false);
-            Inicio.jMenu2.setEnabled(false);
-            break;
-        
-    }
+        Inicio.jMenu1.setEnabled(usuarios.getMenu().getMenu1());
+        Inicio.jMenu2.setEnabled(usuarios.getMenu().getMenu2());
+        Inicio.jMenu5.setEnabled(usuarios.getMenu().getMenu5());
+        //Inicio.jMenu3.setEnabled(Inicio.usuario.getMenu().getMenu3());
+        //Inicio.jMenu4.setEnabled(Inicio.usuario.getMenu().getMenu4());
        this.dispose();
         }
     }//GEN-LAST:event_jButton1ActionPerformed

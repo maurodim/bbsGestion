@@ -160,20 +160,20 @@ public class Proveedores implements Personalizable{
     public Object buscarPorNumero(Integer id) {
         Proveedores prov=new Proveedores();
         try {
-            String sql="select * from proveedores where numero="+id;
+            String sql="select * from proveedores where numero="+id+" and INHABILITADO=0";
             Transaccionable tra=new Conecciones();
             ResultSet rr=tra.leerConjuntoDeRegistros(sql);
             while(rr.next()){
-                prov.setNumero(rr.getInt("numero"));
+                prov.setNumero(rr.getInt("ID"));
                 prov.setNombre(rr.getString("nombre"));
-                prov.setDireccion(rr.getString("direccion"));
-                prov.setLocalidad(rr.getString("localidad"));
+                prov.setDireccion(rr.getString("DOMICILIO"));
+                prov.setLocalidad(rr.getString("LOCALIDAD"));
                 prov.setMail(rr.getString("mail"));
-                prov.setTelefono(rr.getString("telefono"));
-                prov.setCondicionDeIva(rr.getInt("condicionIva"));
-                prov.setNumeroDeCuit(rr.getString("numeroCuit"));
-                prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
-                prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
+                prov.setTelefono(rr.getString("TELEFONO"));
+                //prov.setCondicionDeIva(rr.getInt("condicionIva"));
+                //prov.setNumeroDeCuit(rr.getString("numeroCuit"));
+                //prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
+                //prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
             }
             rr.close();
             

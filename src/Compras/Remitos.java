@@ -7,8 +7,14 @@ package Compras;
 import Administracion.TipoComprobante;
 import interfaces.Comprobable;
 import interfaces.Transaccionable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import objetos.Articulos;
 import objetos.Conecciones;
 
 /**
@@ -23,6 +29,16 @@ public class Remitos implements Comprobable{
     private ArrayList articulos;
     private String numeroRemito;
     private Integer numeroDeposito;
+    private Integer idUsuario;
+
+    public Integer getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+    
 
     public Integer getNumeroDeposito() {
         return numeroDeposito;
@@ -88,13 +104,30 @@ public class Remitos implements Comprobable{
     public Integer nuevoComprobante(Object objeto) {
         //String sql="CREATE TABLE IF NOT EXISTS `movimientos25` (`numero` int(11) NOT NULL AUTO_INCREMENT,`numeroArticulo` int(11) NOT NULL,`cantidad` int(11) NOT NULL,`condicion` int(11) NOT NULL DEFAULT '0',`numeroUsuario` int(11) NOT NULL,`fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,PRIMARY KEY (`numero`)) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5";
         //String sql="insert into clientes (nombre, direccion, localidad, telefono, mail, condIva, numeroCuit) VALUES (mauro, piedras 6738, santa fe, 155451500, contacto@maurodi.com.ar, 1, 0000000000)";
-        String sql="";
+        Remitos rem=(Remitos)objeto;
+        String sql="select * from tipoComprobantes where numero=3";
         Integer veri=0;
         Transaccionable tra=new Conecciones();
-        if(tra.guardarRegistro(sql)){
-            //veri=devuelve el last_id;
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        Integer numero=0;
+        try {
+            while(rs.next()){
+                numero=rs.getInt("numeroActivo");
+                numero++;
+                
+            }
+            rs.close();
+            veri=numero;
+            Iterator listA=rem.getArticulos().listIterator();
+            while(listA.hasNext()){
+                Articulos art=(Articulos)listA.next();
+                Double cantidad=art.getCantidad() / art.getEquivalencia();
+                sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numerousuario) values (5,"+art.getNumeroId()+","+cantidad+","+rem.getNumeroDeposito()+",3,'"+rem.getNumeroRemito()+"',"+rem.getIdProveedor()+",'"+rem.getFechaRecepcion()+"',"+rem.getIdUsuario()+")";
+                if(tra.guardarRegistro(sql))System.out.println(sql);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Remitos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         return veri;
     }
 

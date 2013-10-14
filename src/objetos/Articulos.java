@@ -28,6 +28,16 @@ public class Articulos implements Facturar,Editables{
     private Double precioUnitario;
     private Double precioIva;
     private Double precioUnitarioNeto;
+    private Double equivalencia;
+
+    public Double getEquivalencia() {
+        return equivalencia;
+    }
+
+    public void setEquivalencia(Double equivalencia) {
+        this.equivalencia = equivalencia;
+    }
+    
 
     public String getNrubro() {
         return nrubro;
@@ -175,6 +185,7 @@ public class Articulos implements Facturar,Editables{
                 articulo.setNumeroId(rr.getInt("ID"));
                 articulo.setCodigoDeBarra(rr.getString("BARRAS"));
                 articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
+                articulo.setEquivalencia(rr.getDouble("equivalencia"));
                 resultado.add(articulo);
             }
         } catch (SQLException ex) {
@@ -213,6 +224,7 @@ public class Articulos implements Facturar,Editables{
                 articulo.setCodigoDeBarra(rr.getString("BARRAS"));
                 articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
                 articulo.setNrubro(rr.getString("RUBRON"));
+                articulo.setEquivalencia(rr.getDouble("equivalencia"));
             }
             rr.close();
         } catch (SQLException ex) {

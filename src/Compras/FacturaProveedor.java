@@ -31,6 +31,16 @@ public class FacturaProveedor implements Comprobable,Facturar{
     private Date fecha;
     private Integer pagada;
     private Integer idUsuario;
+    private Integer idSucursal;
+
+    public Integer getIdSucursal() {
+        return idSucursal;
+    }
+
+    public void setIdSucursal(Integer idSucursal) {
+        this.idSucursal = idSucursal;
+    }
+    
 
     public Integer getPagada() {
         return pagada;
@@ -127,7 +137,7 @@ public class FacturaProveedor implements Comprobable,Facturar{
     public Integer nuevoComprobante(Object objeto) {
         FacturaProveedor fact=(FacturaProveedor)objeto;
         Integer idFactura=0;
-        String sql="insert into movimientosproveedores (numeroProveedor,monto,numeroComprobante,idRemito,idUsuario,tipoComprobante) values ("+fact.getNumeroProveedor()+","+fact.getMontoFinal()+",'"+fact.getNumeroFactura()+"',"+fact.getIdRemito()+","+fact.getIdUsuario()+",5)";
+        String sql="insert into movimientosproveedores (numeroProveedor,monto,numeroComprobante,idRemito,idUsuario,tipoComprobante,idSucursal) values ("+fact.getNumeroProveedor()+","+fact.getMontoFinal()+",'"+fact.getNumeroFactura()+"',"+fact.getIdRemito()+","+fact.getIdUsuario()+",5,"+fact.getIdSucursal()+")";
         Transaccionable tra=new Conecciones();
         if(tra.guardarRegistro(sql)){
             sql="select LAST_INSERT_ID()";
@@ -185,9 +195,15 @@ public class FacturaProveedor implements Comprobable,Facturar{
         Boolean verif=false;
         FacturaProveedor fact=(FacturaProveedor)oob;
         // ACA VOY A GUARDAR EN MOVIEMINTOS DE CAJA Y MODIFICAR EN MOVIMIENTOS DE PROVEEDORES
-        
+        String sql="insert into movimientoscaja(numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja) values ("+fact.getIdUsuario()+","+fact.getIdSucursal()+","+fact.getNumeroFactura()+","+fact.getMontoFinal()+",2,"+fact.getIdCaja()+")";
+        Transaccionable tra=new Conecciones();
+        if(tra.guardarRegistro(sql))System.out.println(sql);
+        sql="update movimientosproveedores set pagado=1,fechaPago ='"+fact.getFecha()+"' where id="+fact.getId();
+        if(tra.guardarRegistro(sql))System.out.println(sql);
         
         return verif;
+        
+        
     }
 
     @Override

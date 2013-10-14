@@ -418,7 +418,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        
-          DecimalFormat fr=new DecimalFormat("00");
+        DecimalFormat fr=new DecimalFormat("00");
         Calendar c1=Calendar.getInstance();
 	Calendar c2=new GregorianCalendar();
 	String dia=Integer.toString(c2.get(Calendar.DAY_OF_MONTH));
@@ -440,6 +440,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         comprobante.setIdProveedor(proveedor.getNumero());
         comprobante.setNumeroDeposito(Inicio.deposito.getNumero());
         comprobante.setNumeroRemito(this.jTextField6.getText());
+        comprobante.setIdUsuario(Inicio.usuario.getNumero());
         Comprobable comp=new Remitos();
         Integer idRemito=0;
         idRemito=comp.nuevoComprobante(comprobante);
@@ -451,6 +452,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
             facturaProveedor.setIdRemito(idRemito);
             facturaProveedor.setIdCaja(Inicio.caja.getNumero());
             facturaProveedor.setIdUsuario(Inicio.usuario.getNumero());
+            facturaProveedor.setIdSucursal(Inicio.sucursal.getNumero());
             Double monto=Double.parseDouble(this.jTextField2.getText());
             facturaProveedor.setMontoFinal(monto);
             Comprobable fac=new FacturaProveedor();
@@ -459,8 +461,11 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
             facturaProveedor.setId(idFactura);
             if(this.jCheckBox2.isSelected()){
                 Facturar fact=new FacturaProveedor();
+                facturaProveedor.setPagada(1);
+                facturaProveedor.setFecha(Date.valueOf(fecha2));
                 fact.guardar(facturaProveedor);
             }
+            
             this.jTextField1.setText("");
             this.jTextField2.setText("");
             this.jTextField3.setText("");
@@ -468,6 +473,8 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
             this.jTextField5.setText("");
             this.jTextField6.setText("");
             this.jLabel7.setText("");
+            listadoArt.clear();
+            this.jTable1.removeAll();
             this.jTextField3.requestFocus();
         }
     }//GEN-LAST:event_jButton1ActionPerformed

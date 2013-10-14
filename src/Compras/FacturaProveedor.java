@@ -6,9 +6,15 @@ package Compras;
 
 import Administracion.TipoComprobante;
 import interfaces.Comprobable;
+import interfaces.Transaccionable;
 import interfacesPrograma.Facturar;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import objetos.Conecciones;
 
 /**
  *
@@ -23,8 +29,26 @@ public class FacturaProveedor implements Comprobable,Facturar{
     private Integer idRemito;
     private Integer idCaja;
     private Date fecha;
-    private int pagada;
+    private Integer pagada;
+    private Integer idUsuario;
 
+    public Integer getPagada() {
+        return pagada;
+    }
+
+    public void setPagada(Integer pagada) {
+        this.pagada = pagada;
+    }
+
+    public Integer getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+    
+    
     public FacturaProveedor() {
     }
 
@@ -93,9 +117,7 @@ public class FacturaProveedor implements Comprobable,Facturar{
         this.fecha = fecha;
     }
 
-    public int getPagada() {
-        return pagada;
-    }
+    
 
     public void setPagada(int pagada) {
         this.pagada = pagada;
@@ -103,7 +125,24 @@ public class FacturaProveedor implements Comprobable,Facturar{
 
     @Override
     public Integer nuevoComprobante(Object objeto) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        FacturaProveedor fact=(FacturaProveedor)objeto;
+        Integer idFactura=0;
+        String sql="insert into movimientosproveedores (numeroProveedor,monto,numeroComprobante,idRemito,idUsuario,tipoComprobante) values ("+fact.getNumeroProveedor()+","+fact.getMontoFinal()+",'"+fact.getNumeroFactura()+"',"+fact.getIdRemito()+","+fact.getIdUsuario()+",5)";
+        Transaccionable tra=new Conecciones();
+        if(tra.guardarRegistro(sql)){
+            sql="select LAST_INSERT_ID()";
+            ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+            try {
+                while(rs.next()){
+                    idFactura=rs.getInt(1);
+                    
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(FacturaProveedor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return idFactura;
     }
 
     @Override
@@ -143,7 +182,12 @@ public class FacturaProveedor implements Comprobable,Facturar{
 
     @Override
     public Boolean guardar(Object oob) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Boolean verif=false;
+        FacturaProveedor fact=(FacturaProveedor)oob;
+        // ACA VOY A GUARDAR EN MOVIEMINTOS DE CAJA Y MODIFICAR EN MOVIMIENTOS DE PROVEEDORES
+        
+        
+        return verif;
     }
 
     @Override

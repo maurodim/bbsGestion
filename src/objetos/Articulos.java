@@ -4,6 +4,7 @@
  */
 package objetos;
 
+import interfaces.Editables;
 import interfaces.Transaccionable;
 import interfacesPrograma.Facturar;
 import java.sql.ResultSet;
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author mauro
  */
-public class Articulos implements Facturar{
+public class Articulos implements Facturar,Editables{
     private String codigoDeBarra;
     private String codigoAsignado;
     private Integer rubro;
@@ -164,7 +165,7 @@ public class Articulos implements Facturar{
         Transaccionable tra=new Conecciones();
         ArrayList resultado=new ArrayList();
         Articulos articulo=null;
-        String sql="select * from articulos where NOMBRE like '"+criterio+"%'";
+        String sql="select * from articulos where NOMBRE like '"+criterio+"%' and INHABILITADO=0";
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rr.next()){
@@ -199,7 +200,7 @@ public class Articulos implements Facturar{
 
     @Override
     public Object cargarPorCodigoDeBarra(String codigoDeBarra) {
-        String sql="select * from articulos where BARRAS like '"+codigoDeBarra+"'";
+        String sql="select * from articulos where BARRAS like '"+codigoDeBarra+"' and INHABILITADO=0";
         Transaccionable tra=new Conecciones();
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         Articulos articulo=new Articulos();
@@ -218,6 +219,21 @@ public class Articulos implements Facturar{
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
         return articulo;
+    }
+
+    @Override
+    public Boolean AltaObjeto(Object objeto) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean ModificaionObjeto(Object objeto) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean EliminacionDeObjeto(Object objeto) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     

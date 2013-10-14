@@ -441,19 +441,25 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         comprobante.setNumeroDeposito(Inicio.deposito.getNumero());
         comprobante.setNumeroRemito(this.jTextField6.getText());
         Comprobable comp=new Remitos();
-        comp.nuevoComprobante(comprobante);
+        Integer idRemito=0;
+        idRemito=comp.nuevoComprobante(comprobante);
         if(this.jCheckBox1.isSelected()){
             
             facturaProveedor.setNombreProveedor(proveedor.getNombre());
             facturaProveedor.setNumeroProveedor(proveedor.getNumero());
             facturaProveedor.setFecha(Date.valueOf(fecha2));
-            //fac.setIdRemito(me);
-            //facturaProveedor.setMontoFinal(Double.NaN);
+            facturaProveedor.setIdRemito(idRemito);
+            facturaProveedor.setIdCaja(Inicio.caja.getNumero());
+            facturaProveedor.setIdUsuario(Inicio.usuario.getNumero());
+            Double monto=Double.parseDouble(this.jTextField2.getText());
+            facturaProveedor.setMontoFinal(monto);
             Comprobable fac=new FacturaProveedor();
-            fac.nuevoComprobante(facturaProveedor);
+            Integer idFactura=0;
+            idFactura=fac.nuevoComprobante(facturaProveedor);
+            facturaProveedor.setId(idFactura);
             if(this.jCheckBox2.isSelected()){
                 Facturar fact=new FacturaProveedor();
-                fact.guardar(fac);
+                fact.guardar(facturaProveedor);
             }
             this.jTextField1.setText("");
             this.jTextField2.setText("");

@@ -247,6 +247,11 @@ public class Articulos implements Facturar,Editables{
     public Boolean EliminacionDeObjeto(Object objeto) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public Integer leerNumeroDeComprobanteSiguiente(Integer numeroComprobante) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
     
 }

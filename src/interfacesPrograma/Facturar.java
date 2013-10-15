@@ -22,5 +22,6 @@ public interface Facturar {
     public Boolean modificarDatosDelCliente(Object cliente);
     public ArrayList listarClientes(String nombre);
     public Object cargarPorCodigoDeBarra(String codigoDeBarra);
+    public Integer leerNumeroDeComprobanteSiguiente(Integer numeroComprobante);
     
 }

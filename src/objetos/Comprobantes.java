@@ -8,9 +8,13 @@ import facturacion.clientes.ClientesTango;
 import interfaceGraficas.Inicio;
 import interfaces.Transaccionable;
 import interfacesPrograma.Facturar;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -199,7 +203,8 @@ public class Comprobantes implements Facturar{
         String sql="";
         while(iComp.hasNext()){
             articulo=(Articulos)iComp.next();
-            sql="insert into movimientosArticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario) values ("+comp.getTipoMovimiento()+","+articulo.getNumeroId()+","+articulo.getCantidad()+","+Inicio.deposito.getNumero()+","+comp.getTipoComprobante()+","+comp.getNumero()+",'"+comp.getCliente().getCodigoCliente()+"','"+comp.getFechaEmision()+"',"+comp.getUsuarioGenerador()+")";
+            Double cantidad=articulo.getCantidad() * -1;
+            sql="insert into movimientosArticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario) values ("+comp.getTipoMovimiento()+","+articulo.getNumeroId()+","+cantidad+","+Inicio.deposito.getNumero()+","+comp.getTipoComprobante()+","+comp.getNumero()+",'"+comp.getCliente().getCodigoCliente()+"','"+comp.getFechaEmision()+"',"+comp.getUsuarioGenerador()+")";
             verif=tra.guardarRegistro(sql);
             
         }
@@ -259,6 +264,25 @@ public class Comprobantes implements Facturar{
     @Override
     public Object cargarPorCodigoDeBarra(String codigoDeBarra) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Integer leerNumeroDeComprobanteSiguiente(Integer numeroComprobante) {
+        Integer numeroSiguiente=0;
+        String sql="select tipocomprobantes.numeroActivo from tipocomprobantes where numero="+numeroComprobante+" and numeroSucursal="+Inicio.sucursal.getNumero();
+        Transaccionable tra=new Conecciones();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                numeroSiguiente=rs.getInt("numeroActivo");
+                numeroSiguiente++;
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Comprobantes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return numeroSiguiente;
     }
     
     

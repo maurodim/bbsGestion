@@ -195,12 +195,12 @@ public class FacturaProveedor implements Comprobable,Facturar{
         Boolean verif=false;
         FacturaProveedor fact=(FacturaProveedor)oob;
         // ACA VOY A GUARDAR EN MOVIEMINTOS DE CAJA Y MODIFICAR EN MOVIMIENTOS DE PROVEEDORES
-        String sql="insert into movimientoscaja(numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja) values ("+fact.getIdUsuario()+","+fact.getIdSucursal()+","+fact.getNumeroFactura()+","+fact.getMontoFinal()+",2,"+fact.getIdCaja()+")";
+        Double monto=fact.getMontoFinal() * -1;
+        String sql="insert into movimientoscaja(numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja) values ("+fact.getIdUsuario()+","+fact.getIdSucursal()+","+fact.getNumeroFactura()+",6,"+monto+",2,"+fact.getIdCaja()+")";
         Transaccionable tra=new Conecciones();
         if(tra.guardarRegistro(sql))System.out.println(sql);
         sql="update movimientosproveedores set pagado=1,fechaPago ='"+fact.getFecha()+"' where id="+fact.getId();
-        if(tra.guardarRegistro(sql))System.out.println(sql);
-        
+        if(tra.guardarRegistro(sql))System.out.println(sql);       
         return verif;
         
         
@@ -253,6 +253,11 @@ public class FacturaProveedor implements Comprobable,Facturar{
 
     @Override
     public Object cargarPorCodigoDeBarra(String codigoDeBarra) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Integer leerNumeroDeComprobanteSiguiente(Integer numeroComprobante) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

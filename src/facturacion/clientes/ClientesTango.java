@@ -467,5 +467,10 @@ public class ClientesTango implements Busquedas,Facturar{
     public Object cargarPorCodigoDeBarra(String codigoDeBarra) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public Integer leerNumeroDeComprobanteSiguiente(Integer numeroComprobante) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
         
 }

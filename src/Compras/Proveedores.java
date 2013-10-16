@@ -120,7 +120,7 @@ public class Proveedores implements Personalizable{
     public Boolean agregar(Object objeto) {
        Proveedores prov=(Proveedores)objeto;
        Boolean veri=false;
-       String sql="insert into proveedores (nombre,direccion,localidad,telefono,mail,condicionIva,numeroCuit,condicionIb,numeroIb) values ('"+prov.getNombre()+"','"+prov.getDireccion()+"','"+prov.getLocalidad()+"','"+prov.getTelefono()+"','"+prov.getMail()+"',"+prov.getCondicionDeIva()+",'"+prov.getNumeroDeCuit()+"',"+prov.getCondicionIngresosBrutos()+",'"+prov.getNumeroIngresosBrutos()+")";
+       String sql="insert into proveedores (NOMBRE,DOMICILIO,LOCALIDAD,TELEFONO,mail) values ('"+prov.getNombre()+"','"+prov.getDireccion()+"','"+prov.getLocalidad()+"','"+prov.getTelefono()+"','"+prov.getMail()+"')";
        Transaccionable tra=new Conecciones();
        if(tra.guardarRegistro(sql)){}else{
            veri=false;
@@ -134,7 +134,7 @@ public class Proveedores implements Personalizable{
     public Boolean modificar(Object objeto) {
        Boolean veri=false;
        Proveedores prov=(Proveedores)objeto;
-       String sql="update proveedores set nombre='"+prov.getNombre()+"',direccion='"+prov.getDireccion()+"',localidad='"+prov.getLocalidad()+"',telefono='"+prov.getTelefono()+"',mail='"+prov.getMail()+"',condicionIva="+prov.getCondicionDeIva()+",numeroCuit='"+prov.getNumeroDeCuit()+"',condicionIb="+prov.getCondicionIngresosBrutos()+",numeroIb='"+prov.getNumeroIngresosBrutos()+"' where numero="+prov.getNumero();
+       String sql="update proveedores set NOMBRE='"+prov.getNombre()+"',DOMICILIO='"+prov.getDireccion()+"',LOCALIDAD='"+prov.getLocalidad()+"',TELEFONO='"+prov.getTelefono()+"',mail='"+prov.getMail()+"' where numero="+prov.getNumero();
        Transaccionable tra=new Conecciones();
        if(tra.guardarRegistro(sql)){}else{
            veri=false;
@@ -147,7 +147,7 @@ public class Proveedores implements Personalizable{
     public Boolean eliminar(Object objeto) {
         Boolean veri=false;
         Proveedores prov=(Proveedores)objeto;
-        String sql="delete from proveedores where numero="+prov.getNumero();
+        String sql="update proveedores set INHABILITADO=1 where numero="+prov.getNumero();
         Transaccionable tra=new Conecciones();
         if(tra.guardarRegistro(sql)){}else{
             veri=false;
@@ -192,15 +192,17 @@ public class Proveedores implements Personalizable{
             ResultSet rr=tra.leerConjuntoDeRegistros(sql);
             while(rr.next()){
                 prov.setNumero(rr.getInt("numero"));
-                prov.setNombre(rr.getString("nombre"));
-                prov.setDireccion(rr.getString("direccion"));
-                prov.setLocalidad(rr.getString("localidad"));
+                prov.setNombre(rr.getString("NOMBRE"));
+                prov.setDireccion(rr.getString("DOMICILIO"));
+                prov.setLocalidad(rr.getString("LOCALIDAD"));
                 prov.setMail(rr.getString("mail"));
-                prov.setTelefono(rr.getString("telefono"));
+                prov.setTelefono(rr.getString("TELEFONO"));
+                /*
                 prov.setCondicionDeIva(rr.getInt("condicionIva"));
                 prov.setNumeroDeCuit(rr.getString("numeroCuit"));
                 prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
                 prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
+                */ 
             }
             rr.close();
             
@@ -219,15 +221,17 @@ public class Proveedores implements Personalizable{
             ResultSet rr=tra.leerConjuntoDeRegistros(sql);
             while(rr.next()){
                 prov.setNumero(rr.getInt("numero"));
-                prov.setNombre(rr.getString("nombre"));
-                prov.setDireccion(rr.getString("direccion"));
-                prov.setLocalidad(rr.getString("localidad"));
+                prov.setNombre(rr.getString("NOMBRE"));
+                prov.setDireccion(rr.getString("DOMICILIO"));
+                prov.setLocalidad(rr.getString("LOCALIDAD"));
                 prov.setMail(rr.getString("mail"));
-                prov.setTelefono(rr.getString("telefono"));
+                prov.setTelefono(rr.getString("TELEFONO"));
+                /*
                 prov.setCondicionDeIva(rr.getInt("condicionIva"));
                 prov.setNumeroDeCuit(rr.getString("numeroCuit"));
                 prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
                 prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
+                */ 
             }
             rr.close();
             
@@ -247,10 +251,10 @@ public class Proveedores implements Personalizable{
             while(rr.next()){
                 Proveedores prov=new Proveedores();
                 prov.setNumero(rr.getInt("numero"));
-                prov.setNombre(rr.getString("nombre"));
+                prov.setNombre(rr.getString("NOMBRE"));
                 prov.setDireccion(rr.getString("DOMICILIO"));
                 prov.setLocalidad(rr.getString("LOCALIDAD"));
-                //prov.setMail(rr.getString("mail"));
+                prov.setMail(rr.getString("mail"));
                 prov.setTelefono(rr.getString("TELEFONO"));
                 //prov.setCondicionDeIva(rr.getInt("condicionIva"));
                 //prov.setNumeroDeCuit(rr.getString("numeroCuit"));
@@ -270,21 +274,23 @@ public class Proveedores implements Personalizable{
     public ArrayList listarPorNombre(String nombre) {
         ArrayList listado=new ArrayList();
         try {
-            String sql="select * from proveedores where nombre like '%"+nombre+"%' order by nombre";
+            String sql="select * from proveedores where NOMBRE like '%"+nombre+"%' order by nombre";
             Transaccionable tra=new Conecciones();
             ResultSet rr=tra.leerConjuntoDeRegistros(sql);
             while(rr.next()){
                 Proveedores prov=new Proveedores();
                 prov.setNumero(rr.getInt("numero"));
-                prov.setNombre(rr.getString("nombre"));
-                prov.setDireccion(rr.getString("direccion"));
-                prov.setLocalidad(rr.getString("localidad"));
+                prov.setNombre(rr.getString("NOMBRE"));
+                prov.setDireccion(rr.getString("DOMICILIO"));
+                prov.setLocalidad(rr.getString("LOCALIDAD"));
                 prov.setMail(rr.getString("mail"));
-                prov.setTelefono(rr.getString("telefono"));
+                prov.setTelefono(rr.getString("TELEFONO"));
+                /*
                 prov.setCondicionDeIva(rr.getInt("condicionIva"));
                 prov.setNumeroDeCuit(rr.getString("numeroCuit"));
                 prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
                 prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
+                */
                 listado.add(prov);
             }
             rr.close();
@@ -305,15 +311,17 @@ public class Proveedores implements Personalizable{
             while(rr.next()){
                 Proveedores prov=new Proveedores();
                 prov.setNumero(rr.getInt("numero"));
-                prov.setNombre(rr.getString("nombre"));
-                prov.setDireccion(rr.getString("direccion"));
-                prov.setLocalidad(rr.getString("localidad"));
+                prov.setNombre(rr.getString("NOMBRE"));
+                prov.setDireccion(rr.getString("DOMICILIO"));
+                prov.setLocalidad(rr.getString("LOCALIDAD"));
                 prov.setMail(rr.getString("mail"));
-                prov.setTelefono(rr.getString("telefono"));
+                prov.setTelefono(rr.getString("TELEFONO"));
+                /*
                 prov.setCondicionDeIva(rr.getInt("condicionIva"));
                 prov.setNumeroDeCuit(rr.getString("numeroCuit"));
                 prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
                 prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
+                */
                 listado.add(prov);
             }
             rr.close();

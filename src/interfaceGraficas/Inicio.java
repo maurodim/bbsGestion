@@ -96,11 +96,13 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
+        jMenuItem18 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem17 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
@@ -185,11 +187,20 @@ public class Inicio extends javax.swing.JFrame {
 
         jMenuItem12.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem12.setText("Articulos");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem12);
 
         jMenuItem13.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem13.setText("Consultas");
         jMenu2.add(jMenuItem13);
+
+        jMenuItem18.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem18.setText("Generar Remito Interno");
+        jMenu2.add(jMenuItem18);
 
         jMenuBar1.add(jMenu2);
 
@@ -226,6 +237,10 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem4.setText("Cierre de Caja");
         jMenu3.add(jMenuItem4);
+
+        jMenuItem17.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem17.setText("Recibir Remito Interno");
+        jMenu3.add(jMenuItem17);
 
         jMenuBar1.add(jMenu3);
 
@@ -350,6 +365,21 @@ public class Inicio extends javax.swing.JFrame {
        jMenu3.setEnabled(Inicio.usuario.getMenu().getMenu3());
        jMenu4.setEnabled(Inicio.usuario.getMenu().getMenu4());
        jMenu5.setEnabled(Inicio.usuario.getMenu().getMenu5());
+              this.jMenuItem2.setEnabled(true);
+       Cajeables caj=new Cajas();
+       if(caj.VerificarCaja(usuario.getNumero(),sucursal.getNumero(),fechaDia)){
+           this.caja=(Cajas)caj.CargarCaja(usuario.getNumero(),sucursal.getNumero(),fechaDia);
+       }else{
+       this.caja=new Cajas(1);
+       Double saldo=Double.parseDouble(JOptionPane.showInputDialog("Ingrese Saldo Inicial","0.00"));
+       System.out.println("SALDO INGRESADO "+saldo);
+       this.caja.setSaldoInicial(saldo);
+       
+       this.caja=(Cajas) caj.AbrirCaja(caja);
+       }
+       this.sucursal.setCaja(caja);
+       this.jMenuItem5.setEnabled(false);
+
     }//GEN-LAST:event_formComponentShown
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
@@ -394,6 +424,13 @@ public class Inicio extends javax.swing.JFrame {
         depA.toFront();
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        ArticulosAbm artt=new ArticulosAbm();
+        jDesktopPane1.add(artt);
+        artt.setVisible(true);
+        artt.toFront();
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -434,6 +471,20 @@ public class Inicio extends javax.swing.JFrame {
        jMenu3.setEnabled(Inicio.usuario.getMenu().getMenu3());
        jMenu4.setEnabled(Inicio.usuario.getMenu().getMenu4()); 
        jMenu5.setEnabled(Inicio.usuario.getMenu().getMenu5());
+       this.jMenuItem2.setEnabled(true);
+       Cajeables caj=new Cajas();
+       if(caj.VerificarCaja(usuario.getNumero(),sucursal.getNumero(),fechaDia)){
+           this.caja=(Cajas)caj.CargarCaja(usuario.getNumero(),sucursal.getNumero(),fechaDia);
+       }else{
+       this.caja=new Cajas(1);
+       Double saldo=Double.parseDouble(JOptionPane.showInputDialog("Ingrese Saldo Inicial","0.00"));
+       System.out.println("SALDO INGRESADO "+saldo);
+       this.caja.setSaldoInicial(saldo);
+       
+       this.caja=(Cajas) caj.AbrirCaja(caja);
+       }
+       this.sucursal.setCaja(caja);
+       this.jMenuItem5.setEnabled(false);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JDesktopPane jDesktopPane1;
@@ -451,6 +502,8 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem17;
+    private javax.swing.JMenuItem jMenuItem18;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

@@ -5,6 +5,7 @@
 package Compras;
 
 import Administracion.TipoComprobante;
+import interfaceGraficas.Inicio;
 import interfaces.Comprobable;
 import interfaces.Transaccionable;
 import interfacesPrograma.Facturar;
@@ -60,6 +61,13 @@ public class FacturaProveedor implements Comprobable,Facturar{
     
     
     public FacturaProveedor() {
+        this.numeroProveedor=0;
+        this.numeroFactura="0";
+        this.pagada=0;
+        this.idSucursal=Inicio.sucursal.getNumero();
+        this.idUsuario=Inicio.usuario.getNumeroId();
+        
+        
     }
 
     public Integer getId() {
@@ -201,6 +209,7 @@ public class FacturaProveedor implements Comprobable,Facturar{
         if(tra.guardarRegistro(sql))System.out.println(sql);
         sql="update movimientosproveedores set pagado=1,fechaPago ='"+fact.getFecha()+"' where id="+fact.getId();
         if(tra.guardarRegistro(sql))System.out.println(sql);       
+        
         return verif;
         
         

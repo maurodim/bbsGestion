@@ -69,6 +69,8 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         jTextField5 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jTextField7 = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -79,6 +81,16 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Ingreso de Mercadería");
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
+            }
+        });
 
         jLabel1.setText("Seleccione Proveedor");
 
@@ -167,6 +179,11 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         });
 
         jButton2.setText("Nuevo Proveedor");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Precio");
 
@@ -181,6 +198,15 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField6KeyPressed(evt);
+            }
+        });
+
+        jLabel9.setText("equiv");
+
+        jTextField7.setText("1.00");
+        jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField7KeyPressed(evt);
             }
         });
 
@@ -217,17 +243,22 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jTextField2)
+                                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)))
+                                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -259,7 +290,11 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
                     .addComponent(jButton1)
                     .addComponent(jLabel6)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -310,7 +345,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jButton3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jLabel7))
         );
 
@@ -368,7 +403,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField2KeyPressed
 
     private void jTextField3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyPressed
-               if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            if(evt.getKeyCode()==KeyEvent.VK_ENTER){
             System.out.println("ENTRO CON EL ENTER¡¡¡¡¡¡");
             arti=new Articulos();
             Facturar fart=new Articulos();
@@ -379,6 +414,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
             }else{
             jTextField3.setText(arti.getCodigoAsignado());
             //jTextField2.setText("1");
+            this.jTextField5.setText(String.valueOf(arti.getPrecioDeCosto()));
             this.jTextField4.selectAll();
             this.jTextField4.requestFocus();
             }
@@ -391,20 +427,16 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
             Double cantidad=Double.parseDouble(this.jTextField4.getText());
             arti.setCantidad(cantidad);
             //this.jTextField3.setText("");
+            this.jTextField5.selectAll();
             this.jTextField5.requestFocus();
         }
     }//GEN-LAST:event_jTextField4KeyPressed
 
     private void jTextField5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            Double precio=Double.parseDouble(this.jTextField5.getText());
-            arti.setPrecioUnitarioNeto(precio);
-            this.jTextField3.setText("");
-            listadoArt.add(arti);
-            agregarRenglonTabla();
-            this.jTextField4.setText("1.00");
-            this.jTextField5.setText("");
-            this.jTextField3.requestFocus();
+            arti.setPrecioDeCosto(Double.parseDouble(this.jTextField5.getText()));
+            this.jTextField7.selectAll();
+           this.jTextField7.requestFocus(); 
         }
     }//GEN-LAST:event_jTextField5KeyPressed
 
@@ -437,9 +469,21 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         comprobante.setArticulos(listadoArt);
         comprobante.setFechaComprobante(Date.valueOf(fecha2));
         comprobante.setFechaRecepcion(Date.valueOf(fecha2));
+        if(facturaProveedor.getNumeroProveedor()==0){
+           facturaProveedor.setNumeroProveedor(1);
+           Personalizable per=new Proveedores();
+           proveedor=(Proveedores) per.buscarPorNumero(facturaProveedor.getNumeroProveedor()); 
+        }
         comprobante.setIdProveedor(proveedor.getNumero());
         comprobante.setNumeroDeposito(Inicio.deposito.getNumero());
-        comprobante.setNumeroRemito(this.jTextField6.getText());
+        String numRem="";
+        if(this.jTextField6.getText().equals("")){
+            numRem="0";
+        }else{
+            numRem=this.jTextField6.getText();
+        }
+       
+        comprobante.setNumeroRemito(numRem);
         comprobante.setIdUsuario(Inicio.usuario.getNumero());
         Comprobable comp=new Remitos();
         Integer idRemito=0;
@@ -466,17 +510,19 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
                 fact.guardar(facturaProveedor);
             }
             
+  
+        }
             this.jTextField1.setText("");
             this.jTextField2.setText("");
             this.jTextField3.setText("");
-            this.jTextField4.setText("");
+            this.jTextField4.setText("1.00");
             this.jTextField5.setText("");
             this.jTextField6.setText("");
-            this.jLabel7.setText("");
+            this.jLabel7.setText("1.00");
             listadoArt.clear();
+            agregarRenglonTabla();
             this.jTable1.removeAll();
             this.jTextField3.requestFocus();
-        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -490,6 +536,42 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
             this.jTextField3.requestFocus();
         }
     }//GEN-LAST:event_jTextField6KeyPressed
+
+    private void jTextField7KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            Double equiv=Double.parseDouble(this.jTextField7.getText());
+            Double precio=Double.parseDouble(this.jTextField5.getText());
+            Double cantidad=Double.parseDouble(this.jTextField4.getText());
+            Double resultado=equiv * cantidad;
+            arti.setCantidad(resultado);
+            //this.jTextField4.setText(String.valueOf(resultado));
+            arti.setPrecioUnitarioNeto(precio);
+            this.jTextField3.setText("");
+            listadoArt.add(arti);
+            agregarRenglonTabla();
+            this.jTextField7.setText("1.00");
+            this.jTextField4.setText("1.00");
+            this.jTextField5.setText("");
+            this.jTextField3.requestFocus();
+        }
+    }//GEN-LAST:event_jTextField7KeyPressed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        ProveedoresAbm provA=new ProveedoresAbm();
+        Inicio.jDesktopPane1.add(provA);
+        provA.setVisible(true);
+        provA.toFront();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
+        
+        System.out.println("INGRESO AL TENER EL FOCO ");
+    }//GEN-LAST:event_formFocusGained
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        recargarBox();
+        System.out.println("INGRESO AL TENER EL shown 1");
+    }//GEN-LAST:event_formComponentShown
 private void agregarRenglonTabla(){
         MiModeloTablaFacturacion busC=new MiModeloTablaFacturacion();
         this.jTable1.removeAll();
@@ -500,8 +582,10 @@ private void agregarRenglonTabla(){
         busC.addColumn("CODIGO");
         busC.addColumn("DESCRIPCION");
         busC.addColumn("CANTIDAD");
-        busC.addColumn("PRECIO UNITARIO");
-        Object[] fila=new Object[4];
+        busC.addColumn("PRECIO COSTO");
+        busC.addColumn("PRECIO VTA");
+        busC.addColumn("STOCK ACT");
+        Object[] fila=new Object[6];
         Iterator irP=listadoArt.listIterator();
         while(irP.hasNext()){
             pedidos=(Articulos) irP.next();
@@ -516,11 +600,30 @@ private void agregarRenglonTabla(){
             //Double valor=(pedidos.getCantidad() * precioUnitario);
             //valor=valor * cliT.getCoeficienteListaDeprecios();
             montoTotal=montoTotal + valor;
-            fila[3]=valor;
+            fila[3]=pedidos.getPrecioDeCosto();
+            fila[4]=pedidos.getPrecioUnitarioNeto();
+            Double cantTotal=0.00;
+            cantTotal=pedidos.getStockActual()+pedidos.getCantidad();
+            System.err.println(" actual "+pedidos.getStockActual()+" agregar "+pedidos.getCantidad()+" total "+cantTotal);
+            fila[5]=cantTotal;
             busC.addRow(fila);
         }
         String total=String.valueOf(montoTotal);
         this.jLabel7.setText("Monto Total: $"+total);
+}
+public void recargarBox(){
+    //jComboBox1 = new javax.swing.JComboBox();
+    jComboBox1.removeAllItems();
+    Proveedores proveedor=new Proveedores();
+    ArrayList listaProv=new ArrayList();
+    Personalizable per=new Proveedores();
+    listaProv=per.listar();
+    Iterator ilProv=listaProv.listIterator();
+    while(ilProv.hasNext()){
+        proveedor=(Proveedores)ilProv.next();
+        jComboBox1.addItem(proveedor.getNombre());
+    }
+
 }
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -538,6 +641,7 @@ private void agregarRenglonTabla(){
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -548,5 +652,6 @@ private void agregarRenglonTabla(){
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }

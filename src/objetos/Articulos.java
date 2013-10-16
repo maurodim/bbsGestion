@@ -29,6 +29,48 @@ public class Articulos implements Facturar,Editables{
     private Double precioIva;
     private Double precioUnitarioNeto;
     private Double equivalencia;
+    private Double precioDeCosto;
+    private Double stockMinimo;
+    private Double stockActual;
+    private Double precioServicio;
+
+    public Double getPrecioServicio() {
+        return precioServicio;
+    }
+
+    public void setPrecioServicio(Double precioServicio) {
+        this.precioServicio = precioServicio;
+    }
+    
+
+    public Double getStockActual() {
+        return stockActual;
+    }
+
+    public void setStockActual(Double stockActual) {
+        this.stockActual = stockActual;
+        /*
+         * codigo vista stock
+         * select articulos.id,(select sum(movimientosarticulos.cantidad) from movimientosarticulos where movimientosarticulos.idArticulo=articulos.id)as stock from articulos order by id
+         */
+    }
+    
+    public Double getPrecioDeCosto() {
+        return precioDeCosto;
+    }
+
+    public void setPrecioDeCosto(Double precioDeCosto) {
+        this.precioDeCosto = precioDeCosto;
+    }
+
+    public Double getStockMinimo() {
+        return stockMinimo;
+    }
+
+    public void setStockMinimo(Double stockMinimo) {
+        this.stockMinimo = stockMinimo;
+    }
+    
 
     public Double getEquivalencia() {
         return equivalencia;
@@ -175,7 +217,7 @@ public class Articulos implements Facturar,Editables{
         Transaccionable tra=new Conecciones();
         ArrayList resultado=new ArrayList();
         Articulos articulo=null;
-        String sql="select * from articulos where NOMBRE like '"+criterio+"%' and INHABILITADO=0";
+        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock from articulos where NOMBRE like '"+criterio+"%' and INHABILITADO=0";
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rr.next()){
@@ -186,6 +228,10 @@ public class Articulos implements Facturar,Editables{
                 articulo.setCodigoDeBarra(rr.getString("BARRAS"));
                 articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
                 articulo.setEquivalencia(rr.getDouble("equivalencia"));
+                articulo.setPrecioDeCosto(rr.getDouble("COSTO"));
+                articulo.setStockMinimo(rr.getDouble("MINIMO"));
+                articulo.setStockActual(rr.getDouble("stock"));
+                articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 resultado.add(articulo);
             }
         } catch (SQLException ex) {
@@ -211,7 +257,7 @@ public class Articulos implements Facturar,Editables{
 
     @Override
     public Object cargarPorCodigoDeBarra(String codigoDeBarra) {
-        String sql="select * from articulos where BARRAS like '"+codigoDeBarra+"' and INHABILITADO=0";
+        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock from articulos where BARRAS like '"+codigoDeBarra+"' and INHABILITADO=0";
         Transaccionable tra=new Conecciones();
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         Articulos articulo=new Articulos();
@@ -225,6 +271,10 @@ public class Articulos implements Facturar,Editables{
                 articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
                 articulo.setNrubro(rr.getString("RUBRON"));
                 articulo.setEquivalencia(rr.getDouble("equivalencia"));
+                articulo.setPrecioDeCosto(rr.getDouble("COSTO"));
+                articulo.setStockMinimo(rr.getDouble("MINIMO"));
+                articulo.setStockActual(rr.getDouble("stock"));
+                articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
             }
             rr.close();
         } catch (SQLException ex) {

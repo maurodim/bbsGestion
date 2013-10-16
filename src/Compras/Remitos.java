@@ -120,11 +120,14 @@ public class Remitos implements Comprobable{
             rs.close();
             veri=numero;
             Iterator listA=rem.getArticulos().listIterator();
+            String sql1="";
             while(listA.hasNext()){
                 Articulos art=(Articulos)listA.next();
-                Double cantidad=art.getCantidad() / art.getEquivalencia();
+                Double cantidad=art.getCantidad();
                 sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numerousuario) values (5,"+art.getNumeroId()+","+cantidad+","+rem.getNumeroDeposito()+",3,'"+rem.getNumeroRemito()+"',"+rem.getIdProveedor()+",'"+rem.getFechaRecepcion()+"',"+rem.getIdUsuario()+")";
                 if(tra.guardarRegistro(sql))System.out.println(sql);
+                sql1="update articulos set COSTO="+art.getPrecioDeCosto()+",PRECIO="+art.getPrecioUnitarioNeto()+" where id="+art.getNumeroId();
+                if(tra.guardarRegistro(sql1))System.out.println(sql1);
             }
         } catch (SQLException ex) {
             Logger.getLogger(Remitos.class.getName()).log(Level.SEVERE, null, ex);

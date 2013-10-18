@@ -33,6 +33,16 @@ public class Articulos implements Facturar,Editables{
     private Double stockMinimo;
     private Double stockActual;
     private Double precioServicio;
+    private Boolean confirmado;
+
+    public Boolean getConfirmado() {
+        return confirmado;
+    }
+
+    public void setConfirmado(Boolean confirmado) {
+        this.confirmado = confirmado;
+    }
+    
 
     public Double getPrecioServicio() {
         return precioServicio;

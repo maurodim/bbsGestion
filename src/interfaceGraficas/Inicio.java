@@ -200,6 +200,11 @@ public class Inicio extends javax.swing.JFrame {
 
         jMenuItem18.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem18.setText("Generar Remito Interno");
+        jMenuItem18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem18ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem18);
 
         jMenuBar1.add(jMenu2);
@@ -430,6 +435,13 @@ public class Inicio extends javax.swing.JFrame {
         artt.setVisible(true);
         artt.toFront();
     }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
+        NuevoRemitoInterno nRem=new NuevoRemitoInterno();
+        jDesktopPane1.add(nRem);
+        nRem.setVisible(true);
+        nRem.toFront();
+    }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     /**
      * @param args the command line arguments

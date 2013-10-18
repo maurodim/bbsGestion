@@ -15,8 +15,7 @@ import java.util.Date;
 public class RemitosInternos implements Comprobable{
     private Integer numero;
     private Integer id;
-    private Integer numeroProveedor;
-    private String nombreProveedor;
+    private Integer idUusuario;
     private Date fecha;
     private String numeroDeFactura;
     private Integer depositoDestino;
@@ -39,21 +38,14 @@ public class RemitosInternos implements Comprobable{
         this.numero = numero;
     }
 
-    public Integer getNumeroProveedor() {
-        return numeroProveedor;
+    public Integer getIdUusuario() {
+        return idUusuario;
     }
 
-    public void setNumeroProveedor(Integer numeroProveedor) {
-        this.numeroProveedor = numeroProveedor;
+    public void setIdUusuario(Integer idUusuario) {
+        this.idUusuario = idUusuario;
     }
 
-    public String getNombreProveedor() {
-        return nombreProveedor;
-    }
-
-    public void setNombreProveedor(String nombreProveedor) {
-        this.nombreProveedor = nombreProveedor;
-    }
 
     public Date getFecha() {
         return fecha;
@@ -100,7 +92,7 @@ public class RemitosInternos implements Comprobable{
 
     public RemitosInternos(Integer numero, Integer numeroProveedor) {
         this.numero = numero;
-        this.numeroProveedor = numeroProveedor;
+        this.idUusuario = numeroProveedor;
     }
 
     public RemitosInternos(Integer id) {

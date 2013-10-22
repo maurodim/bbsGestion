@@ -34,6 +34,17 @@ public class Articulos implements Facturar,Editables{
     private Double stockActual;
     private Double precioServicio;
     private Boolean confirmado;
+    private Double recargo;
+
+    public Double getRecargo() {
+        return recargo;
+    }
+
+    public void setRecargo(Double recargo) {
+        this.recargo = recargo;
+    }
+    
+    
 
     public Boolean getConfirmado() {
         return confirmado;
@@ -60,7 +71,7 @@ public class Articulos implements Facturar,Editables{
     public void setStockActual(Double stockActual) {
         this.stockActual = stockActual;
         /*
-         * codigo vista stock
+         * codigo vista stockart
          * select articulos.id,(select sum(movimientosarticulos.cantidad) from movimientosarticulos where movimientosarticulos.idArticulo=articulos.id)as stock from articulos order by id
          */
     }
@@ -173,22 +184,9 @@ public class Articulos implements Facturar,Editables{
     }
 
     public void setPrecioUnitarioNeto(Double precioUnitarioNeto) {
-        Transaccionable tra=new Conecciones();
-        String sql="select rubros.recargo from rubros where nombre like '"+this.nrubro+"%'";
-        ResultSet rr=tra.leerConjuntoDeRegistros(sql);
-        Double rec=1.00;
-        try {
-            while(rr.next()){
-                rec=rr.getDouble("recargo");
-                
-            }
-            rr.close();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.precioUnitarioNeto = precioUnitarioNeto * rec;
-        System.err.println("RECIBIDO "+precioUnitarioNeto+" resultado "+this.precioUnitarioNeto+" recargo "+rec+"\n "+sql);
+      
+        this.precioUnitarioNeto = precioUnitarioNeto * this.recargo;
+        System.err.println("RECIBIDO "+precioUnitarioNeto+" resultado "+this.precioUnitarioNeto+" recargo "+this.recargo+"\n");
     }
     
 
@@ -227,7 +225,7 @@ public class Articulos implements Facturar,Editables{
         Transaccionable tra=new Conecciones();
         ArrayList resultado=new ArrayList();
         Articulos articulo=null;
-        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock from articulos where NOMBRE like '"+criterio+"%' and INHABILITADO=0";
+        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where NOMBRE like '"+criterio+"%' and INHABILITADO=0";
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rr.next()){
@@ -236,6 +234,7 @@ public class Articulos implements Facturar,Editables{
                 articulo.setDescripcionArticulo(rr.getString("NOMBRE"));
                 articulo.setNumeroId(rr.getInt("ID"));
                 articulo.setCodigoDeBarra(rr.getString("BARRAS"));
+                articulo.setRecargo(rr.getDouble("recargo"));
                 articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
                 articulo.setEquivalencia(rr.getDouble("equivalencia"));
                 articulo.setPrecioDeCosto(rr.getDouble("COSTO"));
@@ -267,7 +266,7 @@ public class Articulos implements Facturar,Editables{
 
     @Override
     public Object cargarPorCodigoDeBarra(String codigoDeBarra) {
-        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock from articulos where BARRAS like '"+codigoDeBarra+"' and INHABILITADO=0";
+        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where BARRAS like '"+codigoDeBarra+"' and INHABILITADO=0";
         Transaccionable tra=new Conecciones();
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         Articulos articulo=new Articulos();
@@ -278,6 +277,7 @@ public class Articulos implements Facturar,Editables{
                 articulo.setDescripcionArticulo(rr.getString("NOMBRE"));
                 articulo.setNumeroId(rr.getInt("ID"));
                 articulo.setCodigoDeBarra(rr.getString("BARRAS"));
+                articulo.setRecargo(rr.getDouble("recargo"));
                 articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
                 articulo.setNrubro(rr.getString("RUBRON"));
                 articulo.setEquivalencia(rr.getDouble("equivalencia"));
@@ -285,6 +285,7 @@ public class Articulos implements Facturar,Editables{
                 articulo.setStockMinimo(rr.getDouble("MINIMO"));
                 articulo.setStockActual(rr.getDouble("stock"));
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
+                
             }
             rr.close();
         } catch (SQLException ex) {

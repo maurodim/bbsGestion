@@ -14,12 +14,7 @@ public class MiModeloTablaFacturacion extends DefaultTableModel {
     @Override
     public Class getColumnClass(int colum){
         
-          if(colum==3) {
-            return Double.class;
-        }
-          if(colum==2) {
-            return Double.class;
-        }
+          
         return String.class;
       }    
 }

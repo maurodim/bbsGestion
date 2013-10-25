@@ -38,6 +38,17 @@ public class Comprobantes implements Facturar{
     private Double montoBruto;
     private Double montoIva;
     private Double montoRet;
+    private Integer pagado;
+
+    public Integer getPagado() {
+        return pagado;
+    }
+
+    public void setPagado(Integer pagado) {
+        this.pagado = pagado;
+    }
+    
+    
 
     public int getIdCaja() {
         return idCaja;
@@ -204,12 +215,12 @@ public class Comprobantes implements Facturar{
         while(iComp.hasNext()){
             articulo=(Articulos)iComp.next();
             Double cantidad=articulo.getCantidad() * -1;
-            sql="insert into movimientosArticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario) values ("+comp.getTipoMovimiento()+","+articulo.getNumeroId()+","+cantidad+","+Inicio.deposito.getNumero()+","+comp.getTipoComprobante()+","+comp.getNumero()+",'"+comp.getCliente().getCodigoCliente()+"','"+comp.getFechaEmision()+"',"+comp.getUsuarioGenerador()+")";
+            sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario) values ("+comp.getTipoMovimiento()+","+articulo.getNumeroId()+","+cantidad+","+Inicio.deposito.getNumero()+","+comp.getTipoComprobante()+","+comp.getNumero()+",'"+comp.getCliente().getCodigoCliente()+"','"+comp.getFechaEmision()+"',"+comp.getUsuarioGenerador()+")";
             verif=tra.guardarRegistro(sql);
             
         }
         if(verif){
-            sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja) values ("+comp.getUsuarioGenerador()+","+comp.getIdSucursal()+","+comp.getNumero()+","+comp.getTipoComprobante()+","+comp.getMontoTotal()+","+comp.getTipoMovimiento()+","+comp.getIdCaja()+")";
+            sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado) values ("+comp.getUsuarioGenerador()+","+comp.getIdSucursal()+","+comp.getNumero()+","+comp.getTipoComprobante()+","+comp.getMontoTotal()+","+comp.getTipoMovimiento()+","+comp.getIdCaja()+","+comp.getCliente().getCodigoId()+",1,"+comp.getPagado()+")";
             tra.guardarRegistro(sql);
         }
         System.out.println("SE RECEPCIONO BARBARO");

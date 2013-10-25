@@ -4,6 +4,7 @@
  */
 package facturacion.pantallas;
 
+import Conversores.Numeros;
 import facturacion.clientes.ClientesTango;
 import impresoras.Impresora;
 import interfaceGraficas.Inicio;
@@ -42,11 +43,14 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
     private static Comprobantes comp=new Comprobantes();
     
     public IngresoDePedidos() {
+        //Articulos.CargarMap();
         cliT=new ClientesTango("999999");
         //cliT=(ClientesTango)oob;
         //comp.setCliente(cliT);
         initComponents();
         this.jLabel6.setText(cliT.getRazonSocial());
+        this.jLabel7.setVisible(false);
+        this.jTextField4.setVisible(false);
         this.jTextField1.requestFocus();
         //this.jPanel2.requestFocus();
         
@@ -82,6 +86,9 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
@@ -244,6 +251,14 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel7.setText("PRECIO :");
+
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField4KeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -259,16 +274,20 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                            .addComponent(jTextField4))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -288,8 +307,13 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26))
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         jList1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -336,7 +360,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -357,7 +381,18 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             listadoDeBusqueda.add(arti);
             jTextField1.setText(arti.getCodigoAsignado());
             jTextField2.setText("1");
-            
+            this.jLabel8.setText(arti.getDescripcionArticulo());
+            if(arti.getModificaPrecio()){
+                this.jLabel7.setVisible(true);
+                this.jTextField4.setVisible(true);
+                if(arti.getPrecioServicio() > 0){
+                    this.jTextField4.setText(Numeros.ConvertirNumero(arti.getPrecioServicio()));
+                }
+            }else{
+                this.jLabel7.setVisible(false);
+                this.jTextField4.setVisible(false);
+
+            }
             this.jTextField2.requestFocus();
             }
         }
@@ -375,24 +410,32 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         System.err.println("ARTICULO SELECCIONADO :"+arti.getDescripcionArticulo()+" "+arti.getCodigoDeBarra());
         String codBar=arti.getCodigoDeBarra();
         jTextField1.setText(codBar.trim());
-        this.jTextField2.setText("1");
-        this.jTextField2.requestFocus();
+      
+        this.jLabel8.setText(arti.getDescripcionArticulo());
+        
+        this.jTextField1.requestFocus();
         
     }//GEN-LAST:event_jList1MouseClicked
 
     private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
             arti.setCantidad(Double.parseDouble(this.jTextField2.getText()));
+            if(arti.getModificaPrecio()){
+                this.jTextField4.requestFocus();
+            }else{
             detalleDelPedido.add(arti);
             agregarRenglonTabla();
 //                Double montoTotalX=(arti.getPrecioUnitario() * arti.getCantidad());
 //                montoTotal=montoTotal + montoTotalX;
                  montrarMonto();
                  System.err.println("MONTO TOTAL "+montoTotal);
+                 this.jLabel8.setText("");
+                 this.jList1.removeAll();
                 this.jButton1.setVisible(true);
             this.jTextField1.setText("");
             this.jTextField2.setText("");
             this.jTextField1.requestFocus();
+            }
         }
     }//GEN-LAST:event_jTextField2KeyPressed
 
@@ -426,7 +469,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
          //   comp.setPagado(2);
         }
         //comp.setArticulos(detalleDelPedido);
-                DecimalFormat fr=new DecimalFormat("00");
+        DecimalFormat fr=new DecimalFormat("00");
         Calendar c1=Calendar.getInstance();
 	Calendar c2=new GregorianCalendar();
 	String dia=Integer.toString(c2.get(Calendar.DAY_OF_MONTH));
@@ -467,6 +510,11 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         comprobante.setIdDeposito(Inicio.deposito.getNumero());
         comprobante.setIdCaja(Inicio.caja.getNumero());
         comprobante.setMontoTotal(montoTotal);
+        if(this.jCheckBox2.isSelected()){
+            comprobante.setPagado(1);
+        }else{
+            comprobante.setPagado(0);
+        }
         Facturar fat=new Comprobantes();
         fat.guardar(comprobante);
         /*
@@ -521,6 +569,28 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         nCli.setVisible(true);
         nCli.toFront();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jTextField4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            Double servicio=Numeros.ConvertirStringADouble(this.jTextField4.getText());
+            Double tota=arti.getPrecioUnitarioNeto() + servicio;
+            arti.setPrecioUnitarioNeto(tota);
+                        detalleDelPedido.add(arti);
+            agregarRenglonTabla();
+//                Double montoTotalX=(arti.getPrecioUnitario() * arti.getCantidad());
+//                montoTotal=montoTotal + montoTotalX;
+                 montrarMonto();
+                 System.err.println("MONTO TOTAL "+montoTotal);
+                 this.jLabel8.setText("");
+                 this.jList1.removeAll();
+                this.jButton1.setVisible(true);
+            this.jTextField1.setText("");
+            this.jTextField2.setText("");
+            this.jTextField1.requestFocus();
+            this.jLabel7.setVisible(false);
+            this.jTextField4.setVisible(false);
+        }
+    }//GEN-LAST:event_jTextField4KeyPressed
 private void cargarLista(ArrayList lista){
     DefaultListModel modelo=new DefaultListModel();
     Iterator il=lista.listIterator();
@@ -604,6 +674,8 @@ private void verificar(){
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     public static javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -614,5 +686,6 @@ private void verificar(){
     public static javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 }

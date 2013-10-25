@@ -47,17 +47,27 @@ public class ClientesTango implements Busquedas,Facturar{
         private Double descuento;
         private String condicionIva;
         private Double coeficienteListaDeprecios;
+        private Integer codigoId;
+
+    public Integer getCodigoId() {
+        return codigoId;
+    }
+
+    public void setCodigoId(Integer codigoId) {
+        this.codigoId = codigoId;
+    }
+        
 
     public ClientesTango(String codigoCliente) {
         try {
             this.codigoCliente = codigoCliente;
             Transaccionable tra=new Conecciones();
-                String sql="select *,(select coeficientesListas.coeficiente from coeficientesListas where coeficientesListas.id=listcli.NRO_LISTA)as coeficiente  from listcli where COD_CLIENT like '"+codigoCliente+"%'";
+                String sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente  from listcli where COD_CLIENT like '"+codigoCliente+"%'";
                 //String sql="select pedidos_carga1.COD_CLIENT,pedidos_carga1.RAZON_SOC,pedidos_carga1.NRO_PEDIDO,pedidos_carga1.numero,pedidos_carga1.LEYENDA_2 from pedidos_carga1 where RAZON_SOC like '"+cliente+"%' group by COD_CLIENT order by RAZON_SOC";
                 ResultSet rs=tra.leerConjuntoDeRegistros(sql);
                 while(rs.next()){
                     
-                    
+                    this.codigoId=rs.getInt("codMMd");
                     this.codigoCliente=rs.getString("COD_CLIENT");
                     this.razonSocial=rs.getString("RAZON_SOCI");
                     this.direccion=rs.getString("DOMICILIO");
@@ -126,7 +136,7 @@ public class ClientesTango implements Busquedas,Facturar{
     public void setListaDePrecios(Integer listaDePrecios) {
         
         Transaccionable tra=new Conecciones();
-        String sql="select * from coeficientesListas where id="+listaDePrecios;
+        String sql="select * from coeficienteslistas where id="+listaDePrecios;
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
@@ -320,6 +330,7 @@ public class ClientesTango implements Busquedas,Facturar{
             while(rs.next()){
                 
                 ClientesTango cli=new ClientesTango();
+                cli.setCodigoId(rs.getInt("codMMd"));
                 cli.setCodigoCliente(rs.getString("COD_CLIENT"));
                 cli.setRazonSocial(rs.getString("RAZON_SOCI"));
                 cli.setDireccion(rs.getString("DOMICILIO"));
@@ -438,6 +449,7 @@ public class ClientesTango implements Busquedas,Facturar{
             while(rs.next()){
                 
                 ClientesTango cli=new ClientesTango();
+                cli.setCodigoId(rs.getInt("codMMd"));
                 cli.setCodigoCliente(rs.getString("COD_CLIENT"));
                 cli.setRazonSocial(rs.getString("RAZON_SOCI"));
                 cli.setDireccion(rs.getString("DOMICILIO"));

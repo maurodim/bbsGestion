@@ -4,12 +4,15 @@
  */
 package interfaceGraficas;
 
+import Actualizaciones.Actualiza;
 import Depositos.Depositos;
 import Sucursales.Cajas;
 import Sucursales.Sucursales;
 import Sucursales.Usuarios;
 import facturacion.pantallas.IngresoDePedidos;
 import interfacesPrograma.Cajeables;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +22,8 @@ import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
+import objetos.Articulos;
 
 /**
  *
@@ -67,7 +72,12 @@ public class Inicio extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
+        Articulos.CargarMap();
         initComponents();
+        
+        Actualiza actu=new Actualiza();
+        actu.start();
+ 
         //permisos(nivel);
     }
 

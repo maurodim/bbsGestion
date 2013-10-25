@@ -10,6 +10,10 @@ import interfacesPrograma.Facturar;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,7 +39,19 @@ public class Articulos implements Facturar,Editables{
     private Double precioServicio;
     private Boolean confirmado;
     private Double recargo;
+    private Boolean modificaPrecio;
+    private static Hashtable listadoBarr=new Hashtable();
+    private static Hashtable listadoNom=new Hashtable();
+    
 
+    public Boolean getModificaPrecio() {
+        return modificaPrecio;
+    }
+
+    public void setModificaPrecio(Boolean modificaPrecio) {
+        this.modificaPrecio = modificaPrecio;
+    }
+    
     public Double getRecargo() {
         return recargo;
     }
@@ -185,11 +201,125 @@ public class Articulos implements Facturar,Editables{
 
     public void setPrecioUnitarioNeto(Double precioUnitarioNeto) {
       
-        this.precioUnitarioNeto = precioUnitarioNeto * this.recargo;
+        this.precioUnitarioNeto = precioUnitarioNeto;
         System.err.println("RECIBIDO "+precioUnitarioNeto+" resultado "+this.precioUnitarioNeto+" recargo "+this.recargo+"\n");
     }
     
+    public static void CargarMap(){
+        // ACA SE CARGA EL MAP PARA TENER ACCESO A LOS ARTICULOS SIN ESTAR CONECTADO , LA CLAVE EL CODIGO DE BARRA
+        Transaccionable tra=new Conecciones();
+        //ArrayList resultado=new ArrayList();
+        Articulos articulo=null;
+        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0";
+        ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rr.next()){
+                articulo=new Articulos();
+                articulo.setCodigoAsignado(rr.getString("ID"));
+                articulo.setDescripcionArticulo(rr.getString("NOMBRE"));
+                articulo.setNumeroId(rr.getInt("ID"));
+                articulo.setCodigoDeBarra(rr.getString("BARRAS"));
+                articulo.setRecargo(rr.getDouble("recargo"));
+                articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
+                articulo.setEquivalencia(rr.getDouble("equivalencia"));
+                articulo.setPrecioDeCosto(rr.getDouble("COSTO"));
+                articulo.setStockMinimo(rr.getDouble("MINIMO"));
+                articulo.setStockActual(rr.getDouble("stock"));
+                articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
+                articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
+                listadoBarr.put(articulo.getCodigoDeBarra(),articulo);
+                
+                //resultado.add(articulo);
+            }
+                  } catch (SQLException ex) {
+            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0 order by ID";
+        rr=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rr.next()){
+                articulo=new Articulos();
+                articulo.setCodigoAsignado(rr.getString("ID"));
+                articulo.setDescripcionArticulo(rr.getString("NOMBRE"));
+                articulo.setNumeroId(rr.getInt("ID"));
+                articulo.setCodigoDeBarra(rr.getString("BARRAS"));
+                articulo.setRecargo(rr.getDouble("recargo"));
+                articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
+                articulo.setEquivalencia(rr.getDouble("equivalencia"));
+                articulo.setPrecioDeCosto(rr.getDouble("COSTO"));
+                articulo.setStockMinimo(rr.getDouble("MINIMO"));
+                articulo.setStockActual(rr.getDouble("stock"));
+                articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
+                articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
+                listadoNom.put(articulo.descripcionArticulo,articulo);
+                //resultado.add(articulo);
+            }
+            rr.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    public static void RecargarMap(){
+        listadoBarr.clear();
+        listadoNom.clear();
+        System.out.println(" CANTIDAD MAP "+listadoBarr.size());
+        // ACA SE CARGA EL MAP PARA TENER ACCESO A LOS ARTICULOS SIN ESTAR CONECTADO , LA CLAVE EL CODIGO DE BARRA
+        Transaccionable tra=new Conecciones();
+        //ArrayList resultado=new ArrayList();
+        Articulos articulo=null;
+        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0";
+        ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rr.next()){
+                articulo=new Articulos();
+                articulo.setCodigoAsignado(rr.getString("ID"));
+                articulo.setDescripcionArticulo(rr.getString("NOMBRE"));
+                articulo.setNumeroId(rr.getInt("ID"));
+                articulo.setCodigoDeBarra(rr.getString("BARRAS"));
+                articulo.setRecargo(rr.getDouble("recargo"));
+                articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
+                articulo.setEquivalencia(rr.getDouble("equivalencia"));
+                articulo.setPrecioDeCosto(rr.getDouble("COSTO"));
+                articulo.setStockMinimo(rr.getDouble("MINIMO"));
+                articulo.setStockActual(rr.getDouble("stock"));
+                articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
+                articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
+                listadoBarr.put(articulo.getCodigoDeBarra(),articulo);
+               
+                //resultado.add(articulo);
+            }
+                  } catch (SQLException ex) {
+            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0 order by ID";
+        rr=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rr.next()){
+                articulo=new Articulos();
+                articulo.setCodigoAsignado(rr.getString("ID"));
+                articulo.setDescripcionArticulo(rr.getString("NOMBRE"));
+                articulo.setNumeroId(rr.getInt("ID"));
+                articulo.setCodigoDeBarra(rr.getString("BARRAS"));
+                articulo.setRecargo(rr.getDouble("recargo"));
+                articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
+                articulo.setEquivalencia(rr.getDouble("equivalencia"));
+                articulo.setPrecioDeCosto(rr.getDouble("COSTO"));
+                articulo.setStockMinimo(rr.getDouble("MINIMO"));
+                articulo.setStockActual(rr.getDouble("stock"));
+                articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
+                articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
+                listadoNom.put(articulo.descripcionArticulo,articulo);
+                //resultado.add(articulo);
+            }
+            rr.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+    }
     @Override
     public Boolean guardar(Object oob) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -222,6 +352,21 @@ public class Articulos implements Facturar,Editables{
 
     @Override
     public ArrayList listadoBusqueda(String criterio) {
+        ArrayList resultado=new ArrayList();
+        Articulos articulo=null;
+        criterio=criterio.toUpperCase();
+        Enumeration<Articulos> elementos=listadoNom.elements();
+        while(elementos.hasMoreElements()){
+            articulo=(Articulos)elementos.nextElement();
+            int pos=articulo.getDescripcionArticulo().indexOf(criterio);
+            System.out.println("hash "+articulo.getDescripcionArticulo()+" "+pos);
+            if(pos==-1){
+                
+            }else{
+                resultado.add(articulo);
+            }
+        }
+        /*
         Transaccionable tra=new Conecciones();
         ArrayList resultado=new ArrayList();
         Articulos articulo=null;
@@ -241,11 +386,13 @@ public class Articulos implements Facturar,Editables{
                 articulo.setStockMinimo(rr.getDouble("MINIMO"));
                 articulo.setStockActual(rr.getDouble("stock"));
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
+                articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 resultado.add(articulo);
             }
         } catch (SQLException ex) {
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
+        */
         return resultado;
     }
 
@@ -266,6 +413,9 @@ public class Articulos implements Facturar,Editables{
 
     @Override
     public Object cargarPorCodigoDeBarra(String codigoDeBarra) {
+        Articulos articulo;
+        articulo=(Articulos)listadoBarr.get(codigoDeBarra);
+        /*
         String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where BARRAS like '"+codigoDeBarra+"' and INHABILITADO=0";
         Transaccionable tra=new Conecciones();
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
@@ -285,12 +435,13 @@ public class Articulos implements Facturar,Editables{
                 articulo.setStockMinimo(rr.getDouble("MINIMO"));
                 articulo.setStockActual(rr.getDouble("stock"));
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
-                
+                articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
             }
             rr.close();
         } catch (SQLException ex) {
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
+        */ 
         return articulo;
     }
 

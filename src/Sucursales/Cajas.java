@@ -31,6 +31,15 @@ public class Cajas extends Sucursales implements Cajeables{
     private Comprobantes comprobante;
     private Double cambioEnCaja;
     private Double saldoFinal;
+    private ArrayList listBilletes;
+
+    public ArrayList getListBilletes() {
+        return listBilletes;
+    }
+
+    public void setListBilletes(ArrayList listBilletes) {
+        this.listBilletes = listBilletes;
+    }
 
     public Double getCambioEnCaja() {
         return cambioEnCaja;
@@ -62,9 +71,13 @@ public class Cajas extends Sucursales implements Cajeables{
         this.numeroDeComprobante = numeroDeComprobante;
         this.tipoDeComprobante = tipoDeComprobante;
         this.montoMovimiento = montoMovimiento;
+        Billetes.cargarLista();
+        this.listBilletes=Billetes.getListadoBill();
     }
 
     public Cajas() {
+        Billetes.cargarLista();
+        this.listBilletes=Billetes.getListadoBill();
     }
 
     public Cajas(int numero) {

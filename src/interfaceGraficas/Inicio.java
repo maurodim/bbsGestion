@@ -251,10 +251,20 @@ public class Inicio extends javax.swing.JFrame {
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem4.setText("Cierre de Caja");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem4);
 
         jMenuItem17.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem17.setText("Recibir Remito Interno");
+        jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem17ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem17);
 
         jMenuBar1.add(jMenu3);
@@ -360,7 +370,7 @@ public class Inicio extends javax.swing.JFrame {
         Cajeables caj=new Cajas();
         Cajas cajas=(Cajas)caj.ArquearCaja(caja);
         System.out.println("SALDO DE CAJA "+cajas.getSaldoFinal());
-        ArqueoDeCaja arq=new ArqueoDeCaja();
+        CajaAbm arq=new CajaAbm();
         jDesktopPane1.add(arq);
         arq.setVisible(true);
         arq.toFront();
@@ -398,7 +408,7 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_formComponentShown
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
-        CajasAbm cajA=new CajasAbm();
+        CajaAbm cajA=new CajaAbm();
         jDesktopPane1.add(cajA);
         cajA.setVisible(true);
         cajA.toFront();
@@ -452,6 +462,23 @@ public class Inicio extends javax.swing.JFrame {
         nRem.setVisible(true);
         nRem.toFront();
     }//GEN-LAST:event_jMenuItem18ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        CajaAbm cajaA=new CajaAbm();
+        jDesktopPane1.add(cajaA);
+        cajaA.setTitle("CIERRE DE CAJA");
+        cajaA.setVisible(true);
+        cajaA.toFront();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
+        NuevoRemitoInterno nuevoRemito=new NuevoRemitoInterno();
+        jDesktopPane1.add(nuevoRemito);
+        nuevoRemito.setTitle("RECIBIR REMITO INTERNO");
+        nuevoRemito.jPanel1.setVisible(false);
+        nuevoRemito.setVisible(true);
+        nuevoRemito.toFront();
+    }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.Comprobantes;
 import objetos.Conecciones;
+import objetos.Operaciones;
 
 /**
  *
@@ -32,7 +33,13 @@ public class Cajas extends Sucursales implements Cajeables{
     private Double cambioEnCaja;
     private Double saldoFinal;
     private ArrayList listBilletes;
+    private ArrayList listadoOperaciones;
 
+    public ArrayList getListadoOperaciones() {
+        return listadoOperaciones;
+    }
+
+    
     public ArrayList getListBilletes() {
         return listBilletes;
     }
@@ -73,11 +80,15 @@ public class Cajas extends Sucursales implements Cajeables{
         this.montoMovimiento = montoMovimiento;
         Billetes.cargarLista();
         this.listBilletes=Billetes.getListadoBill();
+        Operaciones.cargarArrayCaja();
+        this.listadoOperaciones=Operaciones.getListadoOp();
     }
 
     public Cajas() {
         Billetes.cargarLista();
         this.listBilletes=Billetes.getListadoBill();
+        Operaciones.cargarArrayCaja();
+        this.listadoOperaciones=Operaciones.getListadoOp();
     }
 
     public Cajas(int numero) {
@@ -189,7 +200,7 @@ public class Cajas extends Sucursales implements Cajeables{
     public Object ArquearCaja(Object caja) {
         Cajas cajas=(Cajas)caja;
         Double saldoFinal=cajas.saldoInicial;
-        String sql="select movimientosCaja.monto from movimientosCaja where idCaja="+cajas.numero;
+        String sql="select movimientoscaja.monto from movimientoscaja where idCaja="+cajas.numero;
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {

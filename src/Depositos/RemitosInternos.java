@@ -4,9 +4,18 @@
  */
 package Depositos;
 
+import interfaceGraficas.Inicio;
 import interfaces.Comprobable;
+import interfaces.Transaccionable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import objetos.Articulos;
+import objetos.Conecciones;
 
 /**
  *
@@ -21,6 +30,7 @@ public class RemitosInternos implements Comprobable{
     private Integer depositoDestino;
     private Integer depositoOrigen;
     private ArrayList articulos;
+    private static Integer numeroComprobante;
 
     public Integer getId() {
         return id;
@@ -98,10 +108,35 @@ public class RemitosInternos implements Comprobable{
     public RemitosInternos(Integer id) {
         this.id = id;
     }
-
+    
+    public static void numeroActual(){
+        Transaccionable tra=new Conecciones();
+        String sql="select * from tipocomprobantes where numero=4";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+            numeroComprobante=rs.getInt("numeroActivo");
+                
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(RemitosInternos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     @Override
-    public Integer nuevoComprobante(Object objeto) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Integer nuevoComprobante(Object objeto){
+        RemitosInternos remInterno=(RemitosInternos)objeto;
+        numeroComprobante++;
+        Transaccionable tra=new Conecciones();
+        String sql="";
+        Iterator itRem=remInterno.articulos.listIterator();
+        while(itRem.hasNext()){
+            Articulos articulo=(Articulos)itRem.next();
+            sql="insert into movimientosdesucursales (depOrigen,depDestino,idArticulo,cantidad,numeroRemito,idUsuario) values ("+remInterno.getDepositoOrigen()+","+remInterno.getDepositoDestino()+","+articulo.getNumeroId()+","+articulo.getCantidad()+","+numeroComprobante+","+Inicio.usuario.getNumeroId()+")";
+            tra.guardarRegistro(sql);
+        }
+        sql="update tipocomprobantes numeroActivo="+numeroComprobante+" where numero=4";
+        return numeroComprobante;
     }
 
     @Override
@@ -121,7 +156,30 @@ public class RemitosInternos implements Comprobable{
 
     @Override
     public Object leerComprobante(Integer numero) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //ACA LEO LOS REMITOS INTERNOS GENERADOS
+        Transaccionable tra=new Conecciones();
+        ArrayList listado=new ArrayList();
+        String sql="select *,(select articulos.NOMBRE from articulos where articulos.ID=movimientosdesucursales.idArticulo)as descripcion from movimientosdesucursales where numeroRemito="+numero;
+        RemitosInternos remitoInterno=new RemitosInternos();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                Articulos articulos=new Articulos();
+                articulos.setCantidad(rs.getDouble("cantidad"));
+                articulos.setNumeroId(rs.getInt("idArticulo"));
+                articulos.setDescripcionArticulo(rs.getString("descripcion"));
+                remitoInterno.setDepositoOrigen(rs.getInt("depOrigen"));
+                remitoInterno.setDepositoDestino(rs.getInt("depDestino"));
+                articulos.setConfirmado(false);
+                listado.add(articulos);
+                
+            }
+            remitoInterno.setArticulos(listado);
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(RemitosInternos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return remitoInterno;
     }
 
     @Override

@@ -69,6 +69,7 @@
                       <Component id="jTextField5" max="32767" attributes="0"/>
                       <Component id="jTextField6" pref="178" max="32767" attributes="0"/>
                       <Component id="jTextField7" max="32767" attributes="0"/>
+                      <Component id="jCheckBox1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="238" max="32767" attributes="0"/>
               </Group>
@@ -113,8 +114,10 @@
                       <Component id="jTextField6" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="40" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -166,6 +169,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Guardar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
@@ -173,6 +179,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextField7">
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Modifica Precio SI/NO"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

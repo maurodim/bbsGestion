@@ -25,6 +25,7 @@ public class Sucursales extends Administracion{
     private Depositos depositos;
     private Cajas caja;
     private Usuarios usuario;
+    
 
     public Sucursales() {
     }

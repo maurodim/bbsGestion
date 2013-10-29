@@ -208,6 +208,7 @@ public class Comprobantes implements Facturar{
          */
         Comprobantes comp=(Comprobantes)oob;
         Iterator iComp=comp.listadoDeArticulos.listIterator();
+        comp.setNumero(numeroComprobante(comp.getTipoComprobante()));
         Transaccionable tra=new Conecciones();
         Articulos articulo=new Articulos();
         Boolean verif=false;
@@ -295,6 +296,26 @@ public class Comprobantes implements Facturar{
         
         return numeroSiguiente;
     }
-    
+    private Integer numeroComprobante(Integer tipoComp){
+               Transaccionable tra=new Conecciones();
+               Integer numeroAct=0;
+        String sql="select * from tipocomprobantes where numero="+tipoComp+" and numeroSucursal="+Inicio.sucursal.getNumero();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+            numeroAct=rs.getInt("numeroActivo");
+                
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Comprobantes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return numeroAct++;
+    }
+
+    @Override
+    public Object cargarPorCodigoAsignado(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }

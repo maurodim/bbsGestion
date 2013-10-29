@@ -5,6 +5,7 @@
 package interfaceGraficas;
 
 import Actualizaciones.Actualiza;
+import Compras.Proveedores;
 import Depositos.Depositos;
 import Sucursales.Cajas;
 import Sucursales.Sucursales;
@@ -73,6 +74,7 @@ public class Inicio extends javax.swing.JFrame {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
         Articulos.CargarMap();
+        Proveedores.cargarListadoProv();
         initComponents();
         
         Actualiza actu=new Actualiza();
@@ -472,10 +474,8 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
-        NuevoRemitoInterno nuevoRemito=new NuevoRemitoInterno();
+        RecepcionDeRemitoInterno nuevoRemito=new RecepcionDeRemitoInterno();
         jDesktopPane1.add(nuevoRemito);
-        nuevoRemito.setTitle("RECIBIR REMITO INTERNO");
-        nuevoRemito.jPanel1.setVisible(false);
         nuevoRemito.setVisible(true);
         nuevoRemito.toFront();
     }//GEN-LAST:event_jMenuItem17ActionPerformed

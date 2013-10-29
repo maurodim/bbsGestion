@@ -23,5 +23,6 @@ public interface Facturar {
     public ArrayList listarClientes(String nombre);
     public Object cargarPorCodigoDeBarra(String codigoDeBarra);
     public Integer leerNumeroDeComprobanteSiguiente(Integer numeroComprobante);
+    public Object cargarPorCodigoAsignado(Integer id);
     
 }

@@ -42,6 +42,17 @@ public class Articulos implements Facturar,Editables{
     private Boolean modificaPrecio;
     private static Hashtable listadoBarr=new Hashtable();
     private static Hashtable listadoNom=new Hashtable();
+    private static Hashtable listadoCodigo=new Hashtable();
+    private Double diferenciaRemitida;
+
+    public Double getDiferenciaRemitida() {
+        return diferenciaRemitida;
+    }
+
+    public void setDiferenciaRemitida(Double diferenciaRemitida) {
+        this.diferenciaRemitida = diferenciaRemitida;
+    }
+    
     
 
     public Boolean getModificaPrecio() {
@@ -228,6 +239,7 @@ public class Articulos implements Facturar,Editables{
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 listadoBarr.put(articulo.getCodigoDeBarra(),articulo);
+                listadoCodigo.put(articulo.getCodigoAsignado(),articulo);
                 
                 //resultado.add(articulo);
             }
@@ -264,6 +276,7 @@ public class Articulos implements Facturar,Editables{
     public static void RecargarMap(){
         listadoBarr.clear();
         listadoNom.clear();
+        listadoCodigo.clear();
         System.out.println(" CANTIDAD MAP "+listadoBarr.size());
         // ACA SE CARGA EL MAP PARA TENER ACCESO A LOS ARTICULOS SIN ESTAR CONECTADO , LA CLAVE EL CODIGO DE BARRA
         Transaccionable tra=new Conecciones();
@@ -287,7 +300,7 @@ public class Articulos implements Facturar,Editables{
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 listadoBarr.put(articulo.getCodigoDeBarra(),articulo);
-               
+               listadoCodigo.put(articulo.getCodigoAsignado(),articulo);
                 //resultado.add(articulo);
             }
                   } catch (SQLException ex) {
@@ -447,12 +460,23 @@ public class Articulos implements Facturar,Editables{
 
     @Override
     public Boolean AltaObjeto(Object objeto) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Articulos articulo=(Articulos)objeto;
+        Boolean ch=false;
+        //String sql="insert into articulos (NOMBRE='"+articulo.getDescripcionArticulo()+"',SERVICIO="+articulo.getPrecioServicio()+",COSTO="+articulo.getPrecioDeCosto()+",PRECIO="+articulo.getPrecioUnitarioNeto()+",MINIMO="+articulo.getStockMinimo()+",BARRAS ='"+articulo.getCodigoDeBarra()+"',modificaPrecio="+articulo.getModificaPrecio()+" where ID="+articulo.getNumeroId();
+        String sql="insert into articulos (NOMBRE,SERVICIO,COSTO,PRECIO,MINIMO,BARRAS,modificaPrecio) values ('"+articulo.getDescripcionArticulo()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+",'"+articulo.getCodigoDeBarra()+"',"+articulo.getModificaPrecio()+")";
+        Transaccionable tra=new Conecciones();
+        ch=tra.guardarRegistro(sql);
+        return ch;
     }
 
     @Override
     public Boolean ModificaionObjeto(Object objeto) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Articulos articulo=(Articulos)objeto;
+        Boolean ch=false;
+        String sql="update articulos set NOMBRE='"+articulo.getDescripcionArticulo()+"',SERVICIO="+articulo.getPrecioServicio()+",COSTO="+articulo.getPrecioDeCosto()+",PRECIO="+articulo.getPrecioUnitarioNeto()+",MINIMO="+articulo.getStockMinimo()+",BARRAS ='"+articulo.getCodigoDeBarra()+"',modificaPrecio="+articulo.getModificaPrecio()+" where ID="+articulo.getNumeroId();
+        Transaccionable tra=new Conecciones();
+        ch=tra.guardarRegistro(sql);
+        return ch;
     }
 
     @Override
@@ -463,6 +487,13 @@ public class Articulos implements Facturar,Editables{
     @Override
     public Integer leerNumeroDeComprobanteSiguiente(Integer numeroComprobante) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object cargarPorCodigoAsignado(Integer id) {
+        Articulos articulo;
+        articulo=(Articulos)listadoCodigo.get(id);
+        return articulo;
     }
     
     

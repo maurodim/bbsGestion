@@ -4,6 +4,8 @@
  */
 package interfaceGraficas;
 
+import Conversores.Numeros;
+import interfaces.Editables;
 import javax.swing.JTextField;
 import objetos.Articulos;
 
@@ -13,6 +15,7 @@ import objetos.Articulos;
  */
 public class ArticulosMod extends javax.swing.JInternalFrame {
     private Articulos arti=new Articulos();
+    private Integer accion=0;
 
     public ArticulosMod(Articulos art) {
         arti=art;
@@ -22,11 +25,11 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         this.jTextField3.setText(String.valueOf(arti.getStockMinimo()));
         this.jTextField4.setText(String.valueOf(arti.getPrecioDeCosto()));
         this.jTextField5.setText(String.valueOf(arti.getPrecioUnitarioNeto()));
-        this.jTextField6.setText("");
-        this.jTextField1.selectAll();
-        this.jTextField1.requestFocus();
-        this.jTextField7.setVisible(false);
-        this.jLabel7.setVisible(false);
+        this.jTextField7.setText(String.valueOf(arti.getCodigoDeBarra()));
+        this.jTextField6.setText(String.valueOf(arti.getPrecioServicio()));
+        this.jTextField7.selectAll();
+        this.jTextField7.requestFocus();
+        accion=2;
     }
     
     
@@ -37,6 +40,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         initComponents();
         this.setTitle("CARGA DE NUEVO ARTICULO");
         this.jTextField7.requestFocus();
+        accion=1;
     }
 
     /**
@@ -64,6 +68,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jTextField7 = new javax.swing.JTextField();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setClosable(true);
         setMaximizable(true);
@@ -83,8 +88,15 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         jLabel6.setText("Costo Servicio :");
 
         jButton1.setText("Guardar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Codigo de Barra");
+
+        jCheckBox1.setText("Modifica Precio SI/NO");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -109,7 +121,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
                     .addComponent(jTextField4)
                     .addComponent(jTextField5)
                     .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                    .addComponent(jTextField7))
+                    .addComponent(jTextField7)
+                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(238, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -144,8 +157,10 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
                     .addComponent(jLabel6)
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addComponent(jCheckBox1)
+                .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -167,8 +182,36 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        arti.setCodigoDeBarra(this.jTextField7.getText());
+        arti.setDescripcionArticulo(this.jTextField1.getText());
+        Double cant=Numeros.ConvertirStringADouble(this.jTextField2.getText());
+        arti.setStockActual(cant);
+        cant=Numeros.ConvertirStringADouble(this.jTextField3.getText());
+        arti.setStockMinimo(cant);
+        cant=Numeros.ConvertirStringADouble(this.jTextField4.getText());
+        arti.setPrecioDeCosto(cant);
+        cant=Numeros.ConvertirStringADouble(this.jTextField5.getText());
+        arti.setPrecioUnitarioNeto(cant);
+        cant=Numeros.ConvertirStringADouble(this.jTextField6.getText());
+        arti.setPrecioServicio(cant);
+        if(arti.getPrecioServicio() > 0){
+            this.jCheckBox1.setSelected(true);
+        }
+        arti.setModificaPrecio(this.jCheckBox1.isSelected());
+        Editables edit=new Articulos();
+        if(accion==2){
+            edit.ModificaionObjeto(arti);
+        }else{
+            edit.AltaObjeto(arti);
+        }
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import objetos.Articulos;
 import objetos.Conecciones;
 
@@ -27,7 +28,8 @@ public class Depositos implements Personalizable, Trasladable{
     private String telefono;
     private String direccion;
     private Proveedores proveedores;
-
+    private static ArrayList remitosInternos=new ArrayList();
+    
     public Depositos() {
     }
 
@@ -42,6 +44,15 @@ public class Depositos implements Personalizable, Trasladable{
                 this.direccion=rr.getString("direccion");
                 this.telefono=rr.getString("telefono");
                 
+            }
+            int numeroRemitoInterno=0;
+            sql1="select movimientosdesucursales.numeroRemito from movimientosdesucursales where depDestino="+this.numero+" and confirmado=0 group by numeroRemito";
+            rr=tra.leerConjuntoDeRegistros(sql1);
+            while(rr.next()){
+                numeroRemitoInterno=rr.getInt("numeroRemito");
+                System.out.println("REMITO INTERNO LEIDOOOOOO "+numeroRemitoInterno);
+                JOptionPane.showMessageDialog(null,"USTED TIENE REMITOS INTERNOS A CONFIRMAR");
+                remitosInternos.add(numeroRemitoInterno);
             }
             rr.close();
         } catch (SQLException ex) {
@@ -88,7 +99,9 @@ public class Depositos implements Personalizable, Trasladable{
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-
+    public static ArrayList leerRemitosInternos(){
+        return remitosInternos;
+    }
     @Override
     public Boolean agregar(Object objeto) {
         throw new UnsupportedOperationException("Not supported yet.");

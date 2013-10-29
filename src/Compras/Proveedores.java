@@ -9,8 +9,12 @@ import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objetos.Articulos;
 import objetos.Conecciones;
 
 /**
@@ -28,6 +32,9 @@ public class Proveedores implements Personalizable{
     private String numeroDeCuit;
     private int condicionIngresosBrutos;
     private String numeroIngresosBrutos;
+    private static Hashtable listadoProv=new Hashtable();
+    
+    
 
     public Proveedores(int numero) {
         this.numero = numero;
@@ -115,7 +122,33 @@ public class Proveedores implements Personalizable{
     public void setNumeroIngresosBrutos(String numeroIngresosBrutos) {
         this.numeroIngresosBrutos = numeroIngresosBrutos;
     }
-
+    public static void cargarListadoProv(){
+        try {
+            listadoProv.clear();
+            String sql="select * from proveedores order by NOMBRE";
+            Transaccionable tra=new Conecciones();
+            ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+            while(rr.next()){
+                Proveedores prov=new Proveedores();
+                prov.setNumero(rr.getInt("numero"));
+                prov.setNombre(rr.getString("NOMBRE"));
+                prov.setDireccion(rr.getString("DOMICILIO"));
+                prov.setLocalidad(rr.getString("LOCALIDAD"));
+                prov.setMail(rr.getString("mail"));
+                prov.setTelefono(rr.getString("TELEFONO"));
+                //prov.setCondicionDeIva(rr.getInt("condicionIva"));
+                //prov.setNumeroDeCuit(rr.getString("numeroCuit"));
+                //prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
+                //prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
+                System.err.println("PROV "+prov.getNombre());
+                listadoProv.put(prov.getNumero(),prov);
+            }
+            rr.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Proveedores.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     @Override
     public Boolean agregar(Object objeto) {
        Proveedores prov=(Proveedores)objeto;
@@ -244,29 +277,23 @@ public class Proveedores implements Personalizable{
     @Override
     public ArrayList listar() {
         ArrayList listado=new ArrayList();
-        try {
-            String sql="select * from proveedores order by nombre";
-            Transaccionable tra=new Conecciones();
-            ResultSet rr=tra.leerConjuntoDeRegistros(sql);
-            while(rr.next()){
-                Proveedores prov=new Proveedores();
-                prov.setNumero(rr.getInt("numero"));
-                prov.setNombre(rr.getString("NOMBRE"));
-                prov.setDireccion(rr.getString("DOMICILIO"));
-                prov.setLocalidad(rr.getString("LOCALIDAD"));
-                prov.setMail(rr.getString("mail"));
-                prov.setTelefono(rr.getString("TELEFONO"));
+        /*
+         * Enumeration<Articulos> elementos=listadoNom.elements();
+       * while(elementos.hasMoreElements()){
+        *    articulo=(Articulos)elementos.nextElement();
+         */
+            Enumeration<Proveedores> elementos=listadoProv.elements();
+            System.out.println(" ELEMENTOS PROVEEDORES "+listadoProv.size());
+            while(elementos.hasMoreElements()){
+                Proveedores prov=(Proveedores)elementos.nextElement();
+                System.out.println(" PROVEEDORES "+prov.getNombre());
                 //prov.setCondicionDeIva(rr.getInt("condicionIva"));
                 //prov.setNumeroDeCuit(rr.getString("numeroCuit"));
                 //prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
                 //prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
                 listado.add(prov);
             }
-            rr.close();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Proveedores.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            //Collections.sort(listado);
         return listado;
     }
 

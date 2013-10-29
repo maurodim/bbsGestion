@@ -4,12 +4,19 @@
  */
 package interfaceGraficas;
 
+import Conversores.Numeros;
 import Depositos.Depositos;
 import Depositos.RemitosInternos;
+import interfaces.Comprobable;
 import interfaces.Personalizable;
+import interfacesPrograma.Facturar;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.DefaultListModel;
+import objetos.Articulos;
 import tablas.MiModeloTablaArticulos;
+import tablas.MiModeloTablaFacturacion;
 
 /**
  *
@@ -17,13 +24,40 @@ import tablas.MiModeloTablaArticulos;
  */
 public class NuevoRemitoInterno extends javax.swing.JInternalFrame {
     private RemitosInternos remitoInterno;
-    
+    private Articulos arti=new Articulos();
+    private static ArrayList listadoArt=new ArrayList();
     /**
      * Creates new form NuevoRemitoInterno
      */
     public NuevoRemitoInterno() {
         remitoInterno=new RemitosInternos();
+        
         initComponents();
+    }
+    private void cargarLista(){
+        DefaultListModel modelo=new DefaultListModel();
+    ArrayList lista=new ArrayList();
+    Facturar fact=new Articulos();
+    lista=fact.listadoBusqueda(this.jTextField1.getText());
+    Iterator il=lista.listIterator();
+    Articulos art=new Articulos();
+    while(il.hasNext()){
+        art=(Articulos)il.next();
+        System.out.println("DESCRIPCION "+art.getDescripcionArticulo());
+        modelo.addElement(art.getCodigoAsignado()+" "+art.getDescripcionArticulo());
+    }
+    ListadoDeArticulos listadoDeArticulos=new ListadoDeArticulos();
+    listadoDeArticulos.jList1.setModel(modelo);
+    listadoDeArticulos.setVisible(true);
+    int posicion=listadoDeArticulos.jList1.getSelectedIndex();
+    System.out.println(" POSICION LISTA "+posicion);
+    this.jTextField1.setText("");
+    arti=(Articulos)lista.get(posicion);
+    jTextField1.setText(arti.getCodigoAsignado());
+            //jTextField2.setText("1");
+            //this.jTextField5.setText(String.valueOf(arti.getPrecioDeCosto()));
+            this.jTextField2.selectAll();
+            this.jTextField2.requestFocus();
     }
 
     /**
@@ -82,7 +116,20 @@ public class NuevoRemitoInterno extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Codigo de Barra");
 
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
+
         jLabel4.setText("Cantidad");
+
+        jTextField2.setText("1.00");
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField2KeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -143,8 +190,18 @@ public class NuevoRemitoInterno extends javax.swing.JInternalFrame {
         );
 
         jButton1.setText("Generar Remito");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Eliminar Item");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -164,7 +221,7 @@ public class NuevoRemitoInterno extends javax.swing.JInternalFrame {
                 .addComponent(jButton1)
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addContainerGap(265, Short.MAX_VALUE))
+                .addContainerGap(269, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -195,6 +252,78 @@ public class NuevoRemitoInterno extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_F1){
+            cargarLista();
+        }
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            String codigo=this.jTextField1.getText();
+            Facturar fact=new Articulos();
+            arti=(Articulos)fact.cargarPorCodigoDeBarra(codigo);
+            this.jTextField2.selectAll();
+            this.jTextField2.requestFocus();
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            String cant=this.jTextField2.getText();
+            Double can=(Double)Numeros.ConvertirStringADouble(cant);
+            arti.setCantidad(can);
+            listadoArt.add(arti);
+            //remitoInterno.agregarItemArticulos(arti);
+            agregarRenglonEnTabla();
+            this.jTextField1.setText("");
+            this.jTextField2.setText("1.00");
+            this.jTextField1.requestFocus();
+        }
+    }//GEN-LAST:event_jTextField2KeyPressed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int posicion=this.jTable1.getSelectedRow();
+        listadoArt.remove(posicion);
+        agregarRenglonEnTabla();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        RemitosInternos.numeroActual();
+        int depOrigen=this.jComboBox1.getSelectedIndex();
+        int depDestino=this.jComboBox2.getSelectedIndex();
+        depOrigen++;
+        depDestino++;
+        remitoInterno.setDepositoOrigen(depOrigen);
+        remitoInterno.setDepositoDestino(depDestino);
+        remitoInterno.setArticulos(listadoArt);
+        Comprobable comp=new RemitosInternos();
+        System.out.println(" REMITO GENERADO "+comp.nuevoComprobante(remitoInterno));
+        listadoArt.clear();
+        agregarRenglonEnTabla();
+    }//GEN-LAST:event_jButton1ActionPerformed
+    private void agregarRenglonEnTabla(){
+        MiModeloTablaFacturacion busC=new MiModeloTablaFacturacion();
+        this.jTable1.removeAll();
+        Double montoTotal=0.00;
+        //ArrayList listadoPedidos=new ArrayList();
+        this.jTable1.setModel(busC);
+        Articulos pedidos=arti;
+        busC.addColumn("CODIGO");
+        busC.addColumn("DESCRIPCION");
+        busC.addColumn("CANTIDAD");
+        Object[] fila=new Object[3];
+        Iterator irP=listadoArt.listIterator();
+        Double cost=0.00;
+        while(irP.hasNext()){
+            pedidos=(Articulos) irP.next();
+            //fila[0]=pedidos.getCodigo();
+            fila[0]=pedidos.getCodigoAsignado();
+            fila[1]=pedidos.getDescripcionArticulo();
+            fila[2]=pedidos.getCantidad();
+            busC.addRow(fila);
+        }
+        //this.jLabel7.setText("");
+
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

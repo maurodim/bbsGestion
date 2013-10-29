@@ -4,6 +4,7 @@
  */
 package Actualizaciones;
 
+import Compras.Proveedores;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
@@ -25,6 +26,7 @@ public class Actualiza extends Thread{
         //ActOt at=new ActOt();
         //at.start();
         Articulos.RecargarMap();
+        Proveedores.cargarListadoProv();
      } 
 }); 
         timer.start();

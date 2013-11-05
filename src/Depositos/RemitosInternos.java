@@ -31,7 +31,16 @@ public class RemitosInternos implements Comprobable{
     private Integer depositoOrigen;
     private ArrayList articulos;
     private static Integer numeroComprobante;
+    private Integer idUsuarioRecep;
 
+    public Integer getIdUsuarioRecep() {
+        return idUsuarioRecep;
+    }
+
+    public void setIdUsuarioRecep(Integer idUsuarioRecep) {
+        this.idUsuarioRecep = idUsuarioRecep;
+    }
+    
     public Integer getId() {
         return id;
     }
@@ -135,7 +144,8 @@ public class RemitosInternos implements Comprobable{
             sql="insert into movimientosdesucursales (depOrigen,depDestino,idArticulo,cantidad,numeroRemito,idUsuario) values ("+remInterno.getDepositoOrigen()+","+remInterno.getDepositoDestino()+","+articulo.getNumeroId()+","+articulo.getCantidad()+","+numeroComprobante+","+Inicio.usuario.getNumeroId()+")";
             tra.guardarRegistro(sql);
         }
-        sql="update tipocomprobantes numeroActivo="+numeroComprobante+" where numero=4";
+        sql="update tipocomprobantes set numeroActivo="+numeroComprobante+" where numero=4";
+        tra.guardarRegistro(sql);
         return numeroComprobante;
     }
 
@@ -146,7 +156,18 @@ public class RemitosInternos implements Comprobable{
 
     @Override
     public Boolean modificarComprobante(Object objeto) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        RemitosInternos remitoInterno=(RemitosInternos)objeto;
+        Boolean conf=false;
+        Transaccionable tra=new Conecciones();
+        String sql="";
+        Iterator itL=remitoInterno.getArticulos().listIterator();
+        while(itL.hasNext()){
+            Articulos articulo=(Articulos)itL.next();
+            sql="update movimientosdesucursales set diferencia=+"+articulo.getDiferenciaRemitida()+",idUsuarioRecep="+Inicio.usuario.getNumeroId()+",confirmado="+articulo.getConfirmado()+" where idArticulo="+articulo.getNumeroId()+" and numeroRemito="+remitoInterno.getNumero();
+            conf=tra.guardarRegistro(sql);
+        }
+        
+        return conf;
     }
 
     @Override
@@ -159,7 +180,7 @@ public class RemitosInternos implements Comprobable{
         //ACA LEO LOS REMITOS INTERNOS GENERADOS
         Transaccionable tra=new Conecciones();
         ArrayList listado=new ArrayList();
-        String sql="select *,(select articulos.NOMBRE from articulos where articulos.ID=movimientosdesucursales.idArticulo)as descripcion from movimientosdesucursales where numeroRemito="+numero;
+        String sql="select *,(select articulos.NOMBRE from articulos where articulos.ID=movimientosdesucursales.idArticulo)as descripcion from movimientosdesucursales where numeroRemito="+numero+" and confirmado=0";
         RemitosInternos remitoInterno=new RemitosInternos();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -170,7 +191,9 @@ public class RemitosInternos implements Comprobable{
                 articulos.setDescripcionArticulo(rs.getString("descripcion"));
                 remitoInterno.setDepositoOrigen(rs.getInt("depOrigen"));
                 remitoInterno.setDepositoDestino(rs.getInt("depDestino"));
-                articulos.setConfirmado(false);
+                articulos.setConfirmado(rs.getBoolean("confirmado"));
+                remitoInterno.setIdUsuarioRecep(rs.getInt("idUsuarioRecep"));
+                remitoInterno.setNumero(rs.getInt("numeroRemito"));
                 listado.add(articulos);
                 
             }

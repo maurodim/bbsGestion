@@ -21,6 +21,11 @@ public class Operaciones {
     private Integer destino;
     private Integer valor;
     private static ArrayList listadoOp=new ArrayList();
+    private static ArrayList listOp=new ArrayList();
+
+    public static ArrayList getListOp() {
+        return listOp;
+    }
 
     public static ArrayList getListadoOp() {
         return listadoOp;
@@ -78,5 +83,28 @@ public class Operaciones {
             Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
         }
        
+    }
+    public static void cargarArray(){
+        Transaccionable tra=new Conecciones();
+        String sql="select * from tipomovimientos";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            listOp.clear();
+            while(rs.next()){
+                Operaciones operaciones=new Operaciones();
+                operaciones.setId(rs.getInt("id"));
+                operaciones.setDescripcion(rs.getString("descripcion"));
+                operaciones.setDestino(rs.getInt("destinoOperacion"));
+                operaciones.setValor(rs.getInt("multiploOp"));
+                System.err.println(" LISTADO OPERACIONES "+operaciones.getDescripcion());
+                listOp.add(operaciones);
+                
+            }
+            rs.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }

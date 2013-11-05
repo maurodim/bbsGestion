@@ -39,6 +39,8 @@ public class Comprobantes implements Facturar{
     private Double montoIva;
     private Double montoRet;
     private Integer pagado;
+    private static Integer numeroComprobante;
+    private static Integer idComp;
 
     public Integer getPagado() {
         return pagado;
@@ -157,10 +159,26 @@ public class Comprobantes implements Facturar{
     
 
     public Comprobantes(int numero) {
+            this.idCaja=0;
+        this.idDeposito=0;
+        this.idSucursal=0;
+        this.numero=0;
+        this.tipoComprobante=0;
+        this.tipoMovimiento=0;
+        this.usuarioGenerador=0;
+
         this.numero = numero;
+
     }
 
     public Comprobantes() {
+        this.idCaja=0;
+        this.idDeposito=0;
+        this.idSucursal=0;
+        this.numero=0;
+        this.tipoComprobante=0;
+        this.tipoMovimiento=0;
+        this.usuarioGenerador=0;
     }
 
     public int getNumero() {
@@ -194,7 +212,28 @@ public class Comprobantes implements Facturar{
     public void setDescargaStock(int descargaStock) {
         this.descargaStock = descargaStock;
     }
-
+    private static void numeroActual(int tipoComprobante){
+        Transaccionable tra=new Conecciones();
+        String tc="ticket";
+        String fc="FCA A";
+        String tx="";
+        if(tipoComprobante==1){
+            tx=tc;
+        }else{
+            tx=fc;
+        }
+        String sql="select * from tipocomprobantes where descripcion like '"+tx+"%' and numeroSucursal ="+Inicio.sucursal.getNumero();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+            numeroComprobante=rs.getInt("numeroActivo");
+            idComp=rs.getInt("numero");   
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Comprobantes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     @Override
     public Boolean guardar(Object oob) {
         // GUARDA EL OBJETO COMPROBANTE COMO EL O LOS MOVIMIENTOS CORRESPONDIENTES
@@ -208,7 +247,9 @@ public class Comprobantes implements Facturar{
          */
         Comprobantes comp=(Comprobantes)oob;
         Iterator iComp=comp.listadoDeArticulos.listIterator();
-        comp.setNumero(numeroComprobante(comp.getTipoComprobante()));
+        numeroActual(comp.getTipoComprobante());
+        numeroComprobante++;
+        comp.setNumero(numeroComprobante);
         Transaccionable tra=new Conecciones();
         Articulos articulo=new Articulos();
         Boolean verif=false;
@@ -223,8 +264,12 @@ public class Comprobantes implements Facturar{
         if(verif){
             sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado) values ("+comp.getUsuarioGenerador()+","+comp.getIdSucursal()+","+comp.getNumero()+","+comp.getTipoComprobante()+","+comp.getMontoTotal()+","+comp.getTipoMovimiento()+","+comp.getIdCaja()+","+comp.getCliente().getCodigoId()+",1,"+comp.getPagado()+")";
             tra.guardarRegistro(sql);
+            sql="insert into movimientosclientes (numeroProveedor,monto,pagado,numeroComprobante,idUsuario,idCaja,idSucursal,tipoComprobante) value ("+comp.getCliente().getCodigoId()+","+comp.getMontoTotal()+","+comp.getPagado()+","+numeroComprobante+","+Inicio.usuario.getNumeroId()+","+Inicio.caja.getNumero()+","+Inicio.sucursal.getNumero()+","+comp.getTipoComprobante()+")";
+            tra.guardarRegistro(sql);
         }
         System.out.println("SE RECEPCIONO BARBARO");
+        sql="update tipocomprobantes set numeroActivo="+numeroComprobante+" where numero="+idComp;
+        tra.guardarRegistro(sql);
         return true;
     }
 

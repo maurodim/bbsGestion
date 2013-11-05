@@ -4,6 +4,7 @@
  */
 package interfaceGraficas;
 
+import Conversores.Numeros;
 import Depositos.Depositos;
 import Depositos.RemitosInternos;
 import interfaces.Comprobable;
@@ -139,8 +140,22 @@ public class RecepcionDeRemitoInterno extends javax.swing.JInternalFrame {
         int cantidadRow=this.jTable1.getRowCount();
         int a=0;
         for(int i=0;i < cantidadRow;i++){
-            System.err.println(this.jTable1.getValueAt(i, 2));
+            
+            Articulos cant=(Articulos)remitoInterno.getArticulos().get(i);
+            if((Boolean)this.jTable1.getValueAt(i, 3)){
+                cant.setConfirmado(true);
+                String num=String.valueOf(this.jTable1.getValueAt(i, 2));
+                Double cantAct=Numeros.ConvertirStringADouble(num);
+                Double dif=cantAct - cant.getCantidad();
+                cant.setDiferenciaRemitida(dif);
+            }else{
+                cant.setConfirmado(false);
+            }
+            
+            System.err.println(this.jTable1.getValueAt(i, 2)+" "+cant.getCantidad());
         }
+        Comprobable comp=new RemitosInternos();
+        comp.modificarComprobante(remitoInterno);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -48,6 +48,25 @@ public class ClientesTango implements Busquedas,Facturar{
         private String condicionIva;
         private Double coeficienteListaDeprecios;
         private Integer codigoId;
+        private Double cupoDeCredito;
+        private Double saldoActual;
+
+    public Double getCupoDeCredito() {
+        return cupoDeCredito;
+    }
+
+    public void setCupoDeCredito(Double cupoDeCredito) {
+        this.cupoDeCredito = cupoDeCredito;
+    }
+
+    public Double getSaldoActual() {
+        return saldoActual;
+    }
+
+    public void setSaldoActual(Double saldoActual) {
+        this.saldoActual = saldoActual;
+    }
+        
 
     public Integer getCodigoId() {
         return codigoId;
@@ -62,7 +81,7 @@ public class ClientesTango implements Busquedas,Facturar{
         try {
             this.codigoCliente = codigoCliente;
             Transaccionable tra=new Conecciones();
-                String sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente  from listcli where COD_CLIENT like '"+codigoCliente+"%'";
+                String sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo   from listcli where COD_CLIENT like '"+codigoCliente+"%'";
                 //String sql="select pedidos_carga1.COD_CLIENT,pedidos_carga1.RAZON_SOC,pedidos_carga1.NRO_PEDIDO,pedidos_carga1.numero,pedidos_carga1.LEYENDA_2 from pedidos_carga1 where RAZON_SOC like '"+cliente+"%' group by COD_CLIENT order by RAZON_SOC";
                 ResultSet rs=tra.leerConjuntoDeRegistros(sql);
                 while(rs.next()){
@@ -81,6 +100,9 @@ public class ClientesTango implements Busquedas,Facturar{
                     this.telefono=rs.getString("TELEFONO_1");
                     this.localidad=rs.getString("LOCALIDAD");
                     this.coeficienteListaDeprecios=rs.getDouble("coeficiente");
+                    this.cupoDeCredito=rs.getDouble("CUPO_CREDI");
+                    this.saldoActual=rs.getDouble("saldo");
+                    this.saldo=rs.getDouble("saldo");
                     //cli.setNumeroPedido(rs.getString(3));
                     //cli.setObservaciones(rs.getString(5));
                     //System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
@@ -302,7 +324,7 @@ public class ClientesTango implements Busquedas,Facturar{
     }
     public void agregarNuevo(ClientesTango cli) throws SQLException{
         Transaccionable tra=new Conecciones();
-        String sql="insert into listcli (COD_CLIENT,RAZON_SOCI,DOMICILIO,LOCALIDAD,TELEFONO_1,TIPO_IVA,IDENTIFTRI,COND_VTA,NRO_LISTA,empresa) values ('"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','SANTA FE','"+cli.getTelefono()+"',"+cli.getCondicionIva()+",'"+cli.getNumeroDeCuit()+"',1,2,'"+cli.getEmpresa()+"')";
+        String sql="insert into listcli (COD_CLIENT,RAZON_SOCI,DOMICILIO,LOCALIDAD,TELEFONO_1,TIPO_IVA,IDENTIFTRI,COND_VTA,NRO_LISTA,empresa) values ('"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','SANTA FE','"+cli.getTelefono()+"',"+cli.getCondicionIva()+",'"+cli.getNumeroDeCuit()+"',1,1,'"+cli.getEmpresa()+"')";
         if(tra.guardarRegistro(sql)){
             
         }else{
@@ -324,7 +346,7 @@ public class ClientesTango implements Busquedas,Facturar{
         try {
             ArrayList ped=new ArrayList();
             Transaccionable tra=new Conecciones();
-            String sql="select * from listcli where RAZON_SOCI like '"+cliente+"%'";
+            String sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo   from listcli where RAZON_SOCI like '"+cliente+"%'";
             //String sql="select pedidos_carga1.COD_CLIENT,pedidos_carga1.RAZON_SOC,pedidos_carga1.NRO_PEDIDO,pedidos_carga1.numero,pedidos_carga1.LEYENDA_2 from pedidos_carga1 where RAZON_SOC like '"+cliente+"%' group by COD_CLIENT order by RAZON_SOC";
             ResultSet rs=tra.leerConjuntoDeRegistros(sql);
             while(rs.next()){
@@ -344,6 +366,9 @@ public class ClientesTango implements Busquedas,Facturar{
                 cli.setCondicionIva(rs.getString("TIPO_IVA"));
                 cli.setTelefono(rs.getString("TELEFONO_1"));
                 cli.setLocalidad(rs.getString("LOCALIDAD"));
+                cli.setCoeficienteListaDeprecios(rs.getDouble("coeficiente"));
+                cli.setSaldo(rs.getDouble("saldo"));
+                cli.setSaldoActual(rs.getDouble("saldo"));
                 //cli.setNumeroPedido(rs.getString(3));
                 //cli.setObservaciones(rs.getString(5));
                 System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
@@ -423,7 +448,7 @@ public class ClientesTango implements Busquedas,Facturar{
         ClientesTango cli=(ClientesTango)cliente;
         Boolean resultado=false;
         Transaccionable tra=new Conecciones();
-        String sql="insert into listcli (COD_CLIENT,RAZON_SOCI,DOMICILIO,LOCALIDAD,TELEFONO_1,TIPO_IVA,IDENTIFTRI,COND_VTA,NRO_LISTA,empresa) values ('"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','SANTA FE','"+cli.getTelefono()+"',"+cli.getCondicionIva()+",'"+cli.getNumeroDeCuit()+"',1,2,'"+cli.getEmpresa()+"')";
+        String sql="insert into listcli (COD_CLIENT,RAZON_SOCI,DOMICILIO,LOCALIDAD,TELEFONO_1,TIPO_IVA,IDENTIFTRI,COND_VTA,NRO_LISTA,empresa) values ('"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','SANTA FE','"+cli.getTelefono()+"',"+cli.getCondicionIva()+",'"+cli.getNumeroDeCuit()+"',1,1,'"+cli.getEmpresa()+"')";
         resultado=tra.guardarRegistro(sql);
         return resultado;
     }
@@ -433,7 +458,7 @@ public class ClientesTango implements Busquedas,Facturar{
         ClientesTango cli=(ClientesTango)cliente;
         Boolean resultado=false;
         Transaccionable tra=new Conecciones();
-        String sql="insert into listcli (COD_CLIENT,RAZON_SOCI,DOMICILIO,LOCALIDAD,TELEFONO_1,TIPO_IVA,IDENTIFTRI,COND_VTA,NRO_LISTA,empresa) values ('"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','SANTA FE','"+cli.getTelefono()+"',"+cli.getCondicionIva()+",'"+cli.getNumeroDeCuit()+"',1,2,'"+cli.getEmpresa()+"')";
+        String sql="insert into listcli (COD_CLIENT,RAZON_SOCI,DOMICILIO,LOCALIDAD,TELEFONO_1,TIPO_IVA,IDENTIFTRI,COND_VTA,NRO_LISTA,empresa) values ('"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','SANTA FE','"+cli.getTelefono()+"',"+cli.getCondicionIva()+",'"+cli.getNumeroDeCuit()+"',1,1,'"+cli.getEmpresa()+"')";
         resultado=tra.guardarRegistro(sql);
         return resultado;
     }
@@ -443,7 +468,7 @@ public class ClientesTango implements Busquedas,Facturar{
                 try {
             ArrayList ped=new ArrayList();
             Transaccionable tra=new Conecciones();
-            String sql="select * from listcli where RAZON_SOCI like '"+nombre+"%'";
+            String sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo   from listcli where RAZON_SOCI like '"+nombre+"%'";
             //String sql="select pedidos_carga1.COD_CLIENT,pedidos_carga1.RAZON_SOC,pedidos_carga1.NRO_PEDIDO,pedidos_carga1.numero,pedidos_carga1.LEYENDA_2 from pedidos_carga1 where RAZON_SOC like '"+cliente+"%' group by COD_CLIENT order by RAZON_SOC";
             ResultSet rs=tra.leerConjuntoDeRegistros(sql);
             while(rs.next()){
@@ -462,6 +487,9 @@ public class ClientesTango implements Busquedas,Facturar{
                 cli.setCondicionIva(rs.getString("TIPO_IVA"));
                 cli.setTelefono(rs.getString("TELEFONO_1"));
                 cli.setLocalidad(rs.getString("LOCALIDAD"));
+                cli.setCoeficienteListaDeprecios(rs.getDouble("coeficiente"));
+                cli.setSaldo(rs.getDouble("saldo"));
+                cli.setSaldoActual(rs.getDouble("saldo"));
                 //cli.setNumeroPedido(rs.getString(3));
                 //cli.setObservaciones(rs.getString(5));
                 System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());

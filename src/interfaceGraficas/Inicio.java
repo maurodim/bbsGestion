@@ -369,9 +369,9 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        Cajeables caj=new Cajas();
-        Cajas cajas=(Cajas)caj.ArquearCaja(caja);
-        System.out.println("SALDO DE CAJA "+cajas.getSaldoFinal());
+        //Cajeables caj=new Cajas();
+        //Cajas cajas=(Cajas)caj.ArquearCaja(caja);
+        //System.out.println("SALDO DE CAJA "+cajas.getSaldoFinal());
         CajaAbm arq=new CajaAbm();
         jDesktopPane1.add(arq);
         arq.setVisible(true);

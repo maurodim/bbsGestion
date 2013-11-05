@@ -31,10 +31,10 @@ public class Conecciones implements Transaccionable{
                 MysqlDataSource dataSource=new MysqlDataSource();
 		try{
 			//Class.forName(driver1).newInstance();
-                    dataSource.setUser("maurodim");//root
-                    dataSource.setDatabaseName("maurodim_lseriea");//bambugestion
-                    dataSource.setPassword("mau*2012");//""
-                    dataSource.setServerName("201.235.253.65");//localhost - 201.235.253.65
+                    dataSource.setUser("root");//maurodim
+                    dataSource.setDatabaseName("bbgestion");//maurodim_lseriea
+                    dataSource.setPassword("");//mau*2012
+                    dataSource.setServerName("localhost");//201.235.253.65
                     con=dataSource.getConnection();
                     st=con.createStatement();
                  }catch(Exception ex){
@@ -89,6 +89,7 @@ public class Conecciones implements Transaccionable{
             rs=st.getResultSet();
         } catch (SQLException ex) {
             Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("NO ENTRO LA CONECCION");
         }
         return rs;
     }

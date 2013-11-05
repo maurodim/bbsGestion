@@ -4,20 +4,71 @@
  */
 package interfaceGraficas;
 
+import Compras.FacturaProveedor;
+import Conversores.Numeros;
+import Sucursales.Cajas;
+import interfaces.Adeudable;
+import interfacesPrograma.Cajeables;
+import java.util.ArrayList;
 import java.util.Iterator;
 import objetos.Operaciones;
+import tablas.MiModeloTablaArticulos;
 
 /**
  *
  * @author mauro
  */
 public class CajaAbm extends javax.swing.JInternalFrame {
-
+    private static Double totalVentas;
+    private static Double totalGastos;
+    private static Double totalEfect;
+    private ArrayList listadoP;
+    private Integer operacionSelect=0;
     /**
      * Creates new form CajaAbm
      */
     public CajaAbm() {
+        Cajeables caj=new Cajas();
+        Inicio.caja=(Cajas) caj.ArquearCaja(Inicio.caja);
+        
         initComponents();
+        this.jLabel5.setText("Saldo Inicial de Caja:"+Inicio.caja.getSaldoInicial());
+        
+    }
+    private void AgregarRenglonTabla(){
+        this.jTable1.removeAll();
+        MiModeloTablaArticulos tablaCaja=new MiModeloTablaArticulos();
+        this.jPanel2.setVisible(false);
+        Iterator itC=Cajas.getListadoCajas().listIterator();
+        totalVentas=0.00;
+        totalGastos=0.00;
+        totalEfect=0.00;
+        Cajas cajj=new Cajas();
+        jTable1.setModel(tablaCaja);
+        tablaCaja.addColumn("COMPROBANTE");
+        tablaCaja.addColumn("MOVIMIENTO");
+        tablaCaja.addColumn("MONTO");
+        Object[] fila=new Object[3];
+        while(itC.hasNext()){
+            cajj=(Cajas)itC.next();
+            fila[0]=cajj.getNumeroDeComprobante();
+            fila[1]=cajj.getDescripcionMovimiento();
+            if(cajj.getTipoMovimiento()==1 || cajj.getTipoMovimiento()==7 || cajj.getTipoMovimiento()==13){
+            totalVentas=totalVentas + cajj.getMontoMovimiento();
+            }else{
+            if(cajj.getTipoMovimiento()==9){
+
+            }else{
+
+                totalGastos=totalGastos + cajj.getMontoMovimiento();
+            }
+        }
+
+            fila[2]=cajj.getMontoMovimiento();
+            tablaCaja.addRow(fila);
+        }
+        ModificarLabels();
+        
     }
 
     /**
@@ -43,7 +94,6 @@ public class CajaAbm extends javax.swing.JInternalFrame {
         jTextField2 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -55,17 +105,37 @@ public class CajaAbm extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("CAJA");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        MiModeloTablaArticulos tablaCaja=new MiModeloTablaArticulos();
+        this.jPanel2.setVisible(false);
+        Iterator itC=Cajas.getListadoCajas().listIterator();
+        totalVentas=0.00;
+        totalGastos=0.00;
+        totalEfect=0.00;
+        Cajas cajj=new Cajas();
+        tablaCaja.addColumn("COMPROBANTE");
+        tablaCaja.addColumn("MOVIMIENTO");
+        tablaCaja.addColumn("MONTO");
+        Object[] fila=new Object[3];
+        while(itC.hasNext()){
+            cajj=(Cajas)itC.next();
+            fila[0]=cajj.getNumeroDeComprobante();
+            fila[1]=cajj.getDescripcionMovimiento();
+            if(cajj.getTipoMovimiento()==1 || cajj.getTipoMovimiento()==7 || cajj.getTipoMovimiento()==13){
+                totalVentas=totalVentas + cajj.getMontoMovimiento();
+            }else{
+                if(cajj.getTipoMovimiento()==9){
+
+                }else{
+
+                    totalGastos=totalGastos + cajj.getMontoMovimiento();
+                }
             }
-        ));
+
+            fila[2]=cajj.getMontoMovimiento();
+            tablaCaja.addRow(fila);
+        }
+        ModificarLabels();
+        jTable1.setModel(tablaCaja);
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setText("Seleccione Operacion");
@@ -76,14 +146,45 @@ public class CajaAbm extends javax.swing.JInternalFrame {
             operaciones=(Operaciones)ilT.next();
             jComboBox1.addItem(operaciones.getDescripcion());
         }
+        jComboBox1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jComboBox1MouseClicked(evt);
+            }
+        });
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("jLabel2");
+
+        jComboBox2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox2ItemStateChanged(evt);
+            }
+        });
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("jLabel3");
 
         jLabel4.setText("jLabel4");
 
         jButton2.setText("Guardar Movimiento");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -93,10 +194,9 @@ public class CajaAbm extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -124,23 +224,15 @@ public class CajaAbm extends javax.swing.JInternalFrame {
                 .addContainerGap(152, Short.MAX_VALUE))
         );
 
-        jButton1.setText("GUARDAR");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 348, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addContainerGap(41, Short.MAX_VALUE))
+            .addGap(0, 75, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -177,7 +269,7 @@ public class CajaAbm extends javax.swing.JInternalFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         jLabel5.setText("Saldo Inicial de Caja:");
@@ -241,8 +333,148 @@ public class CajaAbm extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox1MouseClicked
+        //this.jPanel2.setVisible(true);
+    }//GEN-LAST:event_jComboBox1MouseClicked
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        
+        
+        //AgregarRenglonTabla();
+        //ModificarLabels();
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
+       
+    }//GEN-LAST:event_jComboBox2ItemStateChanged
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+         int posicion=this.jComboBox2.getSelectedIndex();
+        switch (operacionSelect){
+            case 11:
+                FacturaProveedor fact=new FacturaProveedor();
+                fact=(FacturaProveedor)listadoP.get(posicion);
+                this.jTextField1.setText(String.valueOf(fact.getMontoFinal()));
+                break;
+            case 13:
+                
+                break;
+            default:
+                
+                break;
+        }
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        this.jPanel2.setVisible(true);
+        int posicion=this.jComboBox1.getSelectedIndex();
+        Operaciones operaciones=(Operaciones)Inicio.caja.getListadoOperaciones().get(posicion);
+        switch(operaciones.getId()){
+            case 11:
+                ListarProveedores();
+                break;
+            case 13:
+                ListarClientes();
+                break;
+            default:
+                 Inicio.caja.setTipoMovimiento(operaciones.getId());  
+                 OtrosMovimientos();
+                break;
+        }
+        operacionSelect=operaciones.getId();
+        
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       Cajeables caj=new Cajas();
+       Double monto=0.00;
+        switch(operacionSelect){
+           case 11:
+               FacturaProveedor fact=new FacturaProveedor();
+               Adeudable ade=new FacturaProveedor();
+               fact=(FacturaProveedor)listadoP.get(this.jComboBox2.getSelectedIndex());
+               ade.PagarComprobante(fact);
+               listadoP.clear();
+               operacionSelect=0;
+               this.jPanel2.setVisible(false);
+                AgregarRenglonTabla();
+                //ModificarLabels();
+           case 13:
+               
+               break;
+           case 12:
+               monto=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField1.getText()));
+               Inicio.caja.setDescripcionMovimiento(this.jTextField2.getText());
+               Inicio.caja.setMontoMovimiento(monto);
+               
+               caj.NuevoGasto(Inicio.caja);
+               break;
+           case 4:
+               monto=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField1.getText()));
+               Inicio.caja.setMontoMovimiento(monto);
+               
+               caj.NuevoGasto(Inicio.caja);
+               break;
+           case 7:
+               monto=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField1.getText()));
+               Inicio.caja.setMontoMovimiento(monto);
+               
+               caj.NuevoMovimiento(Inicio.caja);
+               break;
+           case 9:
+               monto=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField1.getText()));
+               Inicio.caja.setMontoMovimiento(monto);
+               
+               caj.NuevoMovimiento(Inicio.caja);
+               break;
+       }
+        AgregarRenglonTabla();
+    }//GEN-LAST:event_jButton2ActionPerformed
+    private void ModificarLabels(){
+        this.jLabel6.setText("T. INGRESOS "+totalVentas);
+    this.jLabel7.setText("T. EGRESOS "+totalGastos);
+    totalEfect=Inicio.caja.getSaldoInicial()+totalVentas + totalGastos;
+    this.jLabel8.setText("T. EFECT EN CAJA "+totalEfect);
+    }
+    private void ListarProveedores(){
+        FacturaProveedor fact=new FacturaProveedor();
+        listadoP=new ArrayList();
+        Adeudable ade=new FacturaProveedor();
+        listadoP=ade.ListarAPagar();
+        Iterator ilP=listadoP.listIterator();
+        while(ilP.hasNext()){
+            fact=(FacturaProveedor)ilP.next();
+            this.jComboBox2.addItem(fact.getNombreProveedor());
+        }
+        this.jLabel2.setText("Seleccione Proveedor");
+        this.jLabel3.setText("Monto Adeudado");
+        this.jButton2.setText("PAGAR");
+        this.jLabel4.setVisible(false);
+        this.jTextField2.setVisible(false);
+    }
+    private void ListarClientes(){
+        
+    }
+    private void OtrosMovimientos(){
+        this.jLabel2.setVisible(false);
+        this.jComboBox2.setVisible(false);
+        this.jLabel3.setText("MONTO");
+        if(operacionSelect==12){
+        this.jLabel4.setText("MOTIVO");
+        this.jLabel4.setVisible(true);
+        this.jTextField2.setVisible(true);
+        }else{
+            this.jLabel4.setVisible(false);
+            this.jTextField2.setVisible(false);
+        }
+        
+        this.jButton2.setText("GUARDAR MOVIMIENTO");
+        this.jTextField1.requestFocus();
+        
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;

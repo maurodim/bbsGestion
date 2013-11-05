@@ -21,4 +21,5 @@ public interface Cajeables {
     public Object ArquearCaja(Object caja);
     public Boolean VerificarCaja(int numeroDeUsuario,int numeroDeSucursal,String fecha);
     public Object CargarCaja(int numeroDeUsuario, int numeroDeSucursal, String fecha);
+    public Object NuevoGasto(Object factura);
 }

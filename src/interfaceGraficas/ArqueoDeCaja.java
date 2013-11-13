@@ -4,6 +4,7 @@
  */
 package interfaceGraficas;
 
+import Conversores.Numeros;
 import Sucursales.Cajas;
 import interfacesPrograma.Cajeables;
 
@@ -112,7 +113,7 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
 
         jTextField10.setText("jTextField1");
 
-        jButton1.setText("Calcular");
+        jButton1.setText("Cerrar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -129,7 +130,7 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField6))
+                        .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -218,7 +219,7 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
                     .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(jButton1)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         jLabel11.setText("jLabel11");
@@ -318,52 +319,52 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         Double diferencia=0.00;
         
         //0.10
-        totalBilletes=Double.parseDouble(this.jTextField1.getText());
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField1.getText()));
         totalBilletes=totalBilletes * 0.10;
         total=total + totalBilletes;
         totalBilletes=0.00;
         //0.25
-        totalBilletes=Double.parseDouble(this.jTextField2.getText());
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField2.getText()));
         totalBilletes=totalBilletes * 0.25;
         total=total + totalBilletes;
         totalBilletes=0.00;
         //0.50
-        totalBilletes=Double.parseDouble(this.jTextField3.getText());
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField3.getText()));
         totalBilletes=totalBilletes * 0.50;
         total=total + totalBilletes;
         totalBilletes=0.00;
         //$1
-        totalBilletes=Double.parseDouble(this.jTextField4.getText());
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField4.getText()));
         totalBilletes=totalBilletes * 1;
         total=total + totalBilletes;
         totalBilletes=0.00;
         //$2
-        totalBilletes=Double.parseDouble(this.jTextField5.getText());
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField5.getText()));
         totalBilletes=totalBilletes * 2;
         total=total + totalBilletes;
         totalBilletes=0.00;
         //$5
-        totalBilletes=Double.parseDouble(this.jTextField6.getText());
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField6.getText()));
         totalBilletes=totalBilletes * 5;
         total=total + totalBilletes;
         totalBilletes=0.00;
         //$10
-        totalBilletes=Double.parseDouble(this.jTextField7.getText());
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField7.getText()));
         totalBilletes=totalBilletes * 10;
         total=total + totalBilletes;
         totalBilletes=0.00;
         //$20
-        totalBilletes=Double.parseDouble(this.jTextField8.getText());
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField8.getText()));
         totalBilletes=totalBilletes * 20;
         total=total + totalBilletes;
         totalBilletes=0.00;
         //$50
-        totalBilletes=Double.parseDouble(this.jTextField9.getText());
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField9.getText()));
         totalBilletes=totalBilletes * 50;
         total=total + totalBilletes;
         totalBilletes=0.00;
         //$100
-        totalBilletes=Double.parseDouble(this.jTextField10.getText());
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField10.getText()));
         totalBilletes=totalBilletes * 100;
         total=total + totalBilletes;
         totalBilletes=0.00;
@@ -374,6 +375,7 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         cajas=(Cajas)caj.ArquearCaja(Inicio.sucursal.getCaja());
         Double totalMovimientos=(Double)cajas.getSaldoFinal();
         diferencia=saldoFinal - totalMovimientos;
+        cajas.setMontoMovimiento(diferencia);
         this.jPanel2.setVisible(true);
         this.jLabel11.setText("TOTAL CAJA :"+total);
         this.jLabel12.setText("SALDO INICIAL :"+saldoInicial);

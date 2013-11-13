@@ -6,6 +6,10 @@ package objetos;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import interfaces.Transaccionable;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,7 +44,7 @@ public class Conecciones implements Transaccionable{
                  }catch(Exception ex){
                     
                 String cod1=String.valueOf(ex);
-                
+                        
 			System.out.println("NO SE PUDO CONECTAR A LA BASE "+ex);
 		}
 
@@ -59,6 +63,25 @@ public class Conecciones implements Transaccionable{
             Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println(ex);
             coneccion=false;
+            FileWriter fichero=null;
+            PrintWriter pw=null;
+            try {
+                fichero = new FileWriter("C:\\Gestion\\erroresDeConeccion.txt",true);
+                pw=new PrintWriter(fichero);
+                pw.println(sql);
+            } catch (IOException ex1) {
+                Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex1);
+            }finally{
+                         try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero)
+              fichero.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+            }
+            
         }
         return coneccion;
     }

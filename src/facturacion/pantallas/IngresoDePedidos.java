@@ -551,6 +551,8 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         this.jList1.removeAll();
         listadoDeBusqueda.clear();
         cargarLista(listadoDeBusqueda);
+        cliT=new ClientesTango("999999");
+        this.jLabel6.setText(cliT.getRazonSocial());
         this.jTextField2.setText("");
         jTextField1.setText("");
         jTextField1.requestFocus();

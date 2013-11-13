@@ -274,9 +274,7 @@ public class Articulos implements Facturar,Editables{
         
     }
     public static void RecargarMap(){
-        listadoBarr.clear();
-        listadoNom.clear();
-        listadoCodigo.clear();
+        
         System.out.println(" CANTIDAD MAP "+listadoBarr.size());
         // ACA SE CARGA EL MAP PARA TENER ACCESO A LOS ARTICULOS SIN ESTAR CONECTADO , LA CLAVE EL CODIGO DE BARRA
         Transaccionable tra=new Conecciones();
@@ -285,6 +283,9 @@ public class Articulos implements Facturar,Editables{
         String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0";
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         try {
+            listadoBarr.clear();
+             listadoNom.clear();
+             listadoCodigo.clear();
             while(rr.next()){
                 articulo=new Articulos();
                 articulo.setCodigoAsignado(rr.getString("ID"));

@@ -148,7 +148,11 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
 
         jLabel2.setText("LISTA DE PRECIO ASIGNADA :");
 
+        jTextField2.setEnabled(false);
+
         jLabel3.setText("DESCUENTO");
+
+        jTextField3.setEnabled(false);
 
         jButton3.setText("FACTURACION");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -158,6 +162,8 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
         });
 
         jLabel4.setText("CONDICION DE VENTA");
+
+        jTextField4.setEnabled(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -220,7 +226,7 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();

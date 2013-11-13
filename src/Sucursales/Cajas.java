@@ -32,12 +32,76 @@ public class Cajas extends Sucursales implements Cajeables{
     private Comprobantes comprobante;
     private Double cambioEnCaja;
     private Double saldoFinal;
+    private Double totalVentas;
+    private Double totalGastos;
+    private Double transferenciaACaja;
+    private Double diferencia;
+    private Boolean reandida;
+    private Boolean estado;
+    private Integer tipo;
     private static ArrayList listBilletes=new ArrayList();
     private static ArrayList listadoOperaciones=new ArrayList();
     private static ArrayList listOperaciones=new ArrayList();
     private static ArrayList listadoCajas=new ArrayList();
     private String descripcionMovimiento;
+
+    public Integer getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
+    }
+
+    public Double getTotalVentas() {
+        return totalVentas;
+    }
+
+    public void setTotalVentas(Double totalVentas) {
+        this.totalVentas = totalVentas;
+    }
+
+    public Double getTotalGastos() {
+        return totalGastos;
+    }
+
+    public void setTotalGastos(Double totalGastos) {
+        this.totalGastos = totalGastos;
+    }
+
+    public Double getTransferenciaACaja() {
+        return transferenciaACaja;
+    }
+
+    public void setTransferenciaACaja(Double transferenciaACaja) {
+        this.transferenciaACaja = transferenciaACaja;
+    }
+
+    public Double getDiferencia() {
+        return diferencia;
+    }
+
+    public void setDiferencia(Double diferencia) {
+        this.diferencia = diferencia;
+    }
+
+    public Boolean getReandida() {
+        return reandida;
+    }
+
+    public void setReandida(Boolean reandida) {
+        this.reandida = reandida;
+    }
+
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
    
+    
 
     public String getDescripcionMovimiento() {
         return descripcionMovimiento;
@@ -97,6 +161,7 @@ public class Cajas extends Sucursales implements Cajeables{
         this.numeroDeComprobante = numeroDeComprobante;
         this.tipoDeComprobante = tipoDeComprobante;
         this.montoMovimiento = montoMovimiento;
+        this.tipo=0;
        if(listBilletes.size()==0){
             Billetes.cargarLista();
             listBilletes=Billetes.getListadoBill();
@@ -108,7 +173,9 @@ public class Cajas extends Sucursales implements Cajeables{
         if(listOperaciones.size()==0){
         Operaciones.cargarArray();
         listOperaciones=Operaciones.getListOp();
-        }    }
+        }
+        LeerCajaAdministradora();
+    }
 
     public Cajas() {
 
@@ -129,6 +196,8 @@ public class Cajas extends Sucursales implements Cajeables{
         this.numeroDeComprobante=0;
         this.tipoDeComprobante=0;
         this.tipoMovimiento=0;
+        this.tipo=0;
+        LeerCajaAdministradora();
     }
 
     public Cajas(int numero) {
@@ -146,6 +215,8 @@ public class Cajas extends Sucursales implements Cajeables{
         Operaciones.cargarArray();
         listOperaciones=Operaciones.getListOp();
         }
+        this.tipo=0;
+        LeerCajaAdministradora();
     }
 
     public int getNumero() {
@@ -203,13 +274,32 @@ public class Cajas extends Sucursales implements Cajeables{
     public void setMontoMovimiento(Double montoMovimiento) {
         this.montoMovimiento = montoMovimiento;
     }
+    public void LeerCajaAdministradora(){
+        String sql="select caja.numero from caja where tipo=1 and estado=0";
+        Transaccionable tra=new Conecciones();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+            Inicio.numeroCajaAdministradora=rs.getInt("numero");
+                
+            }
+            System.out.println("CAJA ADMINISTRADORAAAAAAAAAA "+Inicio.numeroCajaAdministradora);
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @Override
     public Object AbrirCaja(Object caja) {
         if(listadoCajas.size() > 0)listadoCajas.clear();
         //listadoCajas.clear();
         Cajas cajaNueva=(Cajas) caja;
-        String sql="insert into caja (numeroSucursal,numeroUsuario,tipoMovimiento,saldoInicial) values ("+Inicio.sucursal.getNumero()+","+Inicio.usuario.getNumero()+",9,"+cajaNueva.saldoInicial+")";
+        Integer tipo=0;
+        if(Inicio.usuario.getNivelDeAutorizacion()==1){
+            tipo=1;
+        }
+        String sql="insert into caja (numeroSucursal,numeroUsuario,tipoMovimiento,saldoInicial,tipo) values ("+Inicio.sucursal.getNumero()+","+Inicio.usuario.getNumero()+",9,"+cajaNueva.saldoInicial+",tipo="+tipo+")";
         Transaccionable tra=new Conecciones();
         tra.guardarRegistro(sql);
         sql="select LAST_INSERT_ID()";
@@ -222,7 +312,7 @@ public class Cajas extends Sucursales implements Cajeables{
             rs.close();
             sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,monto,tipoMovimiento,idCaja) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+cajaNueva.getSaldoInicial()+",9,"+cajaNueva.getNumero()+")";
             tra.guardarRegistro(sql);
-            int pos=cajaNueva.getTipoMovimiento() -1;
+            int pos=cajaNueva.getTipoMovimiento();
             Operaciones operacion=(Operaciones)listOperaciones.get(pos);
             String desc=operacion.getDescripcion();
             cajaNueva.setDescripcionMovimiento(desc);
@@ -235,7 +325,16 @@ public class Cajas extends Sucursales implements Cajeables{
 
     @Override
     public Boolean CerrarCaja(Object caja) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Cajas cajj=(Cajas)caja;
+        Boolean verif=false;
+        //String sql="insert into"cajj.getSaldoFinal()
+        String sql="update caja set saldoFinal="+cajj.getSaldoFinal()+",totalVentas="+cajj.getTotalVentas()+",totalGastos="+cajj.getTotalGastos()+", transfACaja="+cajj.getTransferenciaACaja()+",diferencia="+cajj.getDiferencia()+",estado=1,fechaCierre='"+Inicio.fechaVal+"' where numero="+cajj.getNumero();
+        Transaccionable tra=new Conecciones();
+        verif=tra.guardarRegistro(sql);
+        //tipoMovimiento 10
+        sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+cajj.getNumeroDeComprobante()+","+cajj.getTipoDeComprobante()+","+cajj.getMontoMovimiento()+",10,"+Inicio.numeroCajaAdministradora+",0,0,1)";
+        verif=tra.guardarRegistro(sql);
+        return verif;
     }
 
     @Override
@@ -302,7 +401,7 @@ public class Cajas extends Sucursales implements Cajeables{
     @Override
     public Boolean VerificarCaja(int numeroDeUsuario, int numeroDeSucursal, String fecha) {
         Boolean verifi=false;
-        String sql="select * from caja where numeroUsuario ="+numeroDeUsuario+" and numeroSucursal="+numeroDeSucursal+" and fecha like '"+fecha+"%'";
+        String sql="select * from caja where numeroUsuario ="+numeroDeUsuario+" and numeroSucursal="+numeroDeSucursal+" and estado=0";
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {

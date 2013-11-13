@@ -38,6 +38,7 @@ public class Inicio extends javax.swing.JFrame {
     public static Cajas caja;
     public static String fechaDia;
     public static Date fechaVal;
+    public static Integer numeroCajaAdministradora=0;
     
 
     public void setNiv(Integer nive) {
@@ -109,6 +110,7 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
         jMenuItem18 = new javax.swing.JMenuItem();
+        jMenuItem19 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -121,6 +123,9 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem15 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem16 = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        jMenuItem20 = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SISITEMA DE GESTION BAMBU SOFTWARE");
@@ -219,6 +224,9 @@ public class Inicio extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem18);
 
+        jMenuItem19.setText("Administracion Stock Por Deposito");
+        jMenu2.add(jMenuItem19);
+
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Caja");
@@ -302,6 +310,21 @@ public class Inicio extends javax.swing.JFrame {
         jMenu5.add(jMenuItem16);
 
         jMenuBar1.add(jMenu5);
+
+        jMenu6.setText("Clientes");
+
+        jMenuItem20.setText("Modificacion de clientes");
+        jMenuItem20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem20ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem20);
+
+        jMenuBar1.add(jMenu6);
+
+        jMenu7.setText("Gastos Fijos");
+        jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
 
@@ -466,7 +489,7 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        CajaAbm cajaA=new CajaAbm();
+        ArqueoDeCaja cajaA=new ArqueoDeCaja();
         jDesktopPane1.add(cajaA);
         cajaA.setTitle("CIERRE DE CAJA");
         cajaA.setVisible(true);
@@ -479,6 +502,13 @@ public class Inicio extends javax.swing.JFrame {
         nuevoRemito.setVisible(true);
         nuevoRemito.toFront();
     }//GEN-LAST:event_jMenuItem17ActionPerformed
+
+    private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
+        AbmClientes clie=new AbmClientes();
+        jDesktopPane1.add(clie);
+        clie.setVisible(true);
+        clie.toFront();
+    }//GEN-LAST:event_jMenuItem20ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -542,6 +572,8 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     public static javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
@@ -553,7 +585,9 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem18;
+    private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem20;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

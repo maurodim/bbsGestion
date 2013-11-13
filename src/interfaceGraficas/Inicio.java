@@ -415,6 +415,8 @@ public class Inicio extends javax.swing.JFrame {
        jMenu3.setEnabled(Inicio.usuario.getMenu().getMenu3());
        jMenu4.setEnabled(Inicio.usuario.getMenu().getMenu4());
        jMenu5.setEnabled(Inicio.usuario.getMenu().getMenu5());
+       jMenu6.setEnabled(Inicio.usuario.getMenu().getMenu6());
+       jMenu7.setEnabled(Inicio.usuario.getMenu().getMenu7());
               this.jMenuItem2.setEnabled(true);
        Cajeables caj=new Cajas();
        if(caj.VerificarCaja(usuario.getNumero(),sucursal.getNumero(),fechaDia)){

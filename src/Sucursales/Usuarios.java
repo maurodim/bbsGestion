@@ -141,7 +141,7 @@ public class Usuarios extends TipoAcceso{
         ArrayList listadoUsuarios=new ArrayList();
         try {
             
-            String sql="select *,(select tipoacceso.menu1 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu1,(select tipoacceso.menu2 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu2,(select tipoacceso.menu3 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu3,(select tipoacceso.menu4 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu4,(select tipoacceso.menu5 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu5 from usuarios";
+            String sql="select *,(select tipoacceso.menu1 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu1,(select tipoacceso.menu2 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu2,(select tipoacceso.menu3 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu3,(select tipoacceso.menu4 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu4,(select tipoacceso.menu5 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu5,(select tipoacceso.menu6 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu6,(select tipoacceso.menu7 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu7 from usuarios";
             String sql1="";
             Usuarios us=null;
             Transaccionable traUs=new Conecciones();
@@ -160,7 +160,7 @@ public class Usuarios extends TipoAcceso{
                 us.setNivel(rr.getInt("autorizacion"));
                 us.setNivelDeAutorizacion(rr.getInt("autorizacion"));
                 System.err.println("USUARIOS "+us.nombre);
-                us.setMenu(new Menus(rr.getBoolean("menu1"),rr.getBoolean("menu2"),rr.getBoolean("menu3"),rr.getBoolean("menu4"),rr.getBoolean("menu5")));
+                us.setMenu(new Menus(rr.getBoolean("menu1"),rr.getBoolean("menu2"),rr.getBoolean("menu3"),rr.getBoolean("menu4"),rr.getBoolean("menu5"),rr.getBoolean("menu6"),rr.getBoolean("menu7")));
                 listadoUsuarios.add(us);
                 
             }
@@ -186,7 +186,7 @@ public class Usuarios extends TipoAcceso{
     public Object validarClave(String usuario, String clave) {
         Transaccionable tra=new Conecciones();
         Usuarios usu=null;
-        String sql="select *,(select tipoacceso.menu1 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu1,(select tipoacceso.menu2 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu2,(select tipoacceso.menu3 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu3,(select tipoacceso.menu4 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu4,(select tipoacceso.menu5 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu5 from usuarios where nombreUsuario like '"+usuario+"' and clave like '"+clave+"'";
+        String sql="select *,(select tipoacceso.menu1 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu1,(select tipoacceso.menu2 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu2,(select tipoacceso.menu3 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu3,(select tipoacceso.menu4 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu4,(select tipoacceso.menu5 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu5,(select tipoacceso.menu6 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu6,(select tipoacceso.menu7 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu7 from usuarios where nombreUsuario like '"+usuario+"' and clave like '"+clave+"'";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
        
         
@@ -199,7 +199,7 @@ public class Usuarios extends TipoAcceso{
             usu.setNumeroId(rs.getInt("numero"));
             usu.setSucursal(new Sucursales(rs.getInt("sucursal")));
             
-                    usu.setMenu(new Menus(rs.getBoolean("menu1"),rs.getBoolean("menu2"),rs.getBoolean("menu3"),rs.getBoolean("menu4"),rs.getBoolean("menu5")));                    
+                    usu.setMenu(new Menus(rs.getBoolean("menu1"),rs.getBoolean("menu2"),rs.getBoolean("menu3"),rs.getBoolean("menu4"),rs.getBoolean("menu5"),rs.getBoolean("menu6"),rs.getBoolean("menu7")));                    
                
             }
             rs.close();
@@ -228,7 +228,7 @@ public class Usuarios extends TipoAcceso{
     public Object cargarUsuario(Integer numeroUsuario) {
         Transaccionable tra=new Conecciones();
         Usuarios usu=null;
-        String sql="select *,(select tipoacceso.menu1 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu1,(select tipoacceso.menu2 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu2,(select tipoacceso.menu3 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu3,(select tipoacceso.menu4 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu4,(select tipoacceso.menu5 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu5 from usuarios where numero="+numeroUsuario;
+        String sql="select *,(select tipoacceso.menu1 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu1,(select tipoacceso.menu2 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu2,(select tipoacceso.menu3 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu3,(select tipoacceso.menu4 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu4,(select tipoacceso.menu5 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu5,(select tipoacceso.menu6 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu6,(select tipoacceso.menu7 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu7 from usuarios where numero="+numeroUsuario;
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
        
         
@@ -245,7 +245,7 @@ public class Usuarios extends TipoAcceso{
             usu.setSucursal(new Sucursales(rs.getInt("sucursal")));
            
             
-                    usu.setMenu(new Menus(rs.getBoolean("menu1"),rs.getBoolean("menu2"),rs.getBoolean("menu3"),rs.getBoolean("menu4"),rs.getBoolean("menu5")));                    
+                    usu.setMenu(new Menus(rs.getBoolean("menu1"),rs.getBoolean("menu2"),rs.getBoolean("menu3"),rs.getBoolean("menu4"),rs.getBoolean("menu5"),rs.getBoolean("menu6"),rs.getBoolean("menu7")));                    
                
             }
             rs.close();

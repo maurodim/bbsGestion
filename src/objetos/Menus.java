@@ -14,14 +14,27 @@ public class Menus {
     private Boolean menu3;
     private Boolean menu4;
     private Boolean menu5;
+    private Boolean menu6;
+    private Boolean menu7;
 
-    public Menus(Boolean menu1, Boolean menu2, Boolean menu3, Boolean menu4,Boolean menu5) {
+    public Menus(Boolean menu1, Boolean menu2, Boolean menu3, Boolean menu4, Boolean menu5, Boolean menu6, Boolean menu7) {
         this.menu1 = menu1;
         this.menu2 = menu2;
         this.menu3 = menu3;
         this.menu4 = menu4;
-        this.menu5=menu5;
+        this.menu5 = menu5;
+        this.menu6 = menu6;
+        this.menu7 = menu7;
     }
+
+    public Boolean getMenu6() {
+        return menu6;
+    }
+
+    public Boolean getMenu7() {
+        return menu7;
+    }
+    
 
     public Boolean getMenu5() {
         return menu5;

@@ -47,6 +47,7 @@ public class BbsGestion {
          // Apertura del fichero y creacion de BufferedReader para poder
          // hacer una lectura comoda (disponer del metodo readLine()).
          archivo = new File ("C:\\Gestion\\erroresDeConeccion.txt");
+         if(archivo.exists()){
          fr = new FileReader (archivo);
          br = new BufferedReader(fr);
  
@@ -58,6 +59,7 @@ public class BbsGestion {
            
             if(tra.guardarRegistro(linea));
       }
+        }
       catch(Exception e){
          e.printStackTrace();
       }finally{

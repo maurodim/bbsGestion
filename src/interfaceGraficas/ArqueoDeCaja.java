@@ -7,6 +7,7 @@ package interfaceGraficas;
 import Conversores.Numeros;
 import Sucursales.Cajas;
 import interfacesPrograma.Cajeables;
+import java.awt.event.KeyEvent;
 
 /**
  *
@@ -79,15 +80,37 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
 
         jLabel1.setText("cantidad 0,10");
 
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
+
         jLabel2.setText("cantidad 0,25");
 
         jLabel3.setText("cantidad 0,50");
 
         jLabel4.setText("cantidad 1");
 
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField2KeyPressed(evt);
+            }
+        });
+
         jTextField3.setText("jTextField1");
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField3KeyPressed(evt);
+            }
+        });
 
         jTextField4.setText("jTextField1");
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField4KeyPressed(evt);
+            }
+        });
 
         jLabel5.setText("cantidad 5");
 
@@ -102,16 +125,46 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         jLabel10.setText("cantidad 100");
 
         jTextField5.setText("jTextField1");
+        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField5KeyPressed(evt);
+            }
+        });
 
         jTextField6.setText("jTextField1");
+        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField6KeyPressed(evt);
+            }
+        });
 
         jTextField7.setText("jTextField1");
+        jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField7KeyPressed(evt);
+            }
+        });
 
         jTextField8.setText("jTextField1");
+        jTextField8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField8KeyPressed(evt);
+            }
+        });
 
         jTextField9.setText("jTextField1");
+        jTextField9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField9KeyPressed(evt);
+            }
+        });
 
         jTextField10.setText("jTextField1");
+        jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField10KeyPressed(evt);
+            }
+        });
 
         jButton1.setText("Cerrar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -219,7 +272,7 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
                     .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(jButton1)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         jLabel11.setText("jLabel11");
@@ -382,6 +435,75 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         this.jLabel14.setText("VENTA TOTAL :"+totalMovimientos);
         this.jLabel13.setText("SALDO CAJA :"+diferencia);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            this.jTextField2.selectAll();
+            this.jTextField2.requestFocus();
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
+         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            this.jTextField3.selectAll();
+            this.jTextField3.requestFocus();
+        }
+    }//GEN-LAST:event_jTextField2KeyPressed
+
+    private void jTextField3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyPressed
+         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            this.jTextField4.selectAll();
+            this.jTextField4.requestFocus();
+        }
+    }//GEN-LAST:event_jTextField3KeyPressed
+
+    private void jTextField4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyPressed
+         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            this.jTextField5.selectAll();
+            this.jTextField5.requestFocus();
+        }
+    }//GEN-LAST:event_jTextField4KeyPressed
+
+    private void jTextField5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyPressed
+         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            this.jTextField6.selectAll();
+            this.jTextField6.requestFocus();
+        }
+    }//GEN-LAST:event_jTextField5KeyPressed
+
+    private void jTextField6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyPressed
+         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            this.jTextField7.selectAll();
+            this.jTextField7.requestFocus();
+        }
+    }//GEN-LAST:event_jTextField6KeyPressed
+
+    private void jTextField7KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyPressed
+         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            this.jTextField8.selectAll();
+            this.jTextField8.requestFocus();
+        }
+    }//GEN-LAST:event_jTextField7KeyPressed
+
+    private void jTextField8KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField8KeyPressed
+         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            this.jTextField9.selectAll();
+            this.jTextField9.requestFocus();
+        }
+    }//GEN-LAST:event_jTextField8KeyPressed
+
+    private void jTextField9KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyPressed
+         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            this.jTextField10.selectAll();
+            this.jTextField10.requestFocus();
+        }
+    }//GEN-LAST:event_jTextField9KeyPressed
+
+    private void jTextField10KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyPressed
+         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+           
+        }
+    }//GEN-LAST:event_jTextField10KeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

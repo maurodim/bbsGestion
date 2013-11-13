@@ -274,6 +274,27 @@ public class Cajas extends Sucursales implements Cajeables{
     public void setMontoMovimiento(Double montoMovimiento) {
         this.montoMovimiento = montoMovimiento;
     }
+    private Integer NumeroDeComprobanteActivoMovCaja(){
+        Integer numeroAct=0;
+        String sql="select tipocomprobantes.numeroActivo from tipocomprobantes where numero=12";
+        Transaccionable tra=new Conecciones();
+        ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rr.next()){
+                numeroAct=rr.getInt("numeroActivo");
+                
+                
+            }
+            rr.close();
+            numeroAct++;
+        } catch (SQLException ex) {
+            Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        sql="update tipocomprobantes set numeroActivo="+numeroAct+" where numero=12";
+        if(tra.guardarRegistro(sql))System.err.println(sql);
+        return numeroAct;
+    }
+    
     public void LeerCajaAdministradora(){
         String sql="select caja.numero from caja where tipo=1 and estado=0";
         Transaccionable tra=new Conecciones();
@@ -299,7 +320,7 @@ public class Cajas extends Sucursales implements Cajeables{
         if(Inicio.usuario.getNivelDeAutorizacion()==1){
             tipo=1;
         }
-        String sql="insert into caja (numeroSucursal,numeroUsuario,tipoMovimiento,saldoInicial,tipo) values ("+Inicio.sucursal.getNumero()+","+Inicio.usuario.getNumero()+",9,"+cajaNueva.saldoInicial+",tipo="+tipo+")";
+        String sql="insert into caja (numeroSucursal,numeroUsuario,tipoMovimiento,saldoInicial,tipo) values ("+Inicio.sucursal.getNumero()+","+Inicio.usuario.getNumero()+",9,"+cajaNueva.saldoInicial+","+tipo+")";
         Transaccionable tra=new Conecciones();
         tra.guardarRegistro(sql);
         sql="select LAST_INSERT_ID()";
@@ -348,6 +369,10 @@ public class Cajas extends Sucursales implements Cajeables{
         Boolean ch=false;
         listadoCajas.add(caj);
         System.err.println(Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+caj.getNumeroDeComprobante()+","+caj.getTipoDeComprobante()+","+caj.getMontoMovimiento()+","+caj.getTipoMovimiento()+","+caj.getNumero()+",0,");
+        Integer num=caj.getNumeroDeComprobante();
+        if(num==0){
+            caj.setNumeroDeComprobante(NumeroDeComprobanteActivoMovCaja());
+        }
         String sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+caj.getNumeroDeComprobante()+","+caj.getTipoDeComprobante()+","+caj.getMontoMovimiento()+","+caj.getTipoMovimiento()+","+caj.getNumero()+",0,0,1)";
         Transaccionable tra=new Conecciones();
         ch=tra.guardarRegistro(sql);
@@ -420,7 +445,7 @@ public class Cajas extends Sucursales implements Cajeables{
     @Override
     public Object CargarCaja(int numeroDeUsuario, int numeroDeSucursal, String fecha) {
         Cajas cajas=new Cajas();
-        String sql="select * from caja where numeroUsuario ="+numeroDeUsuario+" and numeroSucursal="+numeroDeSucursal+" and fecha like '"+fecha+"%'";
+        String sql="select * from caja where numeroUsuario ="+numeroDeUsuario+" and numeroSucursal="+numeroDeSucursal+" and estado=0";
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -440,7 +465,12 @@ public class Cajas extends Sucursales implements Cajeables{
     public Object NuevoGasto(Object factura) {
        Cajas caj=(Cajas)factura;
         //Boolean ch=false;
+       Integer num=caj.getNumeroDeComprobante();
+        if(num==0){
+            caj.setNumeroDeComprobante(NumeroDeComprobanteActivoMovCaja());
+        }
         listadoCajas.add(caj);
+        
         Double monto=caj.getMontoMovimiento() * (-1);
         String sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado,observaciones) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+caj.getNumeroDeComprobante()+","+caj.getTipoDeComprobante()+","+monto+","+caj.getTipoMovimiento()+","+caj.getNumero()+",0,2,0,'"+caj.getDescripcionMovimiento()+"')";
         Transaccionable tra=new Conecciones();

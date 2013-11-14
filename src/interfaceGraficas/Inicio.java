@@ -8,12 +8,18 @@ import Actualizaciones.Actualiza;
 import Compras.Proveedores;
 import Depositos.Depositos;
 import Sucursales.Cajas;
+import Sucursales.ListasDePrecios;
 import Sucursales.Sucursales;
 import Sucursales.Usuarios;
+import facturacion.clientes.ClientesTango;
 import facturacion.pantallas.IngresoDePedidos;
 import interfacesPrograma.Cajeables;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,6 +28,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import objetos.Articulos;
@@ -39,7 +47,7 @@ public class Inicio extends javax.swing.JFrame {
     public static String fechaDia;
     public static Date fechaVal;
     public static Integer numeroCajaAdministradora=0;
-    
+    private BufferedImage img;
 
     public void setNiv(Integer nive) {
         niv = nive;
@@ -76,6 +84,8 @@ public class Inicio extends javax.swing.JFrame {
         }
         Articulos.CargarMap();
         Proveedores.cargarListadoProv();
+        ClientesTango.cargarMap();
+        ListasDePrecios.cargarMap();
         initComponents();
         
         Actualiza actu=new Actualiza();
@@ -97,7 +107,24 @@ public class Inicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDesktopPane1 = new javax.swing.JDesktopPane();
+        try {
+            img = ImageIO.read(new URL("http://www.maurodi.net/imagenes/saynomore.jpg"));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        jDesktopPane1 = new javax.swing.JDesktopPane(){
+            @Override
+            protected void paintComponent(Graphics grphcs) {
+                super.paintComponent(grphcs);
+                grphcs.drawImage(img, 0, 0, null);
+            }
+
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(800,600);
+            }
+
+        };
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();

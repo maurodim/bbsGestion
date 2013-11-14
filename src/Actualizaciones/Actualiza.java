@@ -5,6 +5,8 @@
 package Actualizaciones;
 
 import Compras.Proveedores;
+import Sucursales.ListasDePrecios;
+import facturacion.clientes.ClientesTango;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
@@ -27,6 +29,8 @@ public class Actualiza extends Thread{
         //at.start();
         Articulos.RecargarMap();
         Proveedores.cargarListadoProv();
+        ClientesTango.cargarMap();
+        ListasDePrecios.cargarMap();
      } 
 }); 
         timer.start();

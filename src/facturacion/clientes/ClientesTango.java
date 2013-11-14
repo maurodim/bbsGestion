@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.Conecciones;
@@ -50,6 +52,10 @@ public class ClientesTango implements Busquedas,Facturar{
         private Integer codigoId;
         private Double cupoDeCredito;
         private Double saldoActual;
+        private static Hashtable listadoClientes=new Hashtable();
+        private static Hashtable listadoPorNom=new Hashtable();
+        
+        
         
 
     public Double getCupoDeCredito() {
@@ -76,43 +82,79 @@ public class ClientesTango implements Busquedas,Facturar{
     public void setCodigoId(Integer codigoId) {
         this.codigoId = codigoId;
     }
-        
+    public static void cargarMap(){
+              
+            
+            Transaccionable tra=new Conecciones();
+            String sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo from listcli";
+            System.out.println("CLIENTES "+sql);
+            //String sql="select pedidos_carga1.COD_CLIENT,pedidos_carga1.RAZON_SOC,pedidos_carga1.NRO_PEDIDO,pedidos_carga1.numero,pedidos_carga1.LEYENDA_2 from pedidos_carga1 where RAZON_SOC like '"+cliente+"%' group by COD_CLIENT order by RAZON_SOC";
+            ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+            try{
+                listadoClientes.clear();
+                listadoPorNom.clear();
+                String codigo="";
+                String nombre="";
+            while(rs.next()){               
+                ClientesTango cli=new ClientesTango();
+                cli.setCodigoId(rs.getInt("codMMd"));
+                cli.setCodigoCliente(rs.getString("COD_CLIENT"));
+                cli.setRazonSocial(rs.getString("RAZON_SOCI"));
+                cli.setDireccion(rs.getString("DOMICILIO"));
+                cli.setCondicionDeVenta(rs.getInt("COND_VTA"));
+                cli.setListaDePrecios(rs.getInt("NRO_LISTA"));
+                Double descuento=Double.parseDouble(rs.getString("PORC_DESC"));
+                
+                cli.setDescuento(descuento);
+                cli.setNumeroDeCuit(rs.getString("IDENTIFTRI"));
+                cli.setEmpresa(rs.getString("empresa"));
+                cli.setCondicionIva(rs.getString("TIPO_IVA"));
+                cli.setTelefono(rs.getString("TELEFONO_1"));
+                cli.setLocalidad(rs.getString("LOCALIDAD"));
+                cli.setCoeficienteListaDeprecios(rs.getDouble("coeficiente"));
+                cli.setCupoDeCredito(rs.getDouble("CUPO_CREDI"));
+                cli.setSaldo(rs.getDouble("saldo"));
+                cli.setSaldoActual(rs.getDouble("saldo"));
+                //cli.setNumeroPedido(rs.getString(3));
+                //cli.setObservaciones(rs.getString(5));
+                System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
+                codigo=cli.getCodigoCliente();
+                nombre=cli.getRazonSocial();
+                listadoClientes.put(codigo,cli);
+                listadoPorNom.put(nombre,cli);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesTango.class.getName()).log(Level.SEVERE, null, ex);
+        }
+  
+    }   
 
     public ClientesTango(String codigoCliente) {
-        try {
-            this.codigoCliente = codigoCliente;
-            Transaccionable tra=new Conecciones();
-                String sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo   from listcli where COD_CLIENT like '"+codigoCliente+"%'";
-                //String sql="select pedidos_carga1.COD_CLIENT,pedidos_carga1.RAZON_SOC,pedidos_carga1.NRO_PEDIDO,pedidos_carga1.numero,pedidos_carga1.LEYENDA_2 from pedidos_carga1 where RAZON_SOC like '"+cliente+"%' group by COD_CLIENT order by RAZON_SOC";
-                ResultSet rs=tra.leerConjuntoDeRegistros(sql);
-                while(rs.next()){
+        ClientesTango clientesTango=(ClientesTango)listadoClientes.get(codigoCliente);
                     
-                    this.codigoId=rs.getInt("codMMd");
-                    this.codigoCliente=rs.getString("COD_CLIENT");
-                    this.razonSocial=rs.getString("RAZON_SOCI");
-                    this.direccion=rs.getString("DOMICILIO");
-                    this.condicionDeVenta=rs.getInt("COND_VTA");
-                    this.listaDePrecios=rs.getInt("NRO_LISTA");
-                    Double descuento=Double.parseDouble(rs.getString("PORC_DESC"));                
-                    this.descuento=descuento;
-                    this.numeroDeCuit=rs.getString("IDENTIFTRI");
-                    this.empresa=rs.getString("empresa");
-                    this.condicionIva=rs.getString("TIPO_IVA");
-                    this.telefono=rs.getString("TELEFONO_1");
-                    this.localidad=rs.getString("LOCALIDAD");
-                    this.coeficienteListaDeprecios=rs.getDouble("coeficiente");
-                    this.cupoDeCredito=rs.getDouble("CUPO_CREDI");
-                    this.saldoActual=rs.getDouble("saldo");
-                    this.saldo=rs.getDouble("saldo");
+                    this.codigoId=clientesTango.getCodigoId();
+                    this.codigoCliente=clientesTango.getCodigoCliente();
+                    this.razonSocial=clientesTango.getRazonSocial();
+                    this.direccion=clientesTango.getDireccion();
+                    this.condicionDeVenta=clientesTango.getCondicionDeVenta();
+                    this.listaDePrecios=clientesTango.getListaDePrecios();
+                    Double descuent=clientesTango.getDescuento();                
+                    this.descuento=descuent;
+                    this.numeroDeCuit=clientesTango.getNumeroDeCuit();
+                    this.empresa=clientesTango.getEmpresa();
+                    this.condicionIva=clientesTango.getCondicionIva();
+                    this.telefono=clientesTango.getTelefono();
+                    this.localidad=clientesTango.getLocalidad();
+                    this.coeficienteListaDeprecios=clientesTango.getCoeficienteListaDeprecios();
+                    this.cupoDeCredito=clientesTango.getCupoDeCredito();
+                    this.saldoActual=clientesTango.getSaldoActual();
+                    this.saldo=clientesTango.getSaldo();
                     //cli.setNumeroPedido(rs.getString(3));
                     //cli.setObservaciones(rs.getString(5));
                     //System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
                     //ped.add(cli);
-                }
-        } catch (SQLException ex) {
-            Logger.getLogger(ClientesTango.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+            
     }
 
     public ClientesTango() {
@@ -158,20 +200,7 @@ public class ClientesTango implements Busquedas,Facturar{
 
     public void setListaDePrecios(Integer listaDePrecios) {
         
-        Transaccionable tra=new Conecciones();
-        String sql="select * from coeficienteslistas where id="+listaDePrecios;
-        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
-        try {
-            while(rs.next()){
-                this.setCoeficienteListaDeprecios(rs.getDouble("coeficiente"));
-                
-            }
-            rs.close();
             this.listaDePrecios = listaDePrecios;
-        } catch (SQLException ex) {
-            Logger.getLogger(ClientesTango.class.getName()).log(Level.SEVERE, null, ex);
-            
-        }
         
     }
         
@@ -344,45 +373,26 @@ public class ClientesTango implements Busquedas,Facturar{
 
     @Override
     public ArrayList listar(String cliente) {
-        try {
-            ArrayList ped=new ArrayList();
+        ArrayList ped=new ArrayList();
+            ClientesTango rs=null;
             Transaccionable tra=new Conecciones();
-            String sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo from listcli where RAZON_SOCI like '"+cliente+"%'";
-            System.out.println("CLIENTES "+sql);
-            //String sql="select pedidos_carga1.COD_CLIENT,pedidos_carga1.RAZON_SOC,pedidos_carga1.NRO_PEDIDO,pedidos_carga1.numero,pedidos_carga1.LEYENDA_2 from pedidos_carga1 where RAZON_SOC like '"+cliente+"%' group by COD_CLIENT order by RAZON_SOC";
-            ResultSet rs=tra.leerConjuntoDeRegistros(sql);
-            while(rs.next()){
-                
+            cliente=cliente.toUpperCase();
+            Enumeration<ClientesTango> elementos=listadoPorNom.elements();
+            while(elementos.hasMoreElements()){
+                rs=(ClientesTango)elementos.nextElement();
                 ClientesTango cli=new ClientesTango();
-                cli.setCodigoId(rs.getInt("codMMd"));
-                cli.setCodigoCliente(rs.getString("COD_CLIENT"));
-                cli.setRazonSocial(rs.getString("RAZON_SOCI"));
-                cli.setDireccion(rs.getString("DOMICILIO"));
-                cli.setCondicionDeVenta(rs.getInt("COND_VTA"));
-                cli.setListaDePrecios(rs.getInt("NRO_LISTA"));
-                Double descuento=Double.parseDouble(rs.getString("PORC_DESC"));
-                
-                cli.setDescuento(descuento);
-                cli.setNumeroDeCuit(rs.getString("IDENTIFTRI"));
-                cli.setEmpresa(rs.getString("empresa"));
-                cli.setCondicionIva(rs.getString("TIPO_IVA"));
-                cli.setTelefono(rs.getString("TELEFONO_1"));
-                cli.setLocalidad(rs.getString("LOCALIDAD"));
-                cli.setCoeficienteListaDeprecios(rs.getDouble("coeficiente"));
-                cli.setCupoDeCredito(rs.getDouble("CUPO_CREDI"));
-                cli.setSaldo(rs.getDouble("saldo"));
-                cli.setSaldoActual(rs.getDouble("saldo"));
+                 int pos=rs.getRazonSocial().indexOf(cliente);
+                if(pos==-1){
+                    
+                }else{
+                cli=rs;
                 //cli.setNumeroPedido(rs.getString(3));
                 //cli.setObservaciones(rs.getString(5));
                 System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
                 ped.add(cli);
+                }
             }
             return ped;
-        } catch (SQLException ex) {
-            Logger.getLogger(ClientesTango.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-       
     }  
     
 
@@ -470,42 +480,26 @@ public class ClientesTango implements Busquedas,Facturar{
 
     @Override
     public ArrayList listarClientes(String nombre) {
-                try {
-            ArrayList ped=new ArrayList();
+             ArrayList ped=new ArrayList();
+            ClientesTango rs=null;
             Transaccionable tra=new Conecciones();
-            String sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo   from listcli where RAZON_SOCI like '"+nombre+"%'";
-            //String sql="select pedidos_carga1.COD_CLIENT,pedidos_carga1.RAZON_SOC,pedidos_carga1.NRO_PEDIDO,pedidos_carga1.numero,pedidos_carga1.LEYENDA_2 from pedidos_carga1 where RAZON_SOC like '"+cliente+"%' group by COD_CLIENT order by RAZON_SOC";
-            ResultSet rs=tra.leerConjuntoDeRegistros(sql);
-            while(rs.next()){
-                
+            nombre=nombre.toUpperCase();
+            Enumeration<ClientesTango> elementos=listadoPorNom.elements();
+            while(elementos.hasMoreElements()){
+                rs=(ClientesTango)elementos.nextElement();
                 ClientesTango cli=new ClientesTango();
-                cli.setCodigoId(rs.getInt("codMMd"));
-                cli.setCodigoCliente(rs.getString("COD_CLIENT"));
-                cli.setRazonSocial(rs.getString("RAZON_SOCI"));
-                cli.setDireccion(rs.getString("DOMICILIO"));
-                cli.setCondicionDeVenta(rs.getInt("COND_VTA"));
-                cli.setListaDePrecios(rs.getInt("NRO_LISTA"));
-                Double descuento=Double.parseDouble(rs.getString("PORC_DESC"));                
-                cli.setDescuento(descuento);
-                cli.setNumeroDeCuit(rs.getString("IDENTIFTRI"));
-                cli.setEmpresa(rs.getString("empresa"));
-                cli.setCondicionIva(rs.getString("TIPO_IVA"));
-                cli.setTelefono(rs.getString("TELEFONO_1"));
-                cli.setLocalidad(rs.getString("LOCALIDAD"));
-                cli.setCoeficienteListaDeprecios(rs.getDouble("coeficiente"));
-                cli.setSaldo(rs.getDouble("saldo"));
-                cli.setSaldoActual(rs.getDouble("saldo"));
-                cli.setCupoDeCredito(rs.getDouble("CUPO_CREDI"));
+                 int pos=rs.getRazonSocial().indexOf(nombre);
+                if(pos==-1){
+                    
+                }else{
+                cli=rs;
                 //cli.setNumeroPedido(rs.getString(3));
                 //cli.setObservaciones(rs.getString(5));
                 System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
                 ped.add(cli);
+                }
             }
             return ped;
-        } catch (SQLException ex) {
-            Logger.getLogger(ClientesTango.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
 
     }
 

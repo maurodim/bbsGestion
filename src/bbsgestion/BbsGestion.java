@@ -12,7 +12,11 @@ import interfaces.Comprobable;
 import interfaces.Transaccionable;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import objetos.Conecciones;
 
@@ -25,13 +29,18 @@ public class BbsGestion {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException, IOException {
         /*
         ArrayList usuariosList=new ArrayList();
         Usuarios usuarios=new Usuarios();
         usuariosList=usuarios.listarUsuario();
         */
         File folder=new File("C:\\Gestion");
+        File archivos=new File("C:\\Informes");
+        File imagenes=new File("C:\\Gestion\\imagenes\\saynomore.jpg");
+        FileInputStream fregis = new FileInputStream("C:\\Users\\mauro\\Pictures\\Camera Uploads\\snm.jpg"); 
+        
+
         File archivo=null;
         FileReader fr=null;
         BufferedReader br=null;
@@ -43,6 +52,24 @@ public class BbsGestion {
             System.out.println("NOOOOOOOOOOOOOOO EXISTE EL DIRECTORIO");
             
         }
+        if(!archivos.isDirectory())archivos.mkdirs();
+        if(!imagenes.isFile()){
+            //imagenes.mkdirs();
+            FileOutputStream fsalida = new FileOutputStream("C:\\Gestion\\imagenes\\saynomore.jpg", true); 
+        int b = fregis.read(); 
+        while (b != -1) { 
+        fsalida.write(b); 
+        b = fregis.read(); 
+
+        } 
+        fsalida.flush(); 
+        fsalida.close();
+
+       
+            
+        }
+          
+        fregis.close();
         try {
          // Apertura del fichero y creacion de BufferedReader para poder
          // hacer una lectura comoda (disponer del metodo readLine()).

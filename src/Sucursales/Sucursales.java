@@ -9,6 +9,7 @@ import Depositos.Depositos;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.Conecciones;
@@ -25,6 +26,11 @@ public class Sucursales extends Administracion{
     private Depositos depositos;
     private Cajas caja;
     private Usuarios usuario;
+    private ArrayList tipoComprobantes=new ArrayList();
+
+    public ArrayList getTipoComprobantes() {
+        return tipoComprobantes;
+    }
     
 
     public Sucursales() {
@@ -42,6 +48,11 @@ public class Sucursales extends Administracion{
                 this.direccion=rs.getString("direccion");
                 this.telefono=rs.getString("telefono");
                             
+            }
+            sql="select * from tipocomprobantes where numeroSucursal="+this.numero;
+            rs=tra.leerConjuntoDeRegistros(sql);
+            while(rs.next()){
+                tipoComprobantes.add(rs.getInt("numero"));
             }
             rs.close();
         } catch (SQLException ex) {

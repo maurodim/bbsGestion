@@ -223,6 +223,7 @@ public class Articulos implements Facturar,Editables{
         Articulos articulo=null;
         String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0";
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+        String codA="";
         try {
             while(rr.next()){
                 articulo=new Articulos();
@@ -239,7 +240,8 @@ public class Articulos implements Facturar,Editables{
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 listadoBarr.put(articulo.getCodigoDeBarra(),articulo);
-                listadoCodigo.put(articulo.getCodigoAsignado(),articulo);
+                codA=articulo.getCodigoAsignado();
+                listadoCodigo.put(codA,articulo);
                 
                 //resultado.add(articulo);
             }
@@ -493,7 +495,8 @@ public class Articulos implements Facturar,Editables{
     @Override
     public Object cargarPorCodigoAsignado(Integer id) {
         Articulos articulo;
-        articulo=(Articulos)listadoCodigo.get(id);
+        String idd=String.valueOf(id);
+        articulo=(Articulos)listadoCodigo.get(idd);
         return articulo;
     }
     

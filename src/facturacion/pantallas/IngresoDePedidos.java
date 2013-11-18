@@ -506,20 +506,8 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         String fecha2=ano+"-"+mes+"-"+dia;
         //comp.setFechaComprobante(fecha2);
         //comp.setFechaComprobante(fecha);
-        int comprobanteTipo=0;
-        if(cliT.getEmpresa().equals("sd")){
-        if(cliT.getCondicionIva().equals("RI "))comprobanteTipo=1;
-        if(cliT.getCondicionIva().equals("EX "))comprobanteTipo=3;
-        if(cliT.getCondicionIva().equals("CF ")){
-            if(montoTotal < 1000){
-                comprobanteTipo=6;
-            }else{
-                comprobanteTipo=3;
-            }
-        }
-        }else{
-            comprobanteTipo=4;
-        }
+        int comprobanteTipo=(int) Inicio.sucursal.getTipoComprobantes().get(0);
+        if(cliT.getCondicionIva().equals("RI "))comprobanteTipo=(int)Inicio.sucursal.getTipoComprobantes().get(1);
         Comprobantes comprobante=new Comprobantes();
         comprobante.setCliente(cliT);
         comprobante.setTipoMovimiento(1);
@@ -610,6 +598,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             if(arti.getModificaPrecio())servicio=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField4.getText()));
             Double tota=arti.getPrecioUnitarioNeto() + servicio;
             arti.setPrecioUnitarioNeto(tota);
+            arti.setPrecioServicio(servicio);
             articuloss=arti;
                         detalleDelPedido.add(articuloss);
             agregarRenglonTabla();
@@ -666,6 +655,8 @@ private void agregarRenglonTabla(){
             //precioUnitario= pedidos.getPrecioUnitario() * cliT.getCoeficienteListaDeprecios();
             //Double valor=(pedidos.getCantidad() * precioUnitario);
             valor=valor * cliT.getCoeficienteListaDeprecios();
+            pedidos.setPrecioUnitario(valor);
+            
             montoTotal=montoTotal + valor;
             fila[3]=valor;
             busC.addRow(fila);

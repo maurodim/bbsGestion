@@ -38,6 +38,7 @@ public class BbsGestion {
         File folder=new File("C:\\Gestion");
         File archivos=new File("C:\\Informes");
         File imagenes=new File("C:\\Gestion\\imagenes\\saynomore.jpg");
+        File bk;
         FileInputStream fregis = new FileInputStream("C:\\Users\\mauro\\Pictures\\Camera Uploads\\snm.jpg"); 
         
 
@@ -70,6 +71,11 @@ public class BbsGestion {
         }
           
         fregis.close();
+        bk=new File("C:\\Gestion\\backUp.sql");
+        String sql="select * from movimientoscaja into outfile "+bk+" FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n\r'";
+        Transaccionable tra=new Conecciones();
+        //tra.guardarRegistro(sql);
+        
         try {
          // Apertura del fichero y creacion de BufferedReader para poder
          // hacer una lectura comoda (disponer del metodo readLine()).
@@ -80,7 +86,7 @@ public class BbsGestion {
  
          // Lectura del fichero
          String linea;
-          Transaccionable tra=new Conecciones();
+          //Transaccionable tra=new Conecciones();
          while((linea=br.readLine())!=null)
             System.out.println(linea);
            

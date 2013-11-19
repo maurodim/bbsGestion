@@ -10,7 +10,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.Conecciones;
@@ -128,7 +127,7 @@ public class InformeMensual {
             celda5=fila.createCell(5);
             //celda5.setCellFormula(rs.getString("observaciones"));
             celda5.setCellType(HSSFCell.CELL_TYPE_STRING);
-            celda5.setCellValue(rs.getDate("fecha"));
+            celda5.setCellValue(" "+rs.getDate("fecha"));
             //celda5.setCellValue(rs.getDate("fecha"));
             
         }

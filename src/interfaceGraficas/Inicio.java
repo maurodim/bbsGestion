@@ -35,6 +35,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import objetos.Articulos;
+import objetos.GastosF;
 
 /**
  *
@@ -88,6 +89,7 @@ public class Inicio extends javax.swing.JFrame {
         Proveedores.cargarListadoProv();
         ClientesTango.cargarMap();
         ListasDePrecios.cargarMap();
+        GastosF.cargarMap();
         initComponents();
         
         Actualiza actu=new Actualiza();

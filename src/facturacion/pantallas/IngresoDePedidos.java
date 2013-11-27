@@ -441,16 +441,24 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
 
     private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            arti.setCantidad(Double.parseDouble(this.jTextField2.getText()));
+            Double cantt=Double.parseDouble(this.jTextField2.getText());
             if(arti.getModificaPrecio()){
                 this.jTextField4.requestFocus();
             }else{
                 if(arti.getPrecioServicio()>0){
                  this.jTextField4.requestFocus();   
                 }else{
-                    Articulos articuloss=new Articulos();
-                    articuloss=arti;
-            detalleDelPedido.add(articuloss);
+                    Articulos articul=new Articulos();
+                    articul.setCantidad(cantt);
+                    articul.setCodigoAsignado(arti.getCodigoAsignado());
+                    
+                    articul.setCodigoDeBarra(arti.getCodigoDeBarra());
+                    articul.setDescripcionArticulo(arti.getDescripcionArticulo());
+                    articul.setNumeroId(arti.getNumeroId());
+                    articul.setPrecioDeCosto(arti.getPrecioDeCosto());
+                    articul.setPrecioUnitario(arti.getPrecioUnitarioNeto());
+                    articul.setPrecioUnitarioNeto(arti.getPrecioUnitarioNeto());
+            detalleDelPedido.add(articul);
             agregarRenglonTabla();
 //                Double montoTotalX=(arti.getPrecioUnitario() * arti.getCantidad());
 //                montoTotal=montoTotal + montoTotalX;
@@ -592,7 +600,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
     private void jTextField4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
             Double servicio=0.00;
-            Articulos articuloss=new Articulos();
+            //Articulos articuloss=new Articulos();
             if(this.jCheckBox1.isSelected()){
                 servicio=arti.getPrecioServicio();
             }else{
@@ -602,8 +610,19 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             Double tota=arti.getPrecioUnitarioNeto() + servicio;
             arti.setPrecioUnitarioNeto(tota);
             arti.setPrecioServicio(servicio);
-            articuloss=arti;
-                        detalleDelPedido.add(articuloss);
+            Double cantt=Double.parseDouble(this.jTextField2.getText());
+            Articulos articul=new Articulos();
+                    articul.setCantidad(cantt);
+                    articul.setCodigoAsignado(arti.getCodigoAsignado());
+                    articul.setPrecioServicio(arti.getPrecioServicio());
+                    articul.setCodigoDeBarra(arti.getCodigoDeBarra());
+                    articul.setDescripcionArticulo(arti.getDescripcionArticulo());
+                    articul.setNumeroId(arti.getNumeroId());
+                    articul.setPrecioDeCosto(arti.getPrecioDeCosto());
+                    articul.setPrecioUnitario(arti.getPrecioUnitarioNeto());
+                    articul.setPrecioUnitarioNeto(arti.getPrecioUnitarioNeto());
+                    articul.setModificaPrecio(arti.getModificaPrecio());
+                        detalleDelPedido.add(articul);
             agregarRenglonTabla();
 //                Double montoTotalX=(arti.getPrecioUnitario() * arti.getCantidad());
 //                montoTotal=montoTotal + montoTotalX;

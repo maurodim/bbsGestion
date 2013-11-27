@@ -37,9 +37,9 @@ public class BbsGestion {
         */
         File folder=new File("C:\\Gestion");
         File archivos=new File("C:\\Informes");
-        File imagenes=new File("C:\\Gestion\\imagenes\\saynomore.jpg");
+        //File imagenes=new File("C:\\Gestion\\imagenes\\saynomore.jpg");
         File bk;
-        FileInputStream fregis = new FileInputStream("C:\\Users\\mauro\\Pictures\\Camera Uploads\\snm.jpg"); 
+        //FileInputStream fregis = new FileInputStream("C:\\Users\\mauro\\Pictures\\Camera Uploads\\snm.jpg"); 
         
 
         File archivo=null;
@@ -54,6 +54,7 @@ public class BbsGestion {
             
         }
         if(!archivos.isDirectory())archivos.mkdirs();
+        /*
         if(!imagenes.isFile()){
             //imagenes.mkdirs();
             FileOutputStream fsalida = new FileOutputStream("C:\\Gestion\\imagenes\\saynomore.jpg", true); 
@@ -63,14 +64,16 @@ public class BbsGestion {
         b = fregis.read(); 
 
         } 
+        
         fsalida.flush(); 
         fsalida.close();
-
+         
        
             
         }
           
         fregis.close();
+        */
         bk=new File("C:\\Gestion\\backUp.sql");
         //String sql="select * from movimientoscaja into outfile "+bk+" FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n\r'";
         Transaccionable tra=new Conecciones();

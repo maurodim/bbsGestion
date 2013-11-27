@@ -5,6 +5,7 @@
 package objetos;
 
 import Compras.Proveedores;
+import Conversores.Numeros;
 import interfaceGraficas.Inicio;
 import interfaces.Editables;
 import interfaces.Transaccionable;
@@ -116,7 +117,8 @@ public class GastosF implements Editables{
     public Boolean AltaObjeto(Object objeto) {
         Boolean verif=false;
         GastosF gastos=(GastosF)objeto;
-        String sql="insert into movimientosgastosfijos (idProveedor,monto,fechaVencimiento,numeroFactura) values ("+gastos.getProveedor().getNumero()+","+gastos.getMonto()+",'"+gastos.getFechaVencimiento()+"','"+gastos.getNumeroFactura()+"')";
+        String fecha=Numeros.ConvertirFecha(gastos.getFechaVencimiento());
+        String sql="insert into movimientosgastosfijos (idProveedor,monto,fechaVencimiento,numeroFactura) values ("+gastos.getProveedor().getNumero()+","+gastos.getMonto()+",'"+fecha+"','"+gastos.getNumeroFactura()+"')";
         Transaccionable tra=new Conecciones();
         if(tra.guardarRegistro(sql)){
             verif=true;
@@ -129,6 +131,8 @@ public class GastosF implements Editables{
                     
                 }
                 rs.close();
+                sql="insert into movimientosproveedores (numeroProveedor,monto,pagado,idRemito,idUsuario,idCaja,fechaPago,tipoComprobante,numeroComprobante) values ("+gastos.getProveedor().getNumero()+","+gastos.getMonto()+",0,0,"+Inicio.usuario.getNumeroId()+","+Inicio.caja.getNumero()+",'"+Inicio.fechaDia+"',13,"+numeroComprobanteInt+")";
+                tra.guardarRegistro(sql);
             } catch (SQLException ex) {
                 Logger.getLogger(GastosF.class.getName()).log(Level.SEVERE, null, ex);
             }

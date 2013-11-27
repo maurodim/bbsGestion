@@ -4,6 +4,17 @@
  */
 package interfaceGraficas;
 
+import Compras.Proveedores;
+import Conversores.Numeros;
+import interfaces.Editables;
+import interfaces.Personalizable;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import objetos.GastosF;
+
 /**
  *
  * @author mauro
@@ -13,6 +24,7 @@ public class NuevosGastoFijo extends javax.swing.JInternalFrame {
     /**
      * Creates new form NuevosGastoFijo
      */
+    private ArrayList listaProv;
     public NuevosGastoFijo() {
         initComponents();
     }
@@ -41,16 +53,47 @@ public class NuevosGastoFijo extends javax.swing.JInternalFrame {
         setClosable(true);
         setMaximizable(true);
         setTitle("Ingreso de Nuevo Gasto Fijo");
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
+
+        jPanel1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jPanel1ComponentShown(evt);
+            }
+        });
 
         jLabel1.setText("Fecha de Vencimiento :");
 
         jLabel2.setText("Proveedor :");
 
+        Proveedores proveedor=new Proveedores();
+        listaProv=new ArrayList();
+        Personalizable per=new Proveedores();
+        listaProv=per.listar();
+        Iterator ilProv=listaProv.listIterator();
+        while(ilProv.hasNext()){
+            proveedor=(Proveedores)ilProv.next();
+            jComboBox1.addItem(proveedor.getNombre());
+        }
+
         jLabel3.setText("Monto :");
 
         jButton1.setText("Guardar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Nuevo Proveedor");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Numero factura :");
 
@@ -120,6 +163,61 @@ public class NuevosGastoFijo extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        GastosF nuevoGasto=new GastosF();
+        SimpleDateFormat dia=new SimpleDateFormat("dd/mm/yyyy");
+        //Date mes=Calendar.getInstance().getTime();
+        //dateChooserCombo1.setDateFormat(dia);
+        Calendar fechaNueva=dateChooserCombo1.getSelectedDate();
+        //Calendar fechaHasta=dateChooserCombo2.getSelectedDate();
+        //mes=dia.format(fechaNueva,null,null);
+        Double pesoDia=0.00;
+        int ano=fechaNueva.get(Calendar.YEAR);
+        int mes=fechaNueva.get(Calendar.MONTH);
+        mes++;
+        int dd=fechaNueva.get(Calendar.DAY_OF_MONTH);
+        String fecha1=ano+"-"+mes+"-"+dd;
+        String vencimiento=fecha1;
+        System.out.println("FECHA SELECCIONADA :"+vencimiento);
+        nuevoGasto.setFechaVencimiento(Numeros.ConvertirStringEnDate(vencimiento));
+        nuevoGasto.setProveedor((Proveedores)listaProv.get(this.jComboBox1.getSelectedIndex()) );
+        Double monto=Numeros.ConvertirStringADouble(this.jTextField1.getText());
+        nuevoGasto.setMonto(monto);
+        nuevoGasto.setNumeroFactura(this.jTextField2.getText());
+        Editables edita=new GastosF();
+        edita.AltaObjeto(nuevoGasto);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       ProveedoresAbm prov=new ProveedoresAbm();
+       Inicio.jDesktopPane1.add(prov);
+       prov.setVisible(true);
+       prov.toFront();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jPanel1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1ComponentShown
+        recargarBox();
+    }//GEN-LAST:event_jPanel1ComponentShown
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formComponentShown
+public void recargarBox(){
+    //jComboBox1 = new javax.swing.JComboBox();
+    jComboBox1.removeAllItems();
+    Proveedores proveedor=new Proveedores();
+    ArrayList listaProv=new ArrayList();
+    Personalizable per=new Proveedores();
+    listaProv=per.listar();
+    Iterator ilProv=listaProv.listIterator();
+    while(ilProv.hasNext()){
+        proveedor=(Proveedores)ilProv.next();
+        jComboBox1.addItem(proveedor.getNombre());
+    }
+
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private datechooser.beans.DateChooserCombo dateChooserCombo1;
     private javax.swing.JButton jButton1;

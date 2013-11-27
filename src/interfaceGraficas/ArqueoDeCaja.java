@@ -14,7 +14,7 @@ import java.awt.event.KeyEvent;
  * @author mauro
  */
 public class ArqueoDeCaja extends javax.swing.JInternalFrame {
-
+    private Double totalB;
     /**
      * Creates new form ArqueoDeCaja
      */
@@ -272,7 +272,7 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
                     .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(jButton1)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         jLabel11.setText("jLabel11");
@@ -310,7 +310,7 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
-        jLabel15.setText("monto :");
+        jLabel15.setText("monto a retirar :");
 
         jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
 
@@ -365,75 +365,27 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Double total=0.00;
-        Double totalBilletes=0.00;
         Double saldoInicial=0.00;
         Double saldoFinal=0.00;
         Double diferencia=0.00;
-        
-        //0.10
-        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField1.getText()));
-        totalBilletes=totalBilletes * 0.10;
-        total=total + totalBilletes;
-        totalBilletes=0.00;
-        //0.25
-        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField2.getText()));
-        totalBilletes=totalBilletes * 0.25;
-        total=total + totalBilletes;
-        totalBilletes=0.00;
-        //0.50
-        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField3.getText()));
-        totalBilletes=totalBilletes * 0.50;
-        total=total + totalBilletes;
-        totalBilletes=0.00;
-        //$1
-        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField4.getText()));
-        totalBilletes=totalBilletes * 1;
-        total=total + totalBilletes;
-        totalBilletes=0.00;
-        //$2
-        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField5.getText()));
-        totalBilletes=totalBilletes * 2;
-        total=total + totalBilletes;
-        totalBilletes=0.00;
-        //$5
-        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField6.getText()));
-        totalBilletes=totalBilletes * 5;
-        total=total + totalBilletes;
-        totalBilletes=0.00;
-        //$10
-        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField7.getText()));
-        totalBilletes=totalBilletes * 10;
-        total=total + totalBilletes;
-        totalBilletes=0.00;
-        //$20
-        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField8.getText()));
-        totalBilletes=totalBilletes * 20;
-        total=total + totalBilletes;
-        totalBilletes=0.00;
-        //$50
-        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField9.getText()));
-        totalBilletes=totalBilletes * 50;
-        total=total + totalBilletes;
-        totalBilletes=0.00;
-        //$100
-        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField10.getText()));
-        totalBilletes=totalBilletes * 100;
-        total=total + totalBilletes;
-        totalBilletes=0.00;
+        Double entrega=0.00;
         saldoInicial=Inicio.sucursal.getCaja().getSaldoInicial();
-        saldoFinal=total - saldoInicial;
+        saldoFinal=totalB - saldoInicial;
         Cajeables caj=new Cajas();
         Cajas cajas=new Cajas();
         cajas=(Cajas)caj.ArquearCaja(Inicio.sucursal.getCaja());
         Double totalMovimientos=(Double)cajas.getSaldoFinal();
         diferencia=saldoFinal - totalMovimientos;
-        cajas.setMontoMovimiento(diferencia);
-        this.jPanel2.setVisible(true);
-        this.jLabel11.setText("TOTAL CAJA :"+total);
-        this.jLabel12.setText("SALDO INICIAL :"+saldoInicial);
-        this.jLabel14.setText("VENTA TOTAL :"+totalMovimientos);
-        this.jLabel13.setText("SALDO CAJA :"+diferencia);
+        //cajas.setMontoMovimiento(diferencia);
+        entrega=Numeros.ConvertirStringADouble(this.jFormattedTextField1.getText());
+        entrega=entrega * -1;
+        cajas.setMontoMovimiento(entrega);
+        diferencia=diferencia - entrega;
+        cajas.setSaldoFinal(diferencia);
+        //cajas.setTotalVentas(totalB);
+        caj.CerrarCaja(cajas);
+        this.dispose();
+        System.exit(1);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
@@ -501,7 +453,71 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
 
     private void jTextField10KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyPressed
          if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-           
+           Double total=0.00;
+        Double totalBilletes=0.00;
+        
+        
+        //0.10
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField1.getText()));
+        totalBilletes=totalBilletes * 0.10;
+        total=total + totalBilletes;
+        totalBilletes=0.00;
+        //0.25
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField2.getText()));
+        totalBilletes=totalBilletes * 0.25;
+        total=total + totalBilletes;
+        totalBilletes=0.00;
+        //0.50
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField3.getText()));
+        totalBilletes=totalBilletes * 0.50;
+        total=total + totalBilletes;
+        totalBilletes=0.00;
+        //$1
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField4.getText()));
+        totalBilletes=totalBilletes * 1;
+        total=total + totalBilletes;
+        totalBilletes=0.00;
+        //$2
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField5.getText()));
+        totalBilletes=totalBilletes * 2;
+        total=total + totalBilletes;
+        totalBilletes=0.00;
+        //$5
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField6.getText()));
+        totalBilletes=totalBilletes * 5;
+        total=total + totalBilletes;
+        totalBilletes=0.00;
+        //$10
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField7.getText()));
+        totalBilletes=totalBilletes * 10;
+        total=total + totalBilletes;
+        totalBilletes=0.00;
+        //$20
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField8.getText()));
+        totalBilletes=totalBilletes * 20;
+        total=total + totalBilletes;
+        totalBilletes=0.00;
+        //$50
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField9.getText()));
+        totalBilletes=totalBilletes * 50;
+        total=total + totalBilletes;
+        totalBilletes=0.00;
+        //$100
+        totalBilletes=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField10.getText()));
+        totalBilletes=totalBilletes * 100;
+        total=total + totalBilletes;
+        totalBilletes=0.00;
+        
+        
+        this.jPanel2.setVisible(true);
+        this.jLabel11.setText("TOTAL EFECTIVO EN CAJA :"+total);
+        totalB=total;
+        this.jLabel12.setVisible(false);
+        this.jLabel14.setVisible(false);
+        this.jLabel13.setVisible(false);
+        //this.jLabel12.setText("SALDO INICIAL :"+saldoInicial);
+        //this.jLabel14.setText("VENTA TOTAL :"+totalMovimientos);
+        //this.jLabel13.setText("SALDO CAJA :"+diferencia);
         }
     }//GEN-LAST:event_jTextField10KeyPressed
 

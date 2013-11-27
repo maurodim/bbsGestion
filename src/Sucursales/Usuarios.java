@@ -5,6 +5,7 @@
 package Sucursales;
 
 import Administracion.TipoAcceso;
+import interfaceGraficas.Inicio;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -174,12 +175,18 @@ public class Usuarios extends TipoAcceso{
 
     @Override
     public Boolean registrarIngreso(Object objeto) {
-        return super.registrarIngreso(objeto);
+        //return super.registrarIngreso(objeto);
+        String sql="insert into movimientosusuarios (numeroUsuario,tipoacceso) values ("+Inicio.usuario.getNumeroId()+","+Inicio.usuario.getNivelDeAutorizacion()+")";
+        Transaccionable tra=new Conecciones();
+        return tra.guardarRegistro(sql);
     }
 
     @Override
     public Boolean registrarSalida(Object objeto) {
-        return super.registrarSalida(objeto);
+        String sql="update movimientosusuarios set salida=";
+        Transaccionable tra=new Conecciones();
+        return tra.guardarRegistro(sql);
+        //return super.registrarSalida(objeto);
     }
 
     @Override
@@ -203,6 +210,7 @@ public class Usuarios extends TipoAcceso{
                
             }
             rs.close();
+            
         } catch (SQLException ex) {
             Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
         }

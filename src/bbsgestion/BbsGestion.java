@@ -72,7 +72,7 @@ public class BbsGestion {
           
         fregis.close();
         bk=new File("C:\\Gestion\\backUp.sql");
-        String sql="select * from movimientoscaja into outfile "+bk+" FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n\r'";
+        //String sql="select * from movimientoscaja into outfile "+bk+" FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n\r'";
         Transaccionable tra=new Conecciones();
         //tra.guardarRegistro(sql);
         
@@ -87,11 +87,13 @@ public class BbsGestion {
          // Lectura del fichero
          String linea;
           //Transaccionable tra=new Conecciones();
-         while((linea=br.readLine())!=null)
+         while((linea=br.readLine())!=null){
+             
             System.out.println(linea);
            
             if(tra.guardarRegistro(linea));
       }
+        }
         }
       catch(Exception e){
          e.printStackTrace();

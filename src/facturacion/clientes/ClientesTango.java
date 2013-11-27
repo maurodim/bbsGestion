@@ -103,9 +103,9 @@ public class ClientesTango implements Busquedas,Facturar{
                 cli.setDireccion(rs.getString("DOMICILIO"));
                 cli.setCondicionDeVenta(rs.getInt("COND_VTA"));
                 cli.setListaDePrecios(rs.getInt("NRO_LISTA"));
-                Double descuento=Double.parseDouble(rs.getString("PORC_DESC"));
+                //Double descuento=Double.parseDouble(rs.getString("PORC_DESC"));
                 
-                cli.setDescuento(descuento);
+                //cli.setDescuento(descuento);
                 cli.setNumeroDeCuit(rs.getString("IDENTIFTRI"));
                 cli.setEmpresa(rs.getString("empresa"));
                 cli.setCondicionIva(rs.getString("TIPO_IVA"));

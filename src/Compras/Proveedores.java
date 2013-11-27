@@ -155,7 +155,21 @@ public class Proveedores implements Personalizable{
        Boolean veri=false;
        String sql="insert into proveedores (NOMBRE,DOMICILIO,LOCALIDAD,TELEFONO,mail) values ('"+prov.getNombre()+"','"+prov.getDireccion()+"','"+prov.getLocalidad()+"','"+prov.getTelefono()+"','"+prov.getMail()+"')";
        Transaccionable tra=new Conecciones();
-       if(tra.guardarRegistro(sql)){}else{
+       if(tra.guardarRegistro(sql)){
+           int numero=0;
+           sql="select LAST_INSERT_ID()";
+           ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+            try {
+                while(rs.next()){
+                    numero=rs.getInt(1);
+                }
+                rs.close();
+                prov.setNumero(numero);
+                listadoProv.put(numero,prov);
+            } catch (SQLException ex) {
+                Logger.getLogger(Proveedores.class.getName()).log(Level.SEVERE, null, ex);
+            }
+       }else{
            veri=false;
        }
        

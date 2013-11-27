@@ -36,8 +36,8 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
      * Creates new form IngresoDePedidos
      */
     public static ClientesTango cliT;
-    private static ArrayList detalleDelPedido=new ArrayList();
-    private static Articulos arti=new Articulos();
+    private ArrayList detalleDelPedido=new ArrayList();
+    private Articulos arti;
     private static ArrayList listadoDeBusqueda=new ArrayList();
     private static Double montoTotal=0.00;
     private static Comprobantes comp=new Comprobantes();
@@ -385,6 +385,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             System.out.println("ENTRO CON EL ENTER¡¡¡¡¡¡");
             listadoDeBusqueda.clear();
             Facturar fart=new Articulos();
+            arti=new Articulos();
             arti=(Articulos)fart.cargarPorCodigoDeBarra(jTextField1.getText());
             if(arti.getCodigoDeBarra().equals("")){
                 
@@ -447,7 +448,9 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                 if(arti.getPrecioServicio()>0){
                  this.jTextField4.requestFocus();   
                 }else{
-            detalleDelPedido.add(arti);
+                    Articulos articuloss=new Articulos();
+                    articuloss=arti;
+            detalleDelPedido.add(articuloss);
             agregarRenglonTabla();
 //                Double montoTotalX=(arti.getPrecioUnitario() * arti.getCantidad());
 //                montoTotal=montoTotal + montoTotalX;
@@ -637,7 +640,7 @@ private void agregarRenglonTabla(){
         montoTotal=0.00;
         //ArrayList listadoPedidos=new ArrayList();
         this.jTable1.setModel(busC);
-        Articulos pedidos=new Articulos();
+        Articulos pedidos;
         busC.addColumn("CODIGO");
         busC.addColumn("DESCRIPCION");
         busC.addColumn("CANTIDAD");
@@ -645,20 +648,25 @@ private void agregarRenglonTabla(){
         Object[] fila=new Object[4];
         Iterator irP=detalleDelPedido.listIterator();
         while(irP.hasNext()){
+            pedidos=new Articulos();
             pedidos=(Articulos) irP.next();
             //fila[0]=pedidos.getCodigo();
-            fila[0]=pedidos.getCodigoAsignado();
-            fila[1]=pedidos.getDescripcionArticulo();
-            fila[2]=pedidos.getCantidad();
+            String codig=pedidos.getCodigoAsignado();
+            String desc=pedidos.getDescripcionArticulo();
+            String cant=String.valueOf(pedidos.getCantidad());
+            
+            fila[0]=codig;
+            fila[1]=desc;
+            fila[2]=cant;
             Double precioUnitario=pedidos.getPrecioUnitarioNeto();
             Double valor=precioUnitario * pedidos.getCantidad();
             //precioUnitario= pedidos.getPrecioUnitario() * cliT.getCoeficienteListaDeprecios();
             //Double valor=(pedidos.getCantidad() * precioUnitario);
             valor=valor * cliT.getCoeficienteListaDeprecios();
             pedidos.setPrecioUnitario(valor);
-            
+            String val=String.valueOf(valor);
             montoTotal=montoTotal + valor;
-            fila[3]=valor;
+            fila[3]=val;
             busC.addRow(fila);
         }
         String total=String.valueOf(montoTotal);

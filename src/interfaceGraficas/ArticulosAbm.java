@@ -194,7 +194,7 @@ public class ArticulosAbm extends javax.swing.JInternalFrame {
         if(evt.getKeyCode()==KeyEvent.VK_F1){
             System.out.println("ENTRO CON F1¡¡¡¡¡");
         Facturar fart=new Articulos();
-        ArrayList listadoDeBusqueda=fart.listadoBusqueda(this.jTextField1.getText());
+        ArrayList listadoDeBusqueda=fart.listadoBusqueda(this.jTextField1.getText().toUpperCase());
         cargarLista(listadoDeBusqueda);    
         }
     }//GEN-LAST:event_jTextField1KeyPressed

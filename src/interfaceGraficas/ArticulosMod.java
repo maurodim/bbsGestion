@@ -185,7 +185,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         arti.setCodigoDeBarra(this.jTextField7.getText());
-        arti.setDescripcionArticulo(this.jTextField1.getText());
+        arti.setDescripcionArticulo(this.jTextField1.getText().toUpperCase());
         Double cant=Numeros.ConvertirStringADouble(this.jTextField2.getText());
         arti.setStockActual(cant);
         cant=Numeros.ConvertirStringADouble(this.jTextField3.getText());

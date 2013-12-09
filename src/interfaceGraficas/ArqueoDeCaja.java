@@ -272,7 +272,7 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
                     .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(jButton1)
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         jLabel11.setText("jLabel11");
@@ -313,6 +313,7 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         jLabel15.setText("monto a retirar :");
 
         jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        jFormattedTextField1.setText("0");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -515,6 +516,8 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         this.jLabel12.setVisible(false);
         this.jLabel14.setVisible(false);
         this.jLabel13.setVisible(false);
+        this.jFormattedTextField1.selectAll();
+        this.jFormattedTextField1.requestFocus();
         //this.jLabel12.setText("SALDO INICIAL :"+saldoInicial);
         //this.jLabel14.setText("VENTA TOTAL :"+totalMovimientos);
         //this.jLabel13.setText("SALDO CAJA :"+diferencia);

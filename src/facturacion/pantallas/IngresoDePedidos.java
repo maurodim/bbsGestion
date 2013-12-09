@@ -410,6 +410,12 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                     this.jTextField4.setVisible(true);
                     this.jTextField4.setText(Numeros.ConvertirNumero(arti.getPrecioServicio()));
                     this.jCheckBox1.setVisible(true);
+                    Calendar calendario=new GregorianCalendar();
+                    int hora=calendario.get(Calendar.HOUR_OF_DAY);
+                    System.out.println("LA HORA ACTUAL ES :"+hora);
+                    if(hora >= 23 || hora < 8){
+                        this.jCheckBox1.setEnabled(false);
+                    }
                 }
             }
             

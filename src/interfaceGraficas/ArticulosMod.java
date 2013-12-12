@@ -206,9 +206,6 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         arti.setPrecioUnitarioNeto(cant);
         cant=Numeros.ConvertirStringADouble(this.jTextField6.getText());
         arti.setPrecioServicio(cant);
-        if(arti.getPrecioServicio() > 0){
-            this.jCheckBox1.setSelected(true);
-        }
         arti.setModificaPrecio(this.jCheckBox1.isSelected());
         Editables edit=new Articulos();
         if(accion==2){

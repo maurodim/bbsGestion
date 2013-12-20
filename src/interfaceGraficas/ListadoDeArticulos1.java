@@ -4,6 +4,8 @@
  */
 package interfaceGraficas;
 
+import java.awt.event.KeyEvent;
+
 /**
  *
  * @author mauro
@@ -42,6 +44,11 @@ public class ListadoDeArticulos1 extends javax.swing.JDialog {
         jList1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jList1MouseClicked(evt);
+            }
+        });
+        jList1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jList1KeyPressed(evt);
             }
         });
         jScrollPane1.setViewportView(jList1);
@@ -86,6 +93,12 @@ public class ListadoDeArticulos1 extends javax.swing.JDialog {
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
         this.dispose();
     }//GEN-LAST:event_jList1MouseClicked
+
+    private void jList1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jList1KeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            this.dispose();
+        }
+    }//GEN-LAST:event_jList1KeyPressed
 
     /**
      * @param args the command line arguments

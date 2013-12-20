@@ -61,17 +61,20 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jButton1" pref="178" max="32767" attributes="0"/>
-                      <Component id="jTextField1" max="32767" attributes="0"/>
-                      <Component id="jTextField2" max="32767" attributes="0"/>
-                      <Component id="jTextField3" max="32767" attributes="0"/>
-                      <Component id="jTextField4" max="32767" attributes="0"/>
-                      <Component id="jTextField5" max="32767" attributes="0"/>
-                      <Component id="jTextField6" pref="178" max="32767" attributes="0"/>
-                      <Component id="jTextField7" max="32767" attributes="0"/>
-                      <Component id="jCheckBox1" max="32767" attributes="0"/>
+                      <Component id="jCheckBox2" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jButton1" pref="178" max="32767" attributes="0"/>
+                          <Component id="jTextField1" max="32767" attributes="0"/>
+                          <Component id="jTextField2" max="32767" attributes="0"/>
+                          <Component id="jTextField3" max="32767" attributes="0"/>
+                          <Component id="jTextField4" max="32767" attributes="0"/>
+                          <Component id="jTextField5" max="32767" attributes="0"/>
+                          <Component id="jTextField6" pref="178" max="32767" attributes="0"/>
+                          <Component id="jTextField7" max="32767" attributes="0"/>
+                          <Component id="jCheckBox1" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace pref="238" max="32767" attributes="0"/>
+                  <EmptySpace pref="205" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -116,8 +119,10 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jCheckBox2" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="22" max="32767" attributes="0"/>
                   <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="52" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -198,6 +203,11 @@
         <Component class="javax.swing.JCheckBox" name="jCheckBox1">
           <Properties>
             <Property name="text" type="java.lang.String" value="Modifica Precio SI/NO"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="jCheckBox2">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Con servicio despues de 23 hs?SI / NO"/>
           </Properties>
         </Component>
       </SubComponents>

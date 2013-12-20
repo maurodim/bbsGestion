@@ -711,6 +711,7 @@ private void cargarLista(){
     ListadoDeArticulos listadoDeArticulos=new ListadoDeArticulos();
     listadoDeArticulos.jList1.setModel(modelo);
     listadoDeArticulos.setVisible(true);
+    listadoDeArticulos.jList1.requestFocus();
     int posicion=listadoDeArticulos.jList1.getSelectedIndex();
     System.out.println(" POSICION LISTA "+posicion);
     this.jTextField3.setText("");

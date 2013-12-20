@@ -20,6 +20,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyVetoException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -419,6 +420,11 @@ public class Inicio extends javax.swing.JFrame {
         jDesktopPane1.add(ingPed);
         ingPed.setVisible(true);
         ingPed.toFront();
+        try {
+            ingPed.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 

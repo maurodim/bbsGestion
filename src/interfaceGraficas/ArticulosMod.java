@@ -27,6 +27,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         this.jTextField5.setText(String.valueOf(arti.getPrecioUnitarioNeto()));
         this.jTextField7.setText(String.valueOf(arti.getCodigoDeBarra()));
         this.jTextField6.setText(String.valueOf(arti.getPrecioServicio()));
+        this.jCheckBox1.setSelected(arti.getModificaPrecio());
+        this.jCheckBox2.setSelected(arti.getModificaServicio());
         this.jTextField7.selectAll();
         this.jTextField7.requestFocus();
         accion=2;
@@ -69,6 +71,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         jLabel7 = new javax.swing.JLabel();
         jTextField7 = new javax.swing.JTextField();
         jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
 
         setClosable(true);
         setMaximizable(true);
@@ -108,6 +111,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
 
         jCheckBox1.setText("Modifica Precio SI/NO");
 
+        jCheckBox2.setText("Con servicio despues de 23 hs?SI / NO");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -124,16 +129,18 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2)
-                    .addComponent(jTextField3)
-                    .addComponent(jTextField4)
-                    .addComponent(jTextField5)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                    .addComponent(jTextField7)
-                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(238, Short.MAX_VALUE))
+                    .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                        .addComponent(jTextField1)
+                        .addComponent(jTextField2)
+                        .addComponent(jTextField3)
+                        .addComponent(jTextField4)
+                        .addComponent(jTextField5)
+                        .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                        .addComponent(jTextField7)
+                        .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(205, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,8 +176,10 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jCheckBox1)
                 .addGap(18, 18, 18)
+                .addComponent(jCheckBox2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -207,6 +216,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         cant=Numeros.ConvertirStringADouble(this.jTextField6.getText());
         arti.setPrecioServicio(cant);
         arti.setModificaPrecio(this.jCheckBox1.isSelected());
+        arti.setModificaServicio(this.jCheckBox2.isSelected());
         Editables edit=new Articulos();
         if(accion==2){
             edit.ModificaionObjeto(arti);
@@ -219,6 +229,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

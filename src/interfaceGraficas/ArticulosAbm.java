@@ -239,6 +239,7 @@ public class ArticulosAbm extends javax.swing.JInternalFrame {
     ListadoDeArticulos1 listadoDeArt=new ListadoDeArticulos1();
     listadoDeArt.jList1.setModel(modelo);
     listadoDeArt.setVisible(true);
+    listadoDeArt.jList1.requestFocus();
     int posicion=listadoDeArt.jList1.getSelectedIndex();
     Articulos articulo=(Articulos)lista.get(posicion);
     System.out.println(" codigo elegido "+articulo.getCodigoAsignado());

@@ -44,7 +44,17 @@ public class Articulos implements Facturar,Editables{
     private static Hashtable listadoNom=new Hashtable();
     private static Hashtable listadoCodigo=new Hashtable();
     private Double diferenciaRemitida;
+    private Boolean modificaServicio;
 
+    public Boolean getModificaServicio() {
+        return modificaServicio;
+    }
+
+    public void setModificaServicio(Boolean modificaServicio) {
+        this.modificaServicio = modificaServicio;
+    }
+
+    
     public Double getDiferenciaRemitida() {
         return diferenciaRemitida;
     }
@@ -239,6 +249,7 @@ public class Articulos implements Facturar,Editables{
                 articulo.setStockActual(rr.getDouble("stock"));
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
+                articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
                 listadoBarr.put(articulo.getCodigoDeBarra(),articulo);
                 codA=articulo.getCodigoAsignado();
                 listadoCodigo.put(codA,articulo);
@@ -249,7 +260,7 @@ public class Articulos implements Facturar,Editables{
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0 order by ID";
+        sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0 order by NOMBRE";
         rr=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rr.next()){
@@ -266,7 +277,9 @@ public class Articulos implements Facturar,Editables{
                 articulo.setStockActual(rr.getDouble("stock"));
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
-                listadoNom.put(articulo.descripcionArticulo,articulo);
+                articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
+                String nom=rr.getString("NOMBRE");
+                listadoNom.put(nom,articulo);
                 //resultado.add(articulo);
             }
             rr.close();
@@ -302,6 +315,7 @@ public class Articulos implements Facturar,Editables{
                 articulo.setStockActual(rr.getDouble("stock"));
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
+                articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
                 listadoBarr.put(articulo.getCodigoDeBarra(),articulo);
                listadoCodigo.put(articulo.getCodigoAsignado(),articulo);
                 //resultado.add(articulo);
@@ -310,7 +324,7 @@ public class Articulos implements Facturar,Editables{
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0 order by ID";
+        sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0 order by NOMBRE";
         rr=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rr.next()){
@@ -327,7 +341,9 @@ public class Articulos implements Facturar,Editables{
                 articulo.setStockActual(rr.getDouble("stock"));
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
-                listadoNom.put(articulo.descripcionArticulo,articulo);
+                articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
+                String nom=rr.getString("NOMBRE");
+                listadoNom.put(nom,articulo);
                 //resultado.add(articulo);
             }
             rr.close();
@@ -466,7 +482,7 @@ public class Articulos implements Facturar,Editables{
         Articulos articulo=(Articulos)objeto;
         Boolean ch=false;
         //String sql="insert into articulos (NOMBRE='"+articulo.getDescripcionArticulo()+"',SERVICIO="+articulo.getPrecioServicio()+",COSTO="+articulo.getPrecioDeCosto()+",PRECIO="+articulo.getPrecioUnitarioNeto()+",MINIMO="+articulo.getStockMinimo()+",BARRAS ='"+articulo.getCodigoDeBarra()+"',modificaPrecio="+articulo.getModificaPrecio()+" where ID="+articulo.getNumeroId();
-        String sql="insert into articulos (NOMBRE,SERVICIO,COSTO,PRECIO,MINIMO,BARRAS,modificaPrecio) values ('"+articulo.getDescripcionArticulo()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+",'"+articulo.getCodigoDeBarra()+"',"+articulo.getModificaPrecio()+")";
+        String sql="insert into articulos (NOMBRE,SERVICIO,COSTO,PRECIO,MINIMO,BARRAS,modificaPrecio,modificaServicio) values ('"+articulo.getDescripcionArticulo()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+",'"+articulo.getCodigoDeBarra()+"',"+articulo.getModificaPrecio()+","+articulo.getModificaServicio()+")";
         Transaccionable tra=new Conecciones();
         ch=tra.guardarRegistro(sql);
         return ch;
@@ -476,7 +492,7 @@ public class Articulos implements Facturar,Editables{
     public Boolean ModificaionObjeto(Object objeto) {
         Articulos articulo=(Articulos)objeto;
         Boolean ch=false;
-        String sql="update articulos set NOMBRE='"+articulo.getDescripcionArticulo()+"',SERVICIO="+articulo.getPrecioServicio()+",COSTO="+articulo.getPrecioDeCosto()+",PRECIO="+articulo.getPrecioUnitarioNeto()+",MINIMO="+articulo.getStockMinimo()+",BARRAS ='"+articulo.getCodigoDeBarra()+"',modificaPrecio="+articulo.getModificaPrecio()+" where ID="+articulo.getNumeroId();
+        String sql="update articulos set NOMBRE='"+articulo.getDescripcionArticulo()+"',SERVICIO="+articulo.getPrecioServicio()+",COSTO="+articulo.getPrecioDeCosto()+",PRECIO="+articulo.getPrecioUnitarioNeto()+",MINIMO="+articulo.getStockMinimo()+",BARRAS ='"+articulo.getCodigoDeBarra()+"',modificaPrecio="+articulo.getModificaPrecio()+",modificaServicio="+articulo.getModificaServicio()+" where ID="+articulo.getNumeroId();
         Transaccionable tra=new Conecciones();
         ch=tra.guardarRegistro(sql);
         return ch;

@@ -91,6 +91,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         jTextField4 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
+        jLabel9 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
@@ -264,6 +265,8 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel9.setText("PRESIONE F4 PARA IMPRIMIR");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -277,7 +280,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -294,6 +297,8 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -316,10 +321,12 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -331,6 +338,11 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         jList1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jList1MouseClicked(evt);
+            }
+        });
+        jList1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jList1KeyPressed(evt);
             }
         });
         jScrollPane2.setViewportView(jList1);
@@ -372,7 +384,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -418,8 +430,14 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                     int hora=calendario.get(Calendar.HOUR_OF_DAY);
                     System.out.println("LA HORA ACTUAL ES :"+hora);
                     if(hora >= 23 || hora < 8){
-                        this.jCheckBox1.setEnabled(false);
-                    }
+                        if(arti.getModificaServicio()){
+                         System.err.println("SI TIENE QUE MODIFICAR EL SERVICIO");  
+                         this.jCheckBox1.setEnabled(false);
+                        }else{
+                        System.err.println("NO DEBE MODIFICAR EL SERVICIO");
+                            this.jCheckBox1.setEnabled(true);
+                        }
+                        }
                 }
             }
             
@@ -433,6 +451,76 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         Facturar fart=new Articulos();
         listadoDeBusqueda=fart.listadoBusqueda(this.jTextField1.getText());
         cargarLista(listadoDeBusqueda);    
+        }
+        if(evt.getKeyCode()==KeyEvent.VK_F4){
+                    //verificar();
+        //Impresora imp=new Impresora();        
+        String cadena=cliT.getCodigoCliente()+" - "+cliT.getRazonSocial()+"\n"+cliT.getDireccion();
+        //comp.setCliente(cliT);
+        //VisorDeHojaDeRuta
+        
+        //comp.setVendedor(VisorDeHojaDeRuta.tG.getOperador());
+        if(this.jCheckBox1.isSelected()){
+        //    comp.setReparto(1);
+        //    comp.setEntrega(String.valueOf(this.jTextField3.getText()));
+        }
+        
+        //comp.setArticulos(detalleDelPedido);
+        DecimalFormat fr=new DecimalFormat("00");
+        Calendar c1=Calendar.getInstance();
+	Calendar c2=new GregorianCalendar();
+	String dia=Integer.toString(c2.get(Calendar.DAY_OF_MONTH));
+	String mes=Integer.toString(c2.get(Calendar.MONTH));
+	String ano=Integer.toString(c2.get(Calendar.YEAR));
+	
+        int da=Integer.parseInt(dia);
+        int me=Integer.parseInt(mes);
+        me++;
+        dia=fr.format(da);
+        mes=fr.format(me);
+        String fecha=dia+"/"+mes+"/"+ano;
+        String fecha2=ano+"-"+mes+"-"+dia;
+        //comp.setFechaComprobante(fecha2);
+        //comp.setFechaComprobante(fecha);
+        int comprobanteTipo=(int) Inicio.sucursal.getTipoComprobantes().get(0);
+        if(cliT.getCondicionIva().equals("RI "))comprobanteTipo=(int)Inicio.sucursal.getTipoComprobantes().get(1);
+        Comprobantes comprobante=new Comprobantes();
+        comprobante.setCliente(cliT);
+        comprobante.setTipoMovimiento(1);
+        comprobante.setTipoComprobante(comprobanteTipo);
+        comprobante.setFechaEmision((Date.valueOf(fecha2)));
+        comprobante.setListadoDeArticulos(detalleDelPedido);
+        comprobante.setUsuarioGenerador(Inicio.usuario.getNumero());
+        comprobante.setIdSucursal(Inicio.sucursal.getNumero());
+        comprobante.setIdDeposito(Inicio.deposito.getNumero());
+        comprobante.setIdCaja(Inicio.caja.getNumero());
+        comprobante.setMontoTotal(montoTotal);
+        if(this.jCheckBox2.isSelected()){
+            comprobante.setPagado(1);
+        }else{
+            comprobante.setPagado(0);
+        }
+        Facturar fat=new Comprobantes();
+        fat.guardar(comprobante);
+        /*
+         * ACA DEVO LIMPIAR TODOS LOS CAMPOS Y VARIABLES DE LA PANTALLA
+         * 
+         */
+        //comp.setTipoComprobante(comprobanteTipo);
+        //comp.setMontoTotal(montoTotal);
+        detalleDelPedido.clear();
+        agregarRenglonTabla();
+        this.jCheckBox2.setSelected(true);
+        this.jCheckBox2.setEnabled(false);
+        this.jList1.removeAll();
+        listadoDeBusqueda.clear();
+        cargarLista(listadoDeBusqueda);
+        cliT=new ClientesTango("999999");
+        this.jLabel6.setText(cliT.getRazonSocial());
+        this.jTextField2.setText("");
+        jTextField1.setText("");
+        jTextField1.requestFocus();
+
         }
     }//GEN-LAST:event_jTextField1KeyPressed
 
@@ -652,6 +740,22 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
     private void jCheckBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox1ItemStateChanged
        this.jTextField4.requestFocus();
     }//GEN-LAST:event_jCheckBox1ItemStateChanged
+
+    private void jList1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jList1KeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+                    int posicion=this.jList1.getSelectedIndex();
+        arti=(Articulos)listadoDeBusqueda.get(posicion);
+        System.err.println("ARTICULO SELECCIONADO :"+arti.getDescripcionArticulo()+" "+arti.getCodigoDeBarra());
+        String codBar=arti.getCodigoDeBarra();
+        jTextField1.setText(codBar.trim());
+      
+        this.jLabel8.setText(arti.getDescripcionArticulo());
+        
+        this.jTextField1.requestFocus();
+        
+
+        }
+    }//GEN-LAST:event_jList1KeyPressed
 private void cargarLista(ArrayList lista){
     DefaultListModel modelo=new DefaultListModel();
     Iterator il=lista.listIterator();
@@ -662,6 +766,7 @@ private void cargarLista(ArrayList lista){
         modelo.addElement(art.getCodigoAsignado()+" "+art.getDescripcionArticulo());
     }
     this.jList1.setModel(modelo);
+    this.jList1.requestFocus();
 }
 private void agregarRenglonTabla(){
         MiModeloTablaFacturacion busC=new MiModeloTablaFacturacion();
@@ -748,6 +853,7 @@ private void verificar(){
     public static javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

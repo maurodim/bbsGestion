@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import objetos.Articulos;
 import objetos.Comprobantes;
+import objetos.ConeccionLocal;
 import objetos.Conecciones;
 import objetos.Operaciones;
 
@@ -283,7 +284,12 @@ public class Cajas extends Sucursales implements Cajeables{
     private Integer NumeroDeComprobanteActivoMovCaja(){
         Integer numeroAct=0;
         String sql="select tipocomprobantes.numeroActivo from tipocomprobantes where numero=12";
-        Transaccionable tra=new Conecciones();
+        Transaccionable tra;
+        if(Inicio.coneccionRemota){
+            tra=new Conecciones();
+        }else{
+            tra=new ConeccionLocal();
+        }
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rr.next()){
@@ -303,7 +309,12 @@ public class Cajas extends Sucursales implements Cajeables{
     
     public void LeerCajaAdministradora(){
         String sql="select caja.numero from caja where tipo=1 and estado=0";
-        Transaccionable tra=new Conecciones();
+        Transaccionable tra;
+        if(Inicio.coneccionRemota){
+            tra=new Conecciones();
+        }else{
+            tra=new ConeccionLocal();
+        }
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){

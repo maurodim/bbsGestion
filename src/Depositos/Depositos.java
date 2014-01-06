@@ -5,6 +5,7 @@
 package Depositos;
 
 import Compras.Proveedores;
+import interfaceGraficas.Inicio;
 import interfaces.Personalizable;
 import interfaces.Transaccionable;
 import interfaces.Trasladable;
@@ -16,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import objetos.Articulos;
+import objetos.ConeccionLocal;
 import objetos.Conecciones;
 
 /**
@@ -35,7 +37,12 @@ public class Depositos implements Personalizable, Trasladable{
 
     public Depositos(int numero) {
         this.numero = numero;
-        Transaccionable tra=new Conecciones();
+        Transaccionable tra;
+        if(Inicio.coneccionRemota){
+            tra=new Conecciones();
+        }else{
+            tra=new ConeccionLocal();
+        }
         String sql1="select * from depositos where numero ="+numero;
         ResultSet rr=tra.leerConjuntoDeRegistros(sql1);
         try {
@@ -46,6 +53,7 @@ public class Depositos implements Personalizable, Trasladable{
                 
             }
             int numeroRemitoInterno=0;
+            if(Inicio.coneccionRemota){
             sql1="select movimientosdesucursales.numeroRemito from movimientosdesucursales where depDestino="+this.numero+" and confirmado=0 group by numeroRemito";
             rr=tra.leerConjuntoDeRegistros(sql1);
             while(rr.next()){
@@ -53,6 +61,7 @@ public class Depositos implements Personalizable, Trasladable{
                 System.out.println("REMITO INTERNO LEIDOOOOOO "+numeroRemitoInterno);
                 JOptionPane.showMessageDialog(null,"USTED TIENE REMITOS INTERNOS A CONFIRMAR");
                 remitosInternos.add(numeroRemitoInterno);
+            }
             }
             rr.close();
         } catch (SQLException ex) {

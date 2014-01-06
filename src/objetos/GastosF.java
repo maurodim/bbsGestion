@@ -71,7 +71,10 @@ public class GastosF implements Editables{
     
     public static void cargarMap(){
       String sql="select * from movimientosgastosfijos where pagado=0";
-      Transaccionable tra=new Conecciones();
+      Transaccionable tra;
+      if(Inicio.coneccionRemota){
+          tra=new Conecciones();
+      
       GastosF gastos;
       ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -92,6 +95,7 @@ public class GastosF implements Editables{
         } catch (SQLException ex) {
             Logger.getLogger(GastosF.class.getName()).log(Level.SEVERE, null, ex);
         }
+      }
     }
     private void ActualizarComprobante(){
         String sql="update tipocomprobantes set numeroActivo="+numeroComprobanteInt+" where numero=13";

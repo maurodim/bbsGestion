@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objetos.ConeccionLocal;
 import objetos.Conecciones;
 import objetos.Menus;
 
@@ -193,11 +194,12 @@ public class Usuarios extends TipoAcceso{
     public Object validarClave(String usuario, String clave) {
         Transaccionable tra=new Conecciones();
         Usuarios usu=null;
+        try{
         String sql="select *,(select tipoacceso.menu1 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu1,(select tipoacceso.menu2 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu2,(select tipoacceso.menu3 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu3,(select tipoacceso.menu4 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu4,(select tipoacceso.menu5 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu5,(select tipoacceso.menu6 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu6,(select tipoacceso.menu7 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu7 from usuarios where nombreUsuario like '"+usuario+"' and clave like '"+clave+"'";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
        
         
-        try {
+        
             while(rs.next()){
             usu=new Usuarios();
             usu.setNivelDeAutorizacion(rs.getInt("autorizacion"));
@@ -212,7 +214,33 @@ public class Usuarios extends TipoAcceso{
             rs.close();
             
         } catch (SQLException ex) {
-            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                System.out.println("NO SE CONECTA, ACA CARGA LOS OBJETOS"); 
+                Transaccionable tras=new ConeccionLocal();
+                String sql="select *,(select tipoacceso.menu1 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu1,(select tipoacceso.menu2 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu2,(select tipoacceso.menu3 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu3,(select tipoacceso.menu4 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu4,(select tipoacceso.menu5 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu5,(select tipoacceso.menu6 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu6,(select tipoacceso.menu7 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu7 from usuarios where nombreUsuario like '"+usuario+"' and clave like '"+clave+"'";
+                System.out.println(sql);
+                ResultSet rs=tras.leerConjuntoDeRegistros(sql);
+            
+                    
+               
+                 while(rs.next()){
+                 usu=new Usuarios();
+                 usu.setNivelDeAutorizacion(rs.getInt("autorizacion"));
+                 usu.setNombre(rs.getString("nombre"));
+                 usu.setNumero(rs.getInt("numero"));
+                 usu.setNumeroId(rs.getInt("numero"));
+                 usu.setSucursal(new Sucursales(rs.getInt("sucursal")));
+                 
+                         usu.setMenu(new Menus(rs.getBoolean("menu1"),rs.getBoolean("menu2"),rs.getBoolean("menu3"),rs.getBoolean("menu4"),rs.getBoolean("menu5"),rs.getBoolean("menu6"),rs.getBoolean("menu7")));                    
+                    
+                 }
+                 rs.close();
+             
+                 Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            
         }
         return usu;
     }

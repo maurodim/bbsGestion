@@ -6,12 +6,14 @@ package Sucursales;
 
 import Administracion.Administracion;
 import Depositos.Depositos;
+import interfaceGraficas.Inicio;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objetos.ConeccionLocal;
 import objetos.Conecciones;
 
 /**
@@ -38,7 +40,12 @@ public class Sucursales extends Administracion{
 
     public Sucursales(int numero) {
         this.numero = numero;
-        Transaccionable tra=new Conecciones();
+        Transaccionable tra;
+        if(Inicio.coneccionRemota){
+            tra=new Conecciones();
+        }else{
+            tra=new ConeccionLocal();
+        }
         String sql="select * from sucursal where numero="+numero;
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {

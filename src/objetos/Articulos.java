@@ -4,6 +4,7 @@
  */
 package objetos;
 
+import interfaceGraficas.Inicio;
 import interfaces.Editables;
 import interfaces.Transaccionable;
 import interfacesPrograma.Facturar;
@@ -228,10 +229,21 @@ public class Articulos implements Facturar,Editables{
     
     public static void CargarMap(){
         // ACA SE CARGA EL MAP PARA TENER ACCESO A LOS ARTICULOS SIN ESTAR CONECTADO , LA CLAVE EL CODIGO DE BARRA
-        Transaccionable tra=new Conecciones();
+        Transaccionable tra;
         //ArrayList resultado=new ArrayList();
+        String sql="";
         Articulos articulo=null;
-        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0";
+        if(Inicio.coneccionRemota){
+            tra=new Conecciones();
+            sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0";
+            
+        }else{
+            tra=new ConeccionLocal();
+            sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCKS) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio from articulos where INHABILITADO=0";
+            
+        }
+        
+        
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         String codA="";
         try {
@@ -258,9 +270,14 @@ public class Articulos implements Facturar,Editables{
             }
                   } catch (SQLException ex) {
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("ACA DEBE LEER EN LE ARCHIVO");
+            
         }
-        
+        if(Inicio.coneccionRemota){
         sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0 order by NOMBRE";
+        }else{
+            sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCKS) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio from articulos where INHABILITADO=0 order by NOMBRE";
+        }
         rr=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rr.next()){
@@ -286,7 +303,7 @@ public class Articulos implements Facturar,Editables{
         } catch (SQLException ex) {
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        if(Inicio.coneccionRemota)BackapearMap();
     }
     public static void RecargarMap(){
         
@@ -351,6 +368,30 @@ public class Articulos implements Facturar,Editables{
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    public static void BackapearMap(){
+        Transaccionable tt=new ConeccionLocal();
+        System.out.println(" CANTIDAD MAP "+listadoBarr.size());
+        String sql="delete from articulos";
+        tt.guardarRegistro(sql);
+        String criterio="";
+        Articulos articulo=null;
+        criterio=criterio.toUpperCase();
+        Enumeration<Articulos> elementos=listadoNom.elements();
+        while(elementos.hasMoreElements()){
+            articulo=(Articulos)elementos.nextElement();
+            int pos=articulo.getDescripcionArticulo().indexOf(criterio);
+            int mod=0;
+            int serv=0;
+            if(articulo.getModificaPrecio())mod=1;
+            if(articulo.getModificaServicio())serv=1;
+            if(articulo.getDescripcionArticulo().equals(""))articulo.setDescripcionArticulo("--");
+            sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stocks,equivalencia,modificaprecio,modificaservicio,recargo) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+")";
+            System.out.println("hash "+sql);
+            tt.guardarRegistro(sql);
+            
+            
+        }
     }
     @Override
     public Boolean guardar(Object oob) {

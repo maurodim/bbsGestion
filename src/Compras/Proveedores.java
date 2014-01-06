@@ -4,6 +4,7 @@
  */
 package Compras;
 
+import interfaceGraficas.Inicio;
 import interfaces.Personalizable;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
@@ -12,9 +13,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.Articulos;
+import objetos.ConeccionLocal;
 import objetos.Conecciones;
 
 /**
@@ -126,7 +129,12 @@ public class Proveedores implements Personalizable{
         try {
             listadoProv.clear();
             String sql="select * from proveedores order by NOMBRE";
-            Transaccionable tra=new Conecciones();
+            Transaccionable tra;
+            if(Inicio.coneccionRemota){
+                tra=new Conecciones();
+            }else{
+                tra=new ConeccionLocal();
+            }
             ResultSet rr=tra.leerConjuntoDeRegistros(sql);
             while(rr.next()){
                 Proveedores prov=new Proveedores();
@@ -144,9 +152,24 @@ public class Proveedores implements Personalizable{
                 listadoProv.put(prov.getNumero(),prov);
             }
             rr.close();
-            
+            if(Inicio.coneccionRemota)BackapearProveedores();
         } catch (SQLException ex) {
             Logger.getLogger(Proveedores.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private static void BackapearProveedores(){
+        //ArrayList listado=new ArrayList();
+        Personalizable per=new Proveedores();
+        Iterator ilP=per.listar().listIterator();
+        Proveedores proveedores=new Proveedores();
+        Transaccionable tra=new ConeccionLocal();
+        String sql="delete from proveedores";
+        tra.guardarRegistro(sql);
+        while(ilP.hasNext()){
+            proveedores=(Proveedores)ilP.next();
+            sql="insert into proveedores (id,nombre,domicilio,localidad,telefono,inhabilitado,numero,mail) values ("+proveedores.getNumero()+",'"+proveedores.getNombre()+"','"+proveedores.getDireccion()+"','"+proveedores.getLocalidad()+"','"+proveedores.getTelefono()+"',0,"+proveedores.getNumero()+",'"+proveedores.getMail()+"')";
+            System.out.println("PROVEEDORES backapearProveedores---"+sql);
+            tra.guardarRegistro(sql);
         }
     }
     @Override

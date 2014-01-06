@@ -5,6 +5,7 @@
 package facturacion.clientes;
 
 
+import interfaceGraficas.Inicio;
 import interfaces.Transaccionable;
 import interfacesPrograma.Busquedas;
 import interfacesPrograma.Facturar;
@@ -16,8 +17,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objetos.ConeccionLocal;
 import objetos.Conecciones;
 
 
@@ -86,7 +89,15 @@ public class ClientesTango implements Busquedas,Facturar{
               
             
             Transaccionable tra=new Conecciones();
-            String sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo from listcli";
+            String sql=null;
+            if(Inicio.coneccionRemota){
+                tra=new Conecciones();
+                sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo from listcli";    
+            }else{
+                tra=new ConeccionLocal();
+                sql="select (listcli.numero)as codMMd,listcli.COD_CLIENT,listcli.RAZON_SOCI,listcli.DOMICILIO,listcli.COND_VTA,(listcli.LISTADEPRECIO)as NRO_LISTA,(listcli.NUMERODECUIT)as IDENTIFTRI,listcli.empresa,listcli.TELEFONO_1,listcli.LOCALIDAD,listcli.coeficiente,(listcli.CUPODECREDITO) AS CUPO_CREDI,listcli.saldo,listcli.TIPO_IVA from listcli";
+            }
+            //sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo from listcli";
             System.out.println("CLIENTES "+sql);
             //String sql="select pedidos_carga1.COD_CLIENT,pedidos_carga1.RAZON_SOC,pedidos_carga1.NRO_PEDIDO,pedidos_carga1.numero,pedidos_carga1.LEYENDA_2 from pedidos_carga1 where RAZON_SOC like '"+cliente+"%' group by COD_CLIENT order by RAZON_SOC";
             ResultSet rs=tra.leerConjuntoDeRegistros(sql);
@@ -127,7 +138,7 @@ public class ClientesTango implements Busquedas,Facturar{
         } catch (SQLException ex) {
             Logger.getLogger(ClientesTango.class.getName()).log(Level.SEVERE, null, ex);
         }
-  
+            if(Inicio.coneccionRemota)BackapearClientes();
     }   
 
     public ClientesTango(String codigoCliente) {
@@ -370,7 +381,22 @@ public class ClientesTango implements Busquedas,Facturar{
         
         return lista;
     }
-
+    private static void BackapearClientes(){
+        ArrayList listado=new ArrayList();
+        Busquedas bus=new ClientesTango();
+        ClientesTango cli=new ClientesTango();
+        listado=bus.listar("");
+        Iterator ilC=listado.listIterator();
+        Transaccionable tt=new ConeccionLocal();
+        String sql="delete from listcli";
+        tt.guardarRegistro(sql);
+        while(ilC.hasNext()){
+            cli=(ClientesTango)ilC.next();
+            sql="insert into listcli (numero,cod_client,razon_soci,domicilio,telefono_1,cond_vta,listadeprecio,numerodecuit,empresa,condiciondeventa,localidad,coeficiente,cupodecredito,saldo,saldoactual) values ("+cli.getCodigoId()+",'"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','"+cli.getTelefono()+"',"+cli.getCondicionDeVenta()+","+cli.getListaDePrecios()+",'"+cli.getNumeroDeCuit()+"','"+cli.getEmpresa()+"',"+cli.getCondicionDeVenta()+",'"+cli.getLocalidad()+"',"+cli.getCoeficienteListaDeprecios()+","+cli.getCupoDeCredito()+","+cli.getSaldo()+","+cli.getSaldoActual()+")";
+            System.out.println("CLIENTES TANGO - "+sql);
+            tt.guardarRegistro(sql);
+        }
+    }
     @Override
     public ArrayList listar(String cliente) {
         ArrayList ped=new ArrayList();

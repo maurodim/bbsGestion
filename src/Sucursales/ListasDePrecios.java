@@ -4,12 +4,14 @@
  */
 package Sucursales;
 
+import interfaceGraficas.Inicio;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objetos.ConeccionLocal;
 import objetos.Conecciones;
 
 /**
@@ -57,7 +59,12 @@ public class ListasDePrecios {
         this.desccripcion = desccripcion;
     }
     public static void cargarMap(){
-         Transaccionable tra=new Conecciones();
+         Transaccionable tra;
+         if(Inicio.coneccionRemota){
+             tra=new Conecciones();
+         }else{
+             tra=new ConeccionLocal();
+         }
         String sql="select * from coeficienteslistas";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -79,6 +86,9 @@ public class ListasDePrecios {
             
         }
         
+    }
+    public static void BackaperaListasDePrecios(){
+        aa;
     }
     
 }

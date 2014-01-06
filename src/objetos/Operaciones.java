@@ -4,10 +4,12 @@
  */
 package objetos;
 
+import interfaceGraficas.Inicio;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,7 +65,12 @@ public class Operaciones {
     }
     
     public static void cargarArrayCaja(){
-        Transaccionable tra=new Conecciones();
+        Transaccionable tra;
+        if(Inicio.coneccionRemota){
+            tra=new Conecciones();
+        }else{
+            tra=new ConeccionLocal();
+        }
         String sql="select * from tipomovimientos where destinoOperacion=2";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -82,10 +89,15 @@ public class Operaciones {
         } catch (SQLException ex) {
             Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+        if(Inicio.coneccionRemota)BackapearOperaciones();
     }
     public static void cargarArray(){
-        Transaccionable tra=new Conecciones();
+        Transaccionable tra;
+        if(Inicio.coneccionRemota){
+            tra=new Conecciones();
+        }else{
+            tra=new ConeccionLocal();
+        }
         String sql="select * from tipomovimientos";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -106,5 +118,18 @@ public class Operaciones {
             Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    private static void BackapearOperaciones(){
+        String sql="delete from tipomovimientos";
+        cargarArray();
+        Transaccionable tt=new ConeccionLocal();
+        tt.guardarRegistro(sql);
+        Iterator itO=listOp.listIterator();
+        Operaciones oper=new Operaciones();
+        while(itO.hasNext()){
+            oper=(Operaciones)itO.next();
+            sql="insert into tipomovimientos (id,descripcion,destinooperacion,multiploop) values ("+oper.getId()+",'"+oper.getDescripcion()+"',"+oper.getDestino()+","+oper.getValor()+")";
+            tt.guardarRegistro(sql);
+        }
     }
 }

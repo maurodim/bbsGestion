@@ -52,6 +52,7 @@ public class Inicio extends javax.swing.JFrame {
     public static Date fechaVal;
     public static Integer numeroCajaAdministradora=0;
     private BufferedImage img;
+    public static Boolean coneccionRemota=true;
 
     public void setNiv(Integer nive) {
         niv = nive;
@@ -87,10 +88,15 @@ public class Inicio extends javax.swing.JFrame {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
         Articulos.CargarMap();
+        //if(coneccionRemota){
+        //Articulos.CargarMap();
         Proveedores.cargarListadoProv();
         ClientesTango.cargarMap();
         ListasDePrecios.cargarMap();
         GastosF.cargarMap();
+        //}else{
+            
+        //}
         initComponents();
         
         Actualiza actu=new Actualiza();
@@ -113,7 +119,9 @@ public class Inicio extends javax.swing.JFrame {
     private void initComponents() {
 
         try {
-            img = ImageIO.read(new URL("http://www.maurodi.net/imagenes/saynomore.jpg"));
+            if(coneccionRemota){
+                img = ImageIO.read(new URL("http://www.maurodi.net/imagenes/saynomore.jpg"));
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }

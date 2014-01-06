@@ -7,11 +7,11 @@ package objetos;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import interfaceGraficas.Inicio;
 import interfaces.Transaccionable;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,63 +26,28 @@ import java.util.logging.Logger;
 /**
  *
  * @author mauro
- * AQUI SE VAN A GESTIONAR TODAS LAS CONECCIONES DEL SISTEMA, LOS DATOS COMO OBJETOS
- * Y LAS INTERFACES VAN A GUARDAR, ELIMINAR O ACTUALIZAR LAS TABLAS, SE VA A PASAR EL STRING POR LA INTERFAZ 
- * PARA QUE AQUI SE REALICE LA TRANSACCION
- * 
  */
-public class Conecciones implements Transaccionable{
+public class ConeccionLocal implements Transaccionable{
     private Connection con;
     private Statement st;
+    private String driver1="org.apache.derby.jdbc.EmbeddedDriver";
 
-    public Conecciones() {
-                MysqlDataSource dataSource=new MysqlDataSource();
-		try{
-			//Class.forName(driver1).newInstance();
-                    dataSource.setUser("maurodim");//maurodim
-                    dataSource.setDatabaseName("maurodim_lseriea");//maurodim_lseriea
-                    dataSource.setPassword("mau*2012");//mau*2012
-                    dataSource.setServerName("201.235.253.65");//201.235.253.65
-                    con=dataSource.getConnection();
-                    st=con.createStatement();
-                 }catch(Exception ex){
-                    
-                String cod1=String.valueOf(ex);
-                        
-			System.out.println("NO SE PUDO CONECTAR A LA BASE "+ex);
-		FileWriter fichero=null;
-            PrintWriter pw=null;
-            String fechaDia;
-            DecimalFormat fr=new DecimalFormat("00");
-        Calendar c1=Calendar.getInstance();
-	Calendar c2=new GregorianCalendar();
-	String dia=Integer.toString(c2.get(Calendar.DAY_OF_MONTH));
-	String mes=Integer.toString(c2.get(Calendar.MONTH));
-	String ano=Integer.toString(c2.get(Calendar.YEAR));
-	
-        int da=Integer.parseInt(dia);
-        int me=Integer.parseInt(mes);
-        me++;
-        dia=fr.format(da);
-        mes=fr.format(me);
-        fechaDia=ano+"-"+mes+"-"+dia;
+    public ConeccionLocal() {
+              Connection dbConnection = null;
+ String strUrl = "jdbc:derby://localhost:1527/respaldo;create=true";
             try {
-                fichero = new FileWriter("C:\\Gestion\\"+fechaDia+" - erroresDeLectura.txt",true);
-                pw=new PrintWriter(fichero);
-                pw.println(ex);
-            } catch (IOException ex1) {
-                Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex1);
-            }finally{
-                         try {
-           // Nuevamente aprovechamos el finally para 
-           // asegurarnos que se cierra el fichero.
-           if (null != fichero)
-              fichero.close();
-           } catch (Exception e2) {
-              e2.printStackTrace();
-           }
+                Class.forName(driver1).newInstance();
+                dbConnection = DriverManager.getConnection (strUrl,"maurodim","mau*2012");
+                st=dbConnection.createStatement();
+            } catch (InstantiationException ex) {
+            Logger.getLogger(ConeccionLocal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(ConeccionLocal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ConeccionLocal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+                Logger.getLogger(ConeccionLocal.class.getName()).log(Level.SEVERE, null, ex);
             }
-                 }
 
         
     }
@@ -144,17 +109,8 @@ public class Conecciones implements Transaccionable{
     public ResultSet leerConjuntoDeRegistros(String sql) {
         ResultSet rs=null;
         try {
-            /*
-            if(st==null){
-             Transaccionable tt=new ConeccionLocal();
-             System.out.println("ACA DESDE CONECCIONES "+sql);
-             rs=tt.leerConjuntoDeRegistros(sql);
-            }else{
-            */ 
             st.execute(sql);
-            
             rs=st.getResultSet();
-            //}
         } catch (SQLException ex) {
             System.out.println("NO SE CONECTA, ACA CARGA LOS OBJETOS");
             Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex);
@@ -162,9 +118,5 @@ public class Conecciones implements Transaccionable{
         }
         return rs;
     }
-
-   
-
-    }
     
-
+}

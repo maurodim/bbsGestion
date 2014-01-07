@@ -213,7 +213,12 @@ public class Comprobantes implements Facturar{
         this.descargaStock = descargaStock;
     }
     private static void numeroActual(int tipoComprobante){
-        Transaccionable tra=new Conecciones();
+        Transaccionable tra;
+        if(Inicio.coneccionRemota){
+            tra=new Conecciones();
+        }else{
+            tra=new ConeccionLocal();
+        }
         String tc="ticket";
         String fc="FCA A";
         String tx="";
@@ -261,14 +266,19 @@ public class Comprobantes implements Facturar{
             verif=tra.guardarRegistro(sql);
             
         }
-        if(verif){
+        
             sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado) values ("+comp.getUsuarioGenerador()+","+comp.getIdSucursal()+","+comp.getNumero()+","+comp.getTipoComprobante()+","+comp.getMontoTotal()+","+comp.getTipoMovimiento()+","+comp.getIdCaja()+","+comp.getCliente().getCodigoId()+",1,"+comp.getPagado()+")";
             tra.guardarRegistro(sql);
             sql="insert into movimientosclientes (numeroProveedor,monto,pagado,numeroComprobante,idUsuario,idCaja,idSucursal,tipoComprobante) value ("+comp.getCliente().getCodigoId()+","+comp.getMontoTotal()+","+comp.getPagado()+","+numeroComprobante+","+Inicio.usuario.getNumeroId()+","+Inicio.caja.getNumero()+","+Inicio.sucursal.getNumero()+","+comp.getTipoComprobante()+")";
             tra.guardarRegistro(sql);
-        }
+        
         System.out.println("SE RECEPCIONO BARBARO");
         sql="update tipocomprobantes set numeroActivo="+numeroComprobante+" where numero="+idComp;
+        if(Inicio.coneccionRemota){
+            
+        }else{
+            tra=new ConeccionLocal();
+        }
         tra.guardarRegistro(sql);
         return true;
     }

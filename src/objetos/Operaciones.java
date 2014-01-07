@@ -119,7 +119,7 @@ public class Operaciones {
         }
         
     }
-    private static void BackapearOperaciones(){
+    public static void BackapearOperaciones(){
         String sql="delete from tipomovimientos";
         cargarArray();
         Transaccionable tt=new ConeccionLocal();

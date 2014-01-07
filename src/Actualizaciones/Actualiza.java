@@ -31,6 +31,7 @@ public class Actualiza extends Thread{
         Proveedores.cargarListadoProv();
         ClientesTango.cargarMap();
         ListasDePrecios.cargarMap();
+        
      } 
 }); 
         timer.start();

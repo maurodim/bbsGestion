@@ -8,6 +8,7 @@ import interfaceGraficas.Inicio;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,10 +86,22 @@ public class ListasDePrecios {
             Logger.getLogger(ListasDePrecios.class.getName()).log(Level.SEVERE, null, ex);
             
         }
-        
+        if(Inicio.coneccionRemota)BackapearListasDePrecios();
     }
-    public static void BackaperaListasDePrecios(){
-        aa;
+    public static void BackapearListasDePrecios(){
+        ListasDePrecios rs=new ListasDePrecios();
+        Transaccionable tra=new ConeccionLocal();
+        String sql="delete from coeficienteslistas";
+        tra.guardarRegistro(sql);
+        Enumeration<ListasDePrecios> elementos=listadoDeListas.elements();
+            while(elementos.hasMoreElements()){
+                rs=(ListasDePrecios)elementos.nextElement();
+                sql="insert into coeficienteslistas (id,coeficiente,descripcion) values ("+rs.getId()+","+rs.getCoeficiente()+",'"+rs.getDesccripcion()+"')";
+                System.out.println("LISTAS DE PRECIOS  BACKAPEARLISTAS --"+sql);
+                tra.guardarRegistro(sql);
+                
+                }
+            }
     }
     
-}
+

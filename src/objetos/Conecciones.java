@@ -92,7 +92,13 @@ public class Conecciones implements Transaccionable{
         Boolean coneccion=true;
         try {
             System.out.println("SENTENCIA "+sql);
+            if(st==null){
+                Transaccionable tt=new ConeccionLocal();
+            String ss="insert into fallas (st) values ('"+sql+"')";
+            tt.guardarRegistro(ss);
+            }else{
             st.executeUpdate(sql);
+            }
             //this.st.executeQuery(sql);
             
         } catch (SQLException ex) {
@@ -101,10 +107,14 @@ public class Conecciones implements Transaccionable{
             coneccion=false;
             FileWriter fichero=null;
             PrintWriter pw=null;
+            Transaccionable tt=new ConeccionLocal();
+            String ss="insert into fallas (st) values ('"+sql+"')";
+            tt.guardarRegistro(sql);
             try {
                 fichero = new FileWriter("C:\\Gestion\\"+Inicio.fechaDia+" - erroresDeConeccion.txt",true);
                 pw=new PrintWriter(fichero);
                 pw.println(sql);
+                
             } catch (IOException ex1) {
                 Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex1);
             }finally{

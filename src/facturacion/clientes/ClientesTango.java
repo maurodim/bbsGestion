@@ -381,7 +381,7 @@ public class ClientesTango implements Busquedas,Facturar{
         
         return lista;
     }
-    private static void BackapearClientes(){
+    public static void BackapearClientes(){
         ArrayList listado=new ArrayList();
         Busquedas bus=new ClientesTango();
         ClientesTango cli=new ClientesTango();

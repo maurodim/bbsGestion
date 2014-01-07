@@ -157,7 +157,7 @@ public class Proveedores implements Personalizable{
             Logger.getLogger(Proveedores.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    private static void BackapearProveedores(){
+    public static void BackapearProveedores(){
         //ArrayList listado=new ArrayList();
         Personalizable per=new Proveedores();
         Iterator ilP=per.listar().listIterator();

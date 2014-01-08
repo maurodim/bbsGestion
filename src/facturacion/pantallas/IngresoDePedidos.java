@@ -429,7 +429,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                     Calendar calendario=new GregorianCalendar();
                     int hora=calendario.get(Calendar.HOUR_OF_DAY);
                     System.out.println("LA HORA ACTUAL ES :"+hora);
-                    if(hora >= 23 || hora < 8){
+                    if(hora >= 00 || hora < 8){
                         if(arti.getModificaServicio()){
                          System.err.println("SI TIENE QUE MODIFICAR EL SERVICIO");  
                          this.jCheckBox1.setEnabled(false);

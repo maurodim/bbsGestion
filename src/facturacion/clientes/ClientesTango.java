@@ -95,7 +95,7 @@ public class ClientesTango implements Busquedas,Facturar{
                 sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo from listcli";    
             }else{
                 tra=new ConeccionLocal();
-                sql="select (listcli.numero)as codMMd,listcli.COD_CLIENT,listcli.RAZON_SOCI,listcli.DOMICILIO,listcli.COND_VTA,(listcli.LISTADEPRECIO)as NRO_LISTA,(listcli.NUMERODECUIT)as IDENTIFTRI,listcli.empresa,listcli.TELEFONO_1,listcli.LOCALIDAD,listcli.coeficiente,(listcli.CUPODECREDITO) AS CUPO_CREDI,listcli.saldo,listcli.TIPO_IVA from listcli";
+                sql="select codMMd,listcli.COD_CLIENT,listcli.RAZON_SOCI,listcli.DOMICILIO,listcli.COND_VTA,(listcli.LISTADEPRECIO)as NRO_LISTA,(listcli.NUMERODECUIT)as IDENTIFTRI,listcli.empresa,listcli.TELEFONO_1,listcli.coeficiente,(listcli.CUPODECREDITO) AS CUPO_CREDI,listcli.saldo,listcli.TIPO_IVA from listcli";
             }
             //sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo from listcli";
             System.out.println("CLIENTES "+sql);
@@ -121,7 +121,7 @@ public class ClientesTango implements Busquedas,Facturar{
                 cli.setEmpresa(rs.getString("empresa"));
                 cli.setCondicionIva(rs.getString("TIPO_IVA"));
                 cli.setTelefono(rs.getString("TELEFONO_1"));
-                cli.setLocalidad(rs.getString("LOCALIDAD"));
+       
                 cli.setCoeficienteListaDeprecios(rs.getDouble("coeficiente"));
                 cli.setCupoDeCredito(rs.getDouble("CUPO_CREDI"));
                 cli.setSaldo(rs.getDouble("saldo"));
@@ -392,7 +392,8 @@ public class ClientesTango implements Busquedas,Facturar{
         tt.guardarRegistro(sql);
         while(ilC.hasNext()){
             cli=(ClientesTango)ilC.next();
-            sql="insert into listcli (numero,cod_client,razon_soci,domicilio,telefono_1,cond_vta,listadeprecio,numerodecuit,empresa,condiciondeventa,localidad,coeficiente,cupodecredito,saldo,saldoactual) values ("+cli.getCodigoId()+",'"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','"+cli.getTelefono()+"',"+cli.getCondicionDeVenta()+","+cli.getListaDePrecios()+",'"+cli.getNumeroDeCuit()+"','"+cli.getEmpresa()+"',"+cli.getCondicionDeVenta()+",'"+cli.getLocalidad()+"',"+cli.getCoeficienteListaDeprecios()+","+cli.getCupoDeCredito()+","+cli.getSaldo()+","+cli.getSaldoActual()+")";
+            
+            sql="insert into listcli (codmmd,cod_client,razon_soci,domicilio,telefono_1,cond_vta,listadeprecio,numerodecuit,empresa,coeficiente,cupodecredito,saldo,saldoactual,tipo_iva) values ("+cli.getCodigoId()+",'"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','"+cli.getTelefono()+"',"+cli.getCondicionDeVenta()+","+cli.getListaDePrecios()+",'"+cli.getNumeroDeCuit()+"','"+cli.getEmpresa()+"',"+cli.getCoeficienteListaDeprecios()+","+cli.getCupoDeCredito()+","+cli.getSaldo()+","+cli.getSaldoActual()+",1)";
             System.out.println("CLIENTES TANGO - "+sql);
             tt.guardarRegistro(sql);
         }

@@ -237,6 +237,9 @@ public class Comprobantes implements Facturar{
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(Comprobantes.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(NullPointerException ee){
+            Inicio.coneccionRemota=false;
+            numeroActual(tipoComprobante);
         }
     }
     @Override
@@ -262,7 +265,7 @@ public class Comprobantes implements Facturar{
         while(iComp.hasNext()){
             articulo=(Articulos)iComp.next();
             Double cantidad=articulo.getCantidad() * -1;
-            sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario,precioDeVenta,precioServicio) values ("+comp.getTipoMovimiento()+","+articulo.getNumeroId()+","+cantidad+","+Inicio.deposito.getNumero()+","+comp.getTipoComprobante()+","+comp.getNumero()+",'"+comp.getCliente().getCodigoCliente()+"','"+comp.getFechaEmision()+"',"+comp.getUsuarioGenerador()+","+articulo.getPrecioUnitario()+","+articulo.getPrecioServicio()+")";
+            sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario,precioDeVenta,precioServicio) values ("+comp.getTipoMovimiento()+","+articulo.getNumeroId()+","+cantidad+","+Inicio.deposito.getNumero()+","+comp.getTipoComprobante()+","+comp.getNumero()+",'"+comp.getCliente().getCodigoId()+"','"+comp.getFechaEmision()+"',"+comp.getUsuarioGenerador()+","+articulo.getPrecioUnitario()+","+articulo.getPrecioServicio()+")";
             verif=tra.guardarRegistro(sql);
             
         }

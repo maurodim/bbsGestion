@@ -10,6 +10,7 @@ import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.ConeccionLocal;
@@ -32,6 +33,7 @@ public class Usuarios extends TipoAcceso{
     private Integer nivelDeAutorizacion;
     private Sucursales sucursal;
     private Menus menu;
+    private static ArrayList lista=new ArrayList();
 
     public Integer getNivelDeAutorizacion() {
         return nivelDeAutorizacion;
@@ -95,6 +97,7 @@ public class Usuarios extends TipoAcceso{
     }
 
     public void setDireccion(String direccion) {
+        if(direccion.equals(""))direccion=" ";
         this.direccion = direccion;
     }
 
@@ -103,6 +106,7 @@ public class Usuarios extends TipoAcceso{
     }
 
     public void setTelefono(String telefono) {
+        if(telefono.equals(""))telefono=" ";
         this.telefono = telefono;
     }
 
@@ -111,6 +115,7 @@ public class Usuarios extends TipoAcceso{
     }
 
     public void setMail(String mail) {
+        if(mail.equals(""))mail=" ";
         this.mail = mail;
     }
 
@@ -119,6 +124,7 @@ public class Usuarios extends TipoAcceso{
     }
 
     public void setLocalidad(String localidad) {
+        if(localidad.equals(""))localidad=" ";
         this.localidad = localidad;
     }
 
@@ -137,8 +143,77 @@ public class Usuarios extends TipoAcceso{
     public void setClave(String clave) {
         this.clave = clave;
     }
-
-    
+    public static void BackapearUsuarios(){
+        Transaccionable tra=new ConeccionLocal();
+        //lista.clear();
+        Cargar();
+        String sql="delete from usuarios";
+        tra.guardarRegistro(sql);
+        Usuarios usu=new Usuarios();
+        System.out.println("TAMAÑO LISTA "+lista.size());
+        Iterator itUs=lista.listIterator();
+        String parteSentencia="";
+        while(itUs.hasNext()){
+            usu=(Usuarios)itUs.next();
+            parteSentencia=usu.getNumeroId()+",'"+usu.getNombre()+"','"+usu.getDireccion()+"','"+usu.getLocalidad()+"','"+usu.getTelefono()+"','"+usu.getMail()+"','"+usu.getNombreDeUsuario()+"','"+usu.getClave()+"',"+usu.getNivelDeAutorizacion()+","+usu.getNivel()+","+usu.getSucursal().getNumero();
+            //System.out.println("A VER "+parteSentencia);
+            sql="insert into usuarios (numero,nombre,direccion,localidad,telefono,mail,nombreusuario,clave,autorizacion,numerotipoacceso,sucursal) values ("+parteSentencia+")";
+            //System.out.println("SENTENCIA BACKAPEARUSUARIOS --"+sql);
+            tra.guardarRegistro(sql);
+        }
+        lista.clear();
+        if(Inicio.coneccionRemota){
+            String sentencia="";
+            sql="delete from tipoacceso";
+            tra.guardarRegistro(sql);
+            sql="select * from tipoacceso";
+            Transaccionable tt=new Conecciones();
+            ResultSet rs=tt.leerConjuntoDeRegistros(sql);
+            try {
+                while(rs.next()){
+                    sentencia="insert into tipoacceso(numero,descripcion,nivel,menu1,menu2,menu3,menu4,menu5,menu6,menu7) values ("+rs.getInt("numero")+",'"+rs.getString("descripcion")+"',"+rs.getInt("nivel")+","+rs.getInt("menu1")+","+rs.getInt("menu2")+","+rs.getInt("menu3")+","+rs.getInt("menu4")+","+rs.getInt("menu5")+","+rs.getInt("menu6")+","+rs.getInt("menu7")+")";
+                    tra.guardarRegistro(sentencia);
+                    
+                }
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    private static void Cargar(){
+        try {
+            
+            String sql="select *,(select tipoacceso.menu1 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu1,(select tipoacceso.menu2 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu2,(select tipoacceso.menu3 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu3,(select tipoacceso.menu4 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu4,(select tipoacceso.menu5 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu5,(select tipoacceso.menu6 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu6,(select tipoacceso.menu7 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu7 from usuarios";
+            String sql1="";
+            Usuarios us=null;
+            Transaccionable traUs=new Conecciones();
+            ResultSet rr=traUs.leerConjuntoDeRegistros(sql);
+            
+            while(rr.next()){
+                us=new Usuarios();
+                us.nombre=rr.getString("nombre");
+                us.direccion=rr.getString("direccion");
+                us.localidad=rr.getString("localidad");
+                us.mail=rr.getString("mail");
+                us.numeroId=rr.getInt("numero");
+                us.telefono=rr.getString("telefono");
+                us.nombreDeUsuario=rr.getString("nombreUsuario");
+                us.clave=rr.getString("clave");
+                us.sucursal=new Sucursales(rr.getInt("sucursal"));
+                us.setNivel(rr.getInt("autorizacion"));
+                us.setNivelDeAutorizacion(rr.getInt("autorizacion"));
+                System.err.println("USUARIOS "+us.nombre);
+                us.setMenu(new Menus(rr.getBoolean("menu1"),rr.getBoolean("menu2"),rr.getBoolean("menu3"),rr.getBoolean("menu4"),rr.getBoolean("menu5"),rr.getBoolean("menu6"),rr.getBoolean("menu7")));
+                lista.add(us);
+                
+            }
+            
+            rr.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public ArrayList listarUsuario(){
         ArrayList listadoUsuarios=new ArrayList();
         try {

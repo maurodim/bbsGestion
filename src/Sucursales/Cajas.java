@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import objetos.Articulos;
 import objetos.Comprobantes;
 import objetos.ConeccionLocal;
@@ -312,7 +313,7 @@ public class Cajas extends Sucursales implements Cajeables{
         return numeroAct;
     }
     
-    public void LeerCajaAdministradora(){
+    public static void LeerCajaAdministradora(){
         String sql="select caja.numero from caja where tipo=1 and estado=0";
         Transaccionable tra;
         if(Inicio.coneccionRemota){
@@ -330,6 +331,9 @@ public class Cajas extends Sucursales implements Cajeables{
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (NullPointerException ee){
+            Inicio.coneccionRemota=false;
+            LeerCajaAdministradora();
         }
         
         
@@ -380,7 +384,7 @@ public class Cajas extends Sucursales implements Cajeables{
         while(itL.hasNext()){
             caja=(Cajas)itL.next();
             ff=Numeros.ConvertirFecha(caja.getFechaInicio());
-            sql="insert into caja(numero,numerosucursal,numerousuario,tipomovimiento,fechas,saldoinicial,estado,tipo) values ("+caja.getNumero()+","+caja.getSucursal().getNumero()+","+caja.getUsuario().getNumeroId()+","+caja.getTipoMovimiento()+",'"+ff+"',"+caja.getSaldoInicial()+",0,"+caja.getTipo()+")";
+            sql="insert into caja(numero,numerosucursal,numerousuario,tipomovimiento,saldoinicial,estado,tipo) values ("+caja.getNumero()+","+caja.getSucursal().getNumero()+","+caja.getUsuario().getNumeroId()+","+caja.getTipoMovimiento()+","+caja.getSaldoInicial()+",0,"+caja.getTipo()+")";
             System.out.println("CAJA BACKAPEARCAJA --"+sql);
             tra.guardarRegistro(sql);
         }
@@ -530,6 +534,8 @@ public class Cajas extends Sucursales implements Cajeables{
             cajas.saldoFinal=saldoFinal;
         } catch (SQLException ex) {
             Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(NullPointerException ee){
+            JOptionPane.showMessageDialog(null,"Fallo en la conexion, verifique si posee conexion a Internet");
         }
         
         return cajas;
@@ -594,8 +600,18 @@ public class Cajas extends Sucursales implements Cajeables{
         listadoCajas.add(caj);
         
         Double monto=caj.getMontoMovimiento() * (-1);
-        String sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado,observaciones) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+caj.getNumeroDeComprobante()+","+caj.getTipoDeComprobante()+","+monto+","+caj.getTipoMovimiento()+","+caj.getNumero()+",0,2,0,'"+caj.getDescripcionMovimiento()+"')";
-        Transaccionable tra=new Conecciones();
+        String sql="";
+        
+        
+             Transaccionable tra;
+        if(Inicio.coneccionRemota){
+            tra=new Conecciones();
+            sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado,observaciones) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+caj.getNumeroDeComprobante()+","+caj.getTipoDeComprobante()+","+monto+","+caj.getTipoMovimiento()+","+caj.getNumero()+",0,2,0,'"+caj.getDescripcionMovimiento()+"')";
+        }else{
+            tra=new ConeccionLocal();
+            sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+caj.getNumeroDeComprobante()+","+caj.getTipoDeComprobante()+","+monto+","+caj.getTipoMovimiento()+","+caj.getNumero()+",0,2,0)";
+            sql="insert into fallas (st,estado) values ('"+sql+"',0)";
+        }
         tra.guardarRegistro(sql);
         
         return caj;

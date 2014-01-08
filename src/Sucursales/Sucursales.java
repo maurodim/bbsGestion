@@ -66,7 +66,27 @@ public class Sucursales extends Administracion{
             Logger.getLogger(Sucursales.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+    public static void BackapearSucursales(){
+        
+        String sentencia="";
+        if(Inicio.coneccionRemota){
+            Transaccionable tra=new Conecciones();
+            Transaccionable tt=new ConeccionLocal();
+            String sql="select * from sucursal";
+            tt.guardarRegistro("delete from sucursal");
+            ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+            try {
+                while(rs.next()){
+                    sentencia="insert into sucursal (numero,descripcion,direccion,telefono,deposito) values ("+rs.getInt("numero")+",'"+rs.getString("descripcion")+"','"+rs.getString("direccion")+"','"+rs.getString("telefono")+"',"+rs.getInt("deposito")+")";
+                    tt.guardarRegistro(sentencia);
+                    
+                }
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Sucursales.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
     public int getNumero() {
         return numero;
     }

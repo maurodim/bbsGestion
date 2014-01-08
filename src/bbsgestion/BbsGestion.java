@@ -18,6 +18,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import objetos.ConeccionLocal;
 import objetos.Conecciones;
 
 /**
@@ -37,6 +39,7 @@ public class BbsGestion {
         */
         File folder=new File("C:\\Gestion");
         File archivos=new File("C:\\Informes");
+        File bases=new File("C:\\Gestion\\DB");
         //File imagenes=new File("C:\\Gestion\\imagenes\\saynomore.jpg");
         File bk;
         //FileInputStream fregis = new FileInputStream("C:\\Users\\mauro\\Pictures\\Camera Uploads\\snm.jpg"); 
@@ -45,7 +48,12 @@ public class BbsGestion {
         File archivo=null;
         FileReader fr=null;
         BufferedReader br=null;
-        
+        if(!bases.isDirectory()){
+            JOptionPane.showMessageDialog(null,"INICIANDO CONFIGURACION Y CREACION DE LA BASE DE DATOS");
+            bases.mkdirs();
+            ConeccionLocal.CrearDb();
+            
+        }
         if(!folder.isDirectory()){
             System.out.println("EXISTE EL DIRECTORIO");
             folder.mkdirs();

@@ -94,10 +94,12 @@ public class Conecciones implements Transaccionable{
             System.out.println("SENTENCIA "+sql);
             if(st==null){
                 Transaccionable tt=new ConeccionLocal();
-            String ss="insert into fallas (st) values ('"+sql+"')";
+            String ss="insert into fallas (st,estado) values ('"+sql+"',0)";
             tt.guardarRegistro(ss);
+            Inicio.coneccionRemota=false;
             }else{
             st.executeUpdate(sql);
+            Inicio.coneccionRemota=true;
             }
             //this.st.executeQuery(sql);
             
@@ -107,6 +109,7 @@ public class Conecciones implements Transaccionable{
             coneccion=false;
             FileWriter fichero=null;
             PrintWriter pw=null;
+            Inicio.coneccionRemota=false;
             Transaccionable tt=new ConeccionLocal();
             String ss="insert into fallas (st) values ('"+sql+"')";
             tt.guardarRegistro(sql);
@@ -141,9 +144,11 @@ public class Conecciones implements Transaccionable{
             sql=(String)il.next();
             try {
                 st.executeUpdate(sql);
+                Inicio.coneccionRemota=true;
             } catch (SQLException ex) {
                 Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex);
                 coneccionCorrecta=false;
+                Inicio.coneccionRemota=false;
             }
         }
         
@@ -156,23 +161,35 @@ public class Conecciones implements Transaccionable{
         try {
             /*
             if(st==null){
-             Transaccionable tt=new ConeccionLocal();
-             System.out.println("ACA DESDE CONECCIONES "+sql);
-             rs=tt.leerConjuntoDeRegistros(sql);
+            Transaccionable tt=new ConeccionLocal();
+            System.out.println("ACA DESDE CONECCIONES "+sql);
+            rs=tt.leerConjuntoDeRegistros(sql);
             }else{
-            */ 
+             */
+            //System.out.println("ERROR EN SENTENCIA "+sql);
             st.execute(sql);
-            
             rs=st.getResultSet();
             //}
         } catch (SQLException ex) {
+            Inicio.coneccionRemota=false;
             System.out.println("NO SE CONECTA, ACA CARGA LOS OBJETOS");
             Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("NO ENTRO LA CONECCION");
         }
+        catch (NullPointerException ee){
+            
+            if(st!=null)Inicio.coneccionRemota=false;
+            
+            System.out.println("ERROR "+sql);
+        }
         return rs;
     }
-
+    private Boolean ValidarConeccion(){
+        Boolean verificar=true;
+        if(st==null)verificar=false;
+        if(con==null)verificar=false;
+        return verificar;
+    }
    
 
     }

@@ -12,8 +12,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -34,10 +37,11 @@ public class ConeccionLocal implements Transaccionable{
 
     public ConeccionLocal() {
               Connection dbConnection = null;
- String strUrl = "jdbc:derby://localhost:1527/respaldo;create=true";
+ //String strUrl = "jdbc:derby://localhost:1527/respaldo;create=true";
+               String strUrl = "jdbc:derby:C:\\Gestion\\DB\\respaldo.db";
             try {
                 Class.forName(driver1).newInstance();
-                dbConnection = DriverManager.getConnection (strUrl,"maurodim","mau*2012");
+                dbConnection = DriverManager.getConnection (strUrl);
                 st=dbConnection.createStatement();
             } catch (InstantiationException ex) {
             Logger.getLogger(ConeccionLocal.class.getName()).log(Level.SEVERE, null, ex);
@@ -118,5 +122,76 @@ public class ConeccionLocal implements Transaccionable{
         }
         return rs;
     }
-    
+    public static void CrearDb(){
+        Connection dbConnection = null;
+        try {
+            
+                String strUrl = "jdbc:derby:C:\\Gestion\\DB\\respaldo.db;create=true";
+                    Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+                     dbConnection = DriverManager.getConnection (strUrl,"maurodim","mau*2012");
+                     String sql="CREATE TABLE APP.articulos( ID  INTEGER not null primary key, BARRAS   varchar(30) default NULL, NOMBRE   varchar(49) default NULL, SERVICIO   double default NULL, COSTO   double default NULL, PRECIO   double default NULL, MINIMO   INTEGER default NULL, STOCKS  INTEGER default NULL, PROVEEDOR  INTEGER default NULL, RUBRON  varchar(12) default NULL, ALTA  varchar(19) default NULL, INHABILITADO  INTEGER not null , idRubro   INTEGER not null,equivalencia  double not null, modificaPrecio  INTEGER not null, modificaServicio INTEGER not null,recargo double not null)";
+                     //st=dbConnection.createStatement();
+                     PreparedStatement pstm=dbConnection.prepareStatement(sql);
+                     pstm.execute();
+                     pstm.close();
+                     sql="CREATE TABLE APP.billetes (id  INTEGER not null primary key,descripcion  varchar(30) not null,valor  double not null)";
+                     PreparedStatement pstm1=dbConnection.prepareStatement(sql);
+                     pstm1.execute();
+                     pstm1.close();
+                     sql="CREATE TABLE APP.caja (numero  INTEGER not null primary key,numeroSucursal  INTEGER not null,numeroUsuario  INTEGER not null,tipoMovimiento  INTEGER not null,saldoinicial double not null,estado INTEGER not null,tipo INTEGER not null)";
+                     PreparedStatement pstm2=dbConnection.prepareStatement(sql);
+                     pstm2.execute();
+                     pstm2.close();
+                     sql="CREATE TABLE APP.coeficienteslistas (id  INTEGER not null primary key,coeficiente  double not null,descripcion  varchar(30) not null)";
+                     PreparedStatement pstm3=dbConnection.prepareStatement(sql);
+                     pstm3.execute();
+                     pstm3.close();
+                     sql="CREATE TABLE APP.comprobantes  (numero  INTEGER not null primary key,descripcion  varchar(4) not null,destinatarioCondicion  INTEGER not null,descargaStock  INTEGER not null)";
+                     PreparedStatement pstm4=dbConnection.prepareStatement(sql);
+                     pstm4.execute();
+                     pstm4.close();
+                     sql="CREATE TABLE APP.depositos (numero  INTEGER not null primary key,descripcion  varchar(100) not null,direccion  varchar(200) not null,telefono  varchar(200) not null)";
+                     PreparedStatement pstm5=dbConnection.prepareStatement(sql);
+                     pstm5.execute();
+                     pstm5.close();
+                     sql="CREATE TABLE APP.listcli  (COD_CLIENT  varchar(6),RAZON_SOCI  varchar(60),DOMICILIO  varchar(30),COND_VTA INTEGER not null,TELEFONO_1  varchar(30),LISTADEPRECIO INTEGER not null,NUMERODECUIT  varchar(30),CUPODECREDITO  double default NULL,empresa  varchar(3),codMMd  INTEGER not null primary key,saldo double not null,saldoactual double not null,TIPO_IVA INTEGER not null,COEFICIENTE INTEGER not null)";
+                     PreparedStatement pstm6=dbConnection.prepareStatement(sql);
+                     pstm6.execute();
+                     pstm6.close();
+                     sql="CREATE TABLE APP.proveedores (ID  INTEGER default NULL,nombre  varchar(19) default NULL,DOMICILIO  varchar(100) default NULL,LOCALIDAD  varchar(8) default NULL,TELEFONO  varchar(10) default NULL,INHABILITADO  INTEGER default NULL,numero  INTEGER not null primary key,mail  varchar(200) not null)";
+                     PreparedStatement pstm7=dbConnection.prepareStatement(sql);
+                     pstm7.execute();
+                     pstm7.close();
+                     sql="CREATE TABLE APP.sucursal (numero  INTEGER not null primary key,descripcion  varchar(100) not null,direccion  varchar(100) not null,telefono  varchar(100) not null,deposito  INTEGER not null)";
+                     PreparedStatement pstm8=dbConnection.prepareStatement(sql);
+                     pstm8.execute();
+                     pstm8.close();
+                     sql="CREATE TABLE APP.tipoacceso (numero INTEGER not null primary key,descripcion  varchar(20) not null,nivel  INTEGER not null,menu1  INTEGER not null,menu2  INTEGER not null,menu3  INTEGER not null,menu4  INTEGER not null,menu5  INTEGER not null,menu6  INTEGER not null,menu7  INTEGER not null)";
+                     PreparedStatement pstm9=dbConnection.prepareStatement(sql);
+                     pstm9.execute();
+                     pstm9.close();
+                     sql="CREATE TABLE APP.tipocomprobantes  (numero  INTEGER not null primary key,descripcion  varchar(50) not null,numeroActivo  INTEGER not null,numeroSucursal  INTEGER not null)";
+                     PreparedStatement pstm10=dbConnection.prepareStatement(sql);
+                     pstm10.execute();
+                     pstm10.close();
+                     sql="CREATE TABLE APP.usuarios  (numero INTEGER not null primary key,nombre  varchar(70) not null,direccion  varchar(200) not null,localidad  varchar(70) not null,telefono  varchar(100) not null,mail  varchar(100) not null,nombreUsuario  varchar(100) not null,clave  varchar(100) not null,autorizacion  INTEGER not null,numeroTipoAcceso  INTEGER not null,sucursal  INTEGER not null)";
+                     PreparedStatement pstm11=dbConnection.prepareStatement(sql);
+                     pstm11.execute();
+                     pstm11.close();
+                     sql="CREATE TABLE APP.fallas (st varchar(300) not null,estado INTEGER not null)";
+                     PreparedStatement pstm12=dbConnection.prepareStatement(sql);
+                     pstm12.execute();
+                     pstm12.close();
+                     sql="CREATE TABLE APP.tipomovimientos(ID INTEGER not null primary key,DESCRIPCION varchar(30)not null,DESTINOOPERACION INTEGER not null,MULTIPLOOP INTEGER not null)";
+                     PreparedStatement pstm13=dbConnection.prepareStatement(sql);
+                     pstm13.execute();
+                     pstm13.close();
+                     JOptionPane.showMessageDialog(null,"BASE DE DATOS CORRECTAMENTE CREADA");
+        } catch (SQLException ex) {
+            Logger.getLogger(ConeccionLocal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ConeccionLocal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //return dbConnection;
+    }
 }

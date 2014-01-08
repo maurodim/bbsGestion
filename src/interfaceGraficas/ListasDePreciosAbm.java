@@ -4,12 +4,21 @@
  */
 package interfaceGraficas;
 
+import Conversores.Numeros;
+import Sucursales.ListasDePrecios;
+import interfaces.Editables;
+import java.util.ArrayList;
+import java.util.Iterator;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mauro
  */
 public class ListasDePreciosAbm extends javax.swing.JInternalFrame {
-
+    private static ArrayList listadoPrecios;
+    private static int opcion=0;
+    private ListasDePrecios listaDePrecios;
     /**
      * Creates new form ListasDePreciosAbm
      */
@@ -44,7 +53,36 @@ public class ListasDePreciosAbm extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Seleccione Lista de Precios");
 
+        listadoPrecios=new ArrayList();
+        ListasDePrecios lista;
+        listadoPrecios=ListasDePrecios.Listado();
+        Iterator itL=listadoPrecios.listIterator();
+        while(itL.hasNext()){
+            lista=(ListasDePrecios)itL.next();
+            jComboBox1.addItem(lista.getDesccripcion());
+        }
+        jComboBox1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jComboBox1MouseClicked(evt);
+            }
+        });
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
         jButton1.setText("Nueva Lista de Precios");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -78,6 +116,11 @@ public class ListasDePreciosAbm extends javax.swing.JInternalFrame {
         jTextField2.setText("1.00");
 
         jButton2.setText("Guardar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -109,7 +152,7 @@ public class ListasDePreciosAbm extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(142, Short.MAX_VALUE))
+                .addContainerGap(146, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -135,6 +178,67 @@ public class ListasDePreciosAbm extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        opcion=1;
+        listaDePrecios=new ListasDePrecios();
+        this.jTextField1.setText("");
+        this.jTextField1.requestFocus();
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        
+        int posicion=this.jComboBox1.getSelectedIndex();
+        
+        listaDePrecios=(ListasDePrecios) listadoPrecios.get(posicion);
+        this.jTextField1.setText(listaDePrecios.getDesccripcion());
+        Double porc=listaDePrecios.getCoeficiente();
+        if(porc < 1){
+         porc=1 - porc;   
+        }else{
+        porc=porc - 1;
+        }
+        porc=porc * 100;
+        
+        this.jTextField2.setText(Numeros.ConvertirNumero(porc));
+        this.jTextField1.selectAll();
+        this.jTextField1.requestFocus();
+        
+        //JOptionPane.showMessageDialog(this,"CAMBIO EL ESTADO"+posicion);
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jComboBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox1MouseClicked
+        
+    }//GEN-LAST:event_jComboBox1MouseClicked
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+       /*int posicion=this.jComboBox1.getSelectedIndex();
+        listaDePrecios=new ListasDePrecios(posicion);
+        this.jTextField1.setText(listaDePrecios.getDesccripcion());
+        Double porc=listaDePrecios.getCoeficiente();
+        porc=porc - 1;
+        porc=porc * 100;
+        this.jTextField2.setText(String.valueOf(porc));
+        this.jTextField1.selectAll();
+        this.jTextField1.requestFocus();
+        */
+        //JOptionPane.showMessageDialog(this,"CAMBIO LA ACCION");
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Editables edi=new ListasDePrecios();
+        if(opcion==0){
+            
+            edi.ModificaionObjeto(listaDePrecios);
+        }else{
+            listaDePrecios.setDesccripcion(this.jTextField1.getText());
+            listaDePrecios.setCoeficiente(Numeros.ConvertirStringADouble(this.jTextField2.getText()));
+            edi.AltaObjeto(listaDePrecios);
+        }
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

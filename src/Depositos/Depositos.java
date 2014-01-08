@@ -111,6 +111,28 @@ public class Depositos implements Personalizable, Trasladable{
     public static ArrayList leerRemitosInternos(){
         return remitosInternos;
     }
+    public static void BackapearDepositos(){
+                
+        String sentencia="";
+        if(Inicio.coneccionRemota){
+            Transaccionable tra=new Conecciones();
+            Transaccionable tt=new ConeccionLocal();
+            String sql="select * from depositos";
+            tt.guardarRegistro("delete from depositos");
+            ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+            try {
+                while(rs.next()){
+                    sentencia="insert into depositos (numero,descripcion,direccion,telefono) values ("+rs.getInt("numero")+",'"+rs.getString("descripcion")+"','"+rs.getString("direccion")+"','"+rs.getString("telefono")+"')";
+                    tt.guardarRegistro(sentencia);
+                    
+                }
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Depositos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
     @Override
     public Boolean agregar(Object objeto) {
         throw new UnsupportedOperationException("Not supported yet.");

@@ -5,9 +5,11 @@
 package Sucursales;
 
 import interfaceGraficas.Inicio;
+import interfaces.Editables;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.logging.Level;
@@ -19,7 +21,7 @@ import objetos.Conecciones;
  *
  * @author mauro
  */
-public class ListasDePrecios {
+public class ListasDePrecios implements Editables{
     private static Hashtable listadoDeListas=new Hashtable();
     private Integer id;
     private Double coeficiente;
@@ -102,6 +104,47 @@ public class ListasDePrecios {
                 
                 }
             }
+    public static ArrayList Listado(){
+        ArrayList listado=new ArrayList();
+        ListasDePrecios rs=new ListasDePrecios();
+         Enumeration<ListasDePrecios> elementos=listadoDeListas.elements();
+            while(elementos.hasMoreElements()){
+                rs=(ListasDePrecios)elementos.nextElement();
+                listado.add(rs);
+                }
+        return listado;
+    }
+
+    @Override
+    public Boolean AltaObjeto(Object objeto) {
+        ListasDePrecios listaDePrecios=(ListasDePrecios)objeto;
+        Boolean verif=true;
+        Transaccionable tra=new Conecciones();
+        Double coe=listaDePrecios.getCoeficiente() / 100;
+        coe=coe + 1;
+        String sql="insert into coeficienteslistas (coeficiente,descripcion) values ("+coe+",'"+listaDePrecios.getDesccripcion()+"')";
+        tra.guardarRegistro(sql);
+        cargarMap();
+        return verif;
+    }
+
+    @Override
+    public Boolean ModificaionObjeto(Object objeto) {
+        ListasDePrecios listaDePrecios=(ListasDePrecios)objeto;
+        Boolean verif=true;
+        Transaccionable tra=new Conecciones();
+        Double coe=listaDePrecios.getCoeficiente() / 100;
+        coe=coe + 1;
+        String sql="update coeficienteslistas set coeficiente="+coe+",descripcion='"+listaDePrecios.getDesccripcion()+" where id="+listaDePrecios.getId();
+        tra.guardarRegistro(sql);
+        cargarMap();
+        return verif;
+    }
+
+    @Override
+    public Boolean EliminacionDeObjeto(Object objeto) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     }
     
 

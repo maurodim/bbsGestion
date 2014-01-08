@@ -386,7 +386,7 @@ public class Articulos implements Facturar,Editables{
             if(articulo.getModificaPrecio())mod=1;
             if(articulo.getModificaServicio())serv=1;
             if(articulo.getDescripcionArticulo().equals(""))articulo.setDescripcionArticulo("--");
-            sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stocks,equivalencia,modificaprecio,modificaservicio,recargo) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+")";
+            sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stocks,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0)";
             System.out.println("hash "+sql);
             tt.guardarRegistro(sql);
             

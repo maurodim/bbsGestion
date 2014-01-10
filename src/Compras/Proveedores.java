@@ -35,10 +35,18 @@ public class Proveedores implements Personalizable{
     private String numeroDeCuit;
     private int condicionIngresosBrutos;
     private String numeroIngresosBrutos;
+    private Double saldo=0.00;
     private static Hashtable listadoProv=new Hashtable();
-    
-    
 
+    public Double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(Double saldo) {
+        this.saldo = saldo;
+    }
+    
+    
     public Proveedores(int numero) {
         this.numero = numero;
     }
@@ -128,12 +136,14 @@ public class Proveedores implements Personalizable{
     public static void cargarListadoProv(){
         try {
             listadoProv.clear();
-            String sql="select * from proveedores order by NOMBRE";
+            String sql="";
             Transaccionable tra;
             if(Inicio.coneccionRemota){
                 tra=new Conecciones();
+                sql="select *,(select sum(movimientosproveedores.monto) from movimientosproveedores where pagado=0 and movimientosproveedores.numeroProveedor=proveedores.ID)as saldo from proveedores order by NOMBRE";
             }else{
                 tra=new ConeccionLocal();
+                sql="select * from proveedores order by NOMBRE";
             }
             ResultSet rr=tra.leerConjuntoDeRegistros(sql);
             while(rr.next()){
@@ -144,6 +154,7 @@ public class Proveedores implements Personalizable{
                 prov.setLocalidad(rr.getString("LOCALIDAD"));
                 prov.setMail(rr.getString("mail"));
                 prov.setTelefono(rr.getString("TELEFONO"));
+                if(Inicio.coneccionRemota)prov.setSaldo(rr.getDouble("saldo"));
                 //prov.setCondicionDeIva(rr.getInt("condicionIva"));
                 //prov.setNumeroDeCuit(rr.getString("numeroCuit"));
                 //prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));

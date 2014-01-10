@@ -5,7 +5,9 @@
 package facturacion.clientes;
 
 
+import Conversores.Numeros;
 import interfaceGraficas.Inicio;
+import interfaces.Adeudable;
 import interfaces.Transaccionable;
 import interfacesPrograma.Busquedas;
 import interfacesPrograma.Facturar;
@@ -20,6 +22,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objetos.Comprobantes;
 import objetos.ConeccionLocal;
 import objetos.Conecciones;
 
@@ -28,7 +31,7 @@ import objetos.Conecciones;
  *
  * @author Administrador
  */
-public class ClientesTango implements Busquedas,Facturar{
+public class ClientesTango implements Busquedas,Facturar,Adeudable{
         private String codigoCliente;
         private String razonSocial;
         private Double saldo;
@@ -55,6 +58,7 @@ public class ClientesTango implements Busquedas,Facturar{
         private Integer codigoId;
         private Double cupoDeCredito;
         private Double saldoActual;
+        private static Integer numeroRecibo;
         private static Hashtable listadoClientes=new Hashtable();
         private static Hashtable listadoPorNom=new Hashtable();
         
@@ -398,6 +402,25 @@ public class ClientesTango implements Busquedas,Facturar{
             tt.guardarRegistro(sql);
         }
     }
+    private static void numeroActualRecibo(){
+        Transaccionable tra=new Conecciones();
+        String sql="select * from tipocomprobantes where numero=11";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+            numeroRecibo=rs.getInt("numeroActivo");
+                
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesTango.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private void GuardarNumeroRecibo(){
+        Transaccionable tra=new Conecciones();
+        String sql="update tipocomprobantes set numeroActivo="+numeroRecibo+" where numero=11";
+        tra.guardarRegistro(sql);
+    }
     @Override
     public ArrayList listar(String cliente) {
         ArrayList ped=new ArrayList();
@@ -543,6 +566,41 @@ public class ClientesTango implements Busquedas,Facturar{
     @Override
     public Object cargarPorCodigoAsignado(Integer id) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList ListarAPagar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList ListarACobrar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object ActualizarComprobante(Object objeto) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object PagarComprobante(Object objeto) {
+       Comprobantes factProv=(Comprobantes)objeto;
+       numeroActualRecibo();
+       numeroRecibo++;
+       String fech=Numeros.ConvertirFecha(Inicio.fechaVal);
+       Transaccionable tra=new Conecciones();
+       Double montt=factProv.getMontoTotal() * -1;
+       String sql="insert into movimientosclientes (numeroProveedor,monto,numeroComprobante,idUsuario,tipoComprobante,idSucursal,idRemito) values ("+factProv.getCliente().getCodigoId()+","+montt+","+numeroRecibo+","+factProv.getUsuarioGenerador()+",11,"+factProv.getIdSucursal()+",0)";
+       //String sql="update movimientosproveedores set pagado=1,numeroComprobante="+numeroRecibo+",idCaja="+Inicio.caja.getNumero()+",fechaPago='"+fech+"',idSucursal="+Inicio.sucursal.getNumero()+" where id="+factProv.getId();
+       System.out.println("VEAMOS "+sql);
+       tra.guardarRegistro(sql);
+       //String ttx="PAGO A PROVEEDOR "+factProv.getNombreProveedor();
+       Double monto=factProv.getMontoTotal();
+       sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado) value ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+numeroRecibo+",6,"+monto+",13,"+Inicio.caja.getNumero()+","+factProv.getCliente().getCodigoId()+",1,1)";
+       tra.guardarRegistro(sql);
+       GuardarNumeroRecibo();
+       return factProv;
     }
         
 }

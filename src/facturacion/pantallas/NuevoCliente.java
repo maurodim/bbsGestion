@@ -188,6 +188,8 @@ public class NuevoCliente extends javax.swing.JInternalFrame {
        cli.setCondicionIva(condicion);
        cli.setNumeroDeCuit(this.jTextField3.getText());
        cli.setTelefono(this.jTextField4.getText());
+       IngresoDePedidos.jCheckBox2.setSelected(true);
+       IngresoDePedidos.jCheckBox2.setEnabled(false);
        IngresoDePedidos.cliT=cli;
        IngresoDePedidos.jLabel6.setText(cli.getRazonSocial());
        this.dispose();

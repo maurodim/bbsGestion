@@ -39,6 +39,8 @@ public class AbmClientes extends javax.swing.JInternalFrame {
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
+        setClosable(true);
+        setMaximizable(true);
         setTitle("MODIFICACION DE CLIENTES");
 
         MiModeloTablaArticulos miTabla=new MiModeloTablaArticulos();
@@ -94,7 +96,7 @@ public class AbmClientes extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -131,6 +133,7 @@ public class AbmClientes extends javax.swing.JInternalFrame {
         }else{
             cliente.setCondicionDeVenta(1);
         }
+        //cliente.setSaldo(Numeros.ConvertirStringADouble(String.valueOf(this.jTable1.getValueAt(posicion,5))));
         cliente.setListaDePrecios((Integer.parseInt(String.valueOf(this.jTable1.getValueAt(posicion,6)))));
         Facturar fact=new ClientesTango();
         fact.modificarDatosDelCliente(cliente);

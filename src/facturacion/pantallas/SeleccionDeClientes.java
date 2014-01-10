@@ -268,7 +268,7 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
        this.jPanel3.setVisible(true);
        this.jTextField2.setText(String.valueOf(cliT.getListaDePrecios()));
        this.jTextField4.setText(String.valueOf(cliT.getCondicionDeVenta()));
-       this.jTextField3.setText(String.valueOf(cliT.getDescuento()));
+       this.jTextField3.setText(String.valueOf("0"));
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -276,6 +276,7 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
         desc=desc / 100;
         desc= 1 - desc;
         int condicionVta=Integer.parseInt(this.jTextField4.getText());
+        if(condicionVta==2)IngresoDePedidos.jCheckBox2.setSelected(false);
         int listaDePrecio=Integer.parseInt(this.jTextField2.getText());
         cliT.setDescuento(desc);
         cliT.setCondicionDeVenta(condicionVta);

@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import objetos.Articulos;
 import objetos.Comprobantes;
 import tablas.MiModeloTablaBuscarCliente;
@@ -102,13 +103,6 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("FACTURACION - INGRESO DE ARTICULOS");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
-            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-                formInternalFrameClosing(evt);
-            }
-            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
-            }
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
@@ -116,6 +110,13 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
         });
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -384,7 +385,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -429,7 +430,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                     Calendar calendario=new GregorianCalendar();
                     int hora=calendario.get(Calendar.HOUR_OF_DAY);
                     System.out.println("LA HORA ACTUAL ES :"+hora);
-                    if(hora >= 00 || hora < 8){
+                    if(hora >= 0 || hora < 8){
                         if(arti.getModificaServicio()){
                          System.err.println("SI TIENE QUE MODIFICAR EL SERVICIO");  
                          this.jCheckBox1.setEnabled(false);
@@ -495,11 +496,22 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         comprobante.setIdDeposito(Inicio.deposito.getNumero());
         comprobante.setIdCaja(Inicio.caja.getNumero());
         comprobante.setMontoTotal(montoTotal);
+        int noFacturar=0;
         if(this.jCheckBox2.isSelected()){
             comprobante.setPagado(1);
         }else{
             comprobante.setPagado(0);
+            /*
+             * ACA DEBO COMPROBAR EL LIMITE DEL CLIENTE Y SI LO SUPERA LA COMPRA RECHAZAR LA VENTA
+             * 
+             */
+            Double limite=cliT.getCupoDeCredito();
+            Double saldo=cliT.getSaldo();
+            Double totalGral=montoTotal + saldo;
+            if(limite < totalGral)noFacturar=1;
+            
         }
+        if(noFacturar==0){
         Facturar fat=new Comprobantes();
         fat.guardar(comprobante);
         /*
@@ -520,7 +532,10 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         this.jTextField2.setText("");
         jTextField1.setText("");
         jTextField1.requestFocus();
-
+        }else{
+            JOptionPane.showMessageDialog(this,"El cliente supera el límite de crédito, debe abonar la venta");
+            noFacturar=0;
+        }
         }
     }//GEN-LAST:event_jTextField1KeyPressed
 
@@ -628,11 +643,22 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         comprobante.setIdDeposito(Inicio.deposito.getNumero());
         comprobante.setIdCaja(Inicio.caja.getNumero());
         comprobante.setMontoTotal(montoTotal);
+        int noFacturar=0;
         if(this.jCheckBox2.isSelected()){
             comprobante.setPagado(1);
         }else{
             comprobante.setPagado(0);
+            /*
+             * ACA DEBO COMPROBAR EL LIMITE DEL CLIENTE Y SI LO SUPERA LA COMPRA RECHAZAR LA VENTA
+             * 
+             */
+            Double limite=cliT.getCupoDeCredito();
+            Double saldo=cliT.getSaldo();
+            Double totalGral=montoTotal + saldo;
+            if(limite < totalGral)noFacturar=1;
+            
         }
+        if(noFacturar==0){
         Facturar fat=new Comprobantes();
         fat.guardar(comprobante);
         /*
@@ -653,6 +679,10 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         this.jTextField2.setText("");
         jTextField1.setText("");
         jTextField1.requestFocus();
+        }else{
+            JOptionPane.showMessageDialog(this,"El cliente supera el límite de crédito, debe abonar la venta");
+            noFacturar=0;
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -844,7 +874,7 @@ private void verificar(){
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
+    public static javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

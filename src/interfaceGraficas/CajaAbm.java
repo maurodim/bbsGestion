@@ -5,11 +5,16 @@
 package interfaceGraficas;
 
 import Compras.FacturaProveedor;
+import Compras.Proveedores;
 import Conversores.Numeros;
 import Sucursales.Cajas;
+import facturacion.clientes.ClientesTango;
 import interfaces.Adeudable;
+import interfaces.Personalizable;
+import interfacesPrograma.Busquedas;
 import interfacesPrograma.Cajeables;
 import interfacesPrograma.Facturar;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.DefaultListModel;
@@ -362,12 +367,14 @@ public class CajaAbm extends javax.swing.JInternalFrame {
          int posicion=this.jComboBox2.getSelectedIndex();
         switch (operacionSelect){
             case 11:
-                FacturaProveedor fact=new FacturaProveedor();
-                fact=(FacturaProveedor)listadoP.get(posicion);
-                this.jTextField1.setText(String.valueOf(fact.getMontoFinal()));
+                Proveedores fact=new Proveedores();
+                fact=(Proveedores)listadoP.get(posicion);
+                this.jTextField1.setText(String.valueOf(fact.getSaldo()));
                 break;
             case 13:
-                
+                ClientesTango cliente=new ClientesTango();
+                cliente=(ClientesTango)listadoP.get(posicion);
+                this.jTextField1.setText(String.valueOf(cliente.getSaldo()));
                 break;
             default:
                 
@@ -403,15 +410,39 @@ public class CajaAbm extends javax.swing.JInternalFrame {
            case 11:
                FacturaProveedor fact=new FacturaProveedor();
                Adeudable ade=new FacturaProveedor();
-               fact=(FacturaProveedor)listadoP.get(this.jComboBox2.getSelectedIndex());
+               Proveedores prov=new Proveedores();
+               //Personalizable ade=new Proveedores();
+               prov=(Proveedores)listadoP.get(this.jComboBox2.getSelectedIndex());
+               fact.setNombreProveedor(prov.getNombre());
+            fact.setNumeroProveedor(prov.getNumero());
+            fact.setFecha(Date.valueOf(Inicio.fechaDia));
+            //fact.setIdRemito(idRemito);
+            fact.setIdCaja(Inicio.caja.getNumero());
+            fact.setIdUsuario(Inicio.usuario.getNumero());
+            fact.setIdSucursal(Inicio.sucursal.getNumero());
+            String mmt=this.jTextField1.getText();
+            Double montot=Double.parseDouble(this.jTextField1.getText());
+            montot=montot * -1;
+            fact.setMontoFinal(montot);
                ade.PagarComprobante(fact);
                listadoP.clear();
                operacionSelect=0;
                this.jPanel2.setVisible(false);
-                AgregarRenglonTabla();
+                //AgregarRenglonTabla();
                 //ModificarLabels();
            case 13:
-               
+               Comprobantes comprobantes=new Comprobantes();
+               Adeudable adeu=new ClientesTango();
+               ClientesTango cliente=new ClientesTango();
+               cliente=(ClientesTango)listadoP.get(this.jComboBox2.getSelectedIndex());
+               comprobantes.setCliente(cliente);
+               comprobantes.setMontoTotal(Double.parseDouble(this.jTextField1.getText()));
+               comprobantes.setFechaEmision(Date.valueOf(Inicio.fechaDia));
+               adeu.PagarComprobante(comprobantes);
+                            listadoP.clear();
+               operacionSelect=0;
+               this.jPanel2.setVisible(false);
+                //AgregarRenglonTabla();
                break;
            case 12:
                monto=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField1.getText()));
@@ -440,6 +471,7 @@ public class CajaAbm extends javax.swing.JInternalFrame {
                break;
        }
         AgregarRenglonTabla();
+        this.jTextField2.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -452,14 +484,15 @@ public class CajaAbm extends javax.swing.JInternalFrame {
     this.jLabel8.setText("T. EFECT EN CAJA "+totalEfect);
     }
     private void ListarProveedores(){
-        FacturaProveedor fact=new FacturaProveedor();
+        Proveedores fact=new Proveedores();
         listadoP=new ArrayList();
-        Adeudable ade=new FacturaProveedor();
-        listadoP=ade.ListarAPagar();
+        //Adeudable ade=new FacturaProveedor();
+        Personalizable ade=new Proveedores();
+        listadoP=ade.listar();
         Iterator ilP=listadoP.listIterator();
         while(ilP.hasNext()){
-            fact=(FacturaProveedor)ilP.next();
-            this.jComboBox2.addItem(fact.getNombreProveedor());
+            fact=(Proveedores)ilP.next();
+            this.jComboBox2.addItem(fact.getNombre());
         }
         this.jLabel2.setText("Seleccione Proveedor");
         this.jLabel3.setText("Monto Adeudado");
@@ -468,7 +501,21 @@ public class CajaAbm extends javax.swing.JInternalFrame {
         this.jTextField2.setVisible(false);
     }
     private void ListarClientes(){
-        
+      ClientesTango fact=new ClientesTango();
+        listadoP=new ArrayList();
+        //Adeudable ade=new FacturaProveedor();
+        Busquedas ade=new ClientesTango();
+        listadoP=ade.listar("");
+        Iterator ilP=listadoP.listIterator();
+        while(ilP.hasNext()){
+            fact=(ClientesTango)ilP.next();
+            this.jComboBox2.addItem(fact.getRazonSocial());
+        }
+        this.jLabel2.setText("Seleccione Proveedor");
+        this.jLabel3.setText("Monto Adeudado");
+        this.jButton2.setText("PAGAR");
+        this.jLabel4.setVisible(false);
+        this.jTextField2.setVisible(false); 
     }
     private void cargarLista(){
     DefaultListModel modelo=new DefaultListModel();

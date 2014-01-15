@@ -34,7 +34,7 @@ public class Comprobantes implements Facturar{
     private int usuarioGenerador;
     private int idSucursal;
     private int idDeposito;
-    private int idCaja;
+    private Integer idCaja;
     private Double montoBruto;
     private Double montoIva;
     private Double montoRet;
@@ -52,7 +52,7 @@ public class Comprobantes implements Facturar{
     
     
 
-    public int getIdCaja() {
+    public Integer getIdCaja() {
         return idCaja;
     }
 
@@ -214,11 +214,13 @@ public class Comprobantes implements Facturar{
     }
     private static void numeroActual(int tipoComprobante){
         Transaccionable tra;
+        /*
         if(Inicio.coneccionRemota){
             tra=new Conecciones();
         }else{
+        */ 
             tra=new ConeccionLocal();
-        }
+        //}
         String tc="ticket";
         String fc="FCA A";
         String tx="";
@@ -258,30 +260,32 @@ public class Comprobantes implements Facturar{
         numeroActual(comp.getTipoComprobante());
         numeroComprobante++;
         comp.setNumero(numeroComprobante);
-        Transaccionable tra=new Conecciones();
+        Transaccionable tra=new ConeccionLocal();
         Articulos articulo=new Articulos();
         Boolean verif=false;
         String sql="";
         while(iComp.hasNext()){
             articulo=(Articulos)iComp.next();
             Double cantidad=articulo.getCantidad() * -1;
-            sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario,precioDeVenta,precioServicio) values ("+comp.getTipoMovimiento()+","+articulo.getNumeroId()+","+cantidad+","+Inicio.deposito.getNumero()+","+comp.getTipoComprobante()+","+comp.getNumero()+",'"+comp.getCliente().getCodigoId()+"','"+comp.getFechaEmision()+"',"+comp.getUsuarioGenerador()+","+articulo.getPrecioUnitario()+","+articulo.getPrecioServicio()+")";
+            sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario,precioDeVenta,precioServicio,preciodecosto) values ("+comp.getTipoMovimiento()+","+articulo.getNumeroId()+","+cantidad+","+Inicio.deposito.getNumero()+","+comp.getTipoComprobante()+","+comp.getNumero()+","+comp.getCliente().getCodigoId()+",'"+comp.getFechaEmision()+"',"+comp.getUsuarioGenerador()+","+articulo.getPrecioUnitario()+","+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+")";
             verif=tra.guardarRegistro(sql);
             
         }
         
             sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado) values ("+comp.getUsuarioGenerador()+","+comp.getIdSucursal()+","+comp.getNumero()+","+comp.getTipoComprobante()+","+comp.getMontoTotal()+","+comp.getTipoMovimiento()+","+comp.getIdCaja()+","+comp.getCliente().getCodigoId()+",1,"+comp.getPagado()+")";
             tra.guardarRegistro(sql);
-            sql="insert into movimientosclientes (numeroProveedor,monto,pagado,numeroComprobante,idUsuario,idCaja,idSucursal,tipoComprobante) value ("+comp.getCliente().getCodigoId()+","+comp.getMontoTotal()+","+comp.getPagado()+","+numeroComprobante+","+Inicio.usuario.getNumeroId()+","+Inicio.caja.getNumero()+","+Inicio.sucursal.getNumero()+","+comp.getTipoComprobante()+")";
+            sql="insert into movimientosclientes (numeroProveedor,monto,pagado,numeroComprobante,idUsuario,idCaja,idSucursal,tipoComprobante) values ("+comp.getCliente().getCodigoId()+","+comp.getMontoTotal()+","+comp.getPagado()+","+numeroComprobante+","+Inicio.usuario.getNumeroId()+","+Inicio.caja.getNumero()+","+Inicio.sucursal.getNumero()+","+comp.getTipoComprobante()+")";
             tra.guardarRegistro(sql);
         
         System.out.println("SE RECEPCIONO BARBARO");
         sql="update tipocomprobantes set numeroActivo="+numeroComprobante+" where numero="+idComp;
+        /*
         if(Inicio.coneccionRemota){
             
         }else{
+        * */
             tra=new ConeccionLocal();
-        }
+        //}
         tra.guardarRegistro(sql);
         return true;
     }

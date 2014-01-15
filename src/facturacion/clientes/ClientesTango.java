@@ -61,6 +61,7 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
         private static Integer numeroRecibo;
         private static Hashtable listadoClientes=new Hashtable();
         private static Hashtable listadoPorNom=new Hashtable();
+        private static int signal=0;
         
         
         
@@ -92,12 +93,15 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
     public static void cargarMap(){
               
             
-            Transaccionable tra=new Conecciones();
+            Transaccionable tra;
             String sql=null;
-            if(Inicio.coneccionRemota){
+            
+            if(signal==1){
                 tra=new Conecciones();
                 sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo from listcli";    
+                signal=0;
             }else{
+             
                 tra=new ConeccionLocal();
                 sql="select codMMd,listcli.COD_CLIENT,listcli.RAZON_SOCI,listcli.DOMICILIO,listcli.COND_VTA,(listcli.LISTADEPRECIO)as NRO_LISTA,(listcli.NUMERODECUIT)as IDENTIFTRI,listcli.empresa,listcli.TELEFONO_1,listcli.coeficiente,(listcli.CUPODECREDITO) AS CUPO_CREDI,listcli.saldo,listcli.TIPO_IVA from listcli";
             }
@@ -386,6 +390,10 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
         return lista;
     }
     public static void BackapearClientes(){
+        if(listadoPorNom.size()==0){
+            signal=1;
+            cargarMap();
+        }
         ArrayList listado=new ArrayList();
         Busquedas bus=new ClientesTango();
         ClientesTango cli=new ClientesTango();

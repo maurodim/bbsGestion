@@ -4,7 +4,14 @@
  */
 package objetos;
 
+import Compras.Proveedores;
+import Depositos.Depositos;
+import Sucursales.Cajas;
+import Sucursales.ListasDePrecios;
+import Sucursales.Sucursales;
+import Sucursales.Usuarios;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import facturacion.clientes.ClientesTango;
 import interfaceGraficas.Inicio;
 import interfaces.Transaccionable;
 import java.io.FileWriter;
@@ -129,7 +136,7 @@ public class ConeccionLocal implements Transaccionable{
                 String strUrl = "jdbc:derby:C:\\Gestion\\DB\\respaldo.db;create=true";
                     Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
                      dbConnection = DriverManager.getConnection (strUrl,"maurodim","mau*2012");
-                     String sql="CREATE TABLE APP.articulos( ID  INTEGER not null primary key, BARRAS   varchar(30) default NULL, NOMBRE   varchar(49) default NULL, SERVICIO   double default NULL, COSTO   double default NULL, PRECIO   double default NULL, MINIMO   INTEGER default NULL, STOCKS  INTEGER default NULL, PROVEEDOR  INTEGER default NULL, RUBRON  varchar(12) default NULL, ALTA  varchar(19) default NULL, INHABILITADO  INTEGER not null , idRubro   INTEGER not null,equivalencia  double not null, modificaPrecio  INTEGER not null, modificaServicio INTEGER not null,recargo double not null)";
+                     String sql="CREATE TABLE APP.articulos( ID  INTEGER not null primary key, BARRAS   varchar(30) default NULL, NOMBRE   varchar(49) default NULL, SERVICIO   double default NULL, COSTO   double default NULL, PRECIO   double default NULL, MINIMO   INTEGER default NULL, STOCK  INTEGER default NULL, PROVEEDOR  INTEGER default NULL, RUBRON  varchar(12) default NULL, ALTA  varchar(19) default NULL, INHABILITADO  INTEGER not null , idRubro   INTEGER not null,equivalencia  double not null, modificaPrecio  INTEGER not null, modificaServicio INTEGER not null,recargo double not null)";
                      //st=dbConnection.createStatement();
                      PreparedStatement pstm=dbConnection.prepareStatement(sql);
                      pstm.execute();
@@ -138,7 +145,7 @@ public class ConeccionLocal implements Transaccionable{
                      PreparedStatement pstm1=dbConnection.prepareStatement(sql);
                      pstm1.execute();
                      pstm1.close();
-                     sql="CREATE TABLE APP.caja (numero  INTEGER not null primary key,numeroSucursal  INTEGER not null,numeroUsuario  INTEGER not null,tipoMovimiento  INTEGER not null,saldoinicial double not null,estado INTEGER not null,tipo INTEGER not null)";
+                     sql="CREATE TABLE APP.caja (numero  INTEGER primary key,numeroSucursal  INTEGER not null,numeroUsuario  INTEGER not null,tipoMovimiento  INTEGER not null,saldoinicial double not null,estado INTEGER not null,tipo INTEGER not null,saldofinal double,fechacierre varchar(30),diferencia double)";
                      PreparedStatement pstm2=dbConnection.prepareStatement(sql);
                      pstm2.execute();
                      pstm2.close();
@@ -186,6 +193,52 @@ public class ConeccionLocal implements Transaccionable{
                      PreparedStatement pstm13=dbConnection.prepareStatement(sql);
                      pstm13.execute();
                      pstm13.close();
+                     sql="CREATE TABLE APP.movimientosarticulos (tipoMovimiento INTEGER not null,idArticulo INTEGER not null,cantidad double not null,numeroDeposito INTEGER not null,tipoComprobante INTEGER not null,numeroComprobante INTEGER not null,numeroCliente INTEGER NOT NULL,fechaComprobante varchar(30) not null,numeroUsuario INTEGER NOT NULL,precioDeCosto double not null,precioDeVenta double not null,precioServicio double NOT NULL,estado INTEGER)";
+                     PreparedStatement pstm14=dbConnection.prepareStatement(sql);
+                     pstm14.execute();
+                     pstm14.close();
+                     sql="CREATE TABLE APP.movimientoscaja (numeroUsuario INTEGER not null,idCliente INTEGER,numeroSucursal INTEGER NOT NULL,numeroComprobante INTEGER NOT NULL,tipoComprobante INTEGER NOT NULL,monto Double,tipoMovimiento INTEGER NOT NULL,idCaja INTEGER NOT NULL,cantidad double,pagado INTEGER NOT NULL,observaciones varchar(100),estado INTEGER,tipoCliente INTEGER)";
+                     PreparedStatement pstm15=dbConnection.prepareStatement(sql);
+                     pstm15.execute();
+                     pstm15.close();
+                     sql="CREATE TABLE APP.movimientosclientes (numeroProveedor INTEGER NOT NULL,monto double not null,pagado INTEGER,numeroComprobante INTEGER,idRemito INTEGER,idUsuario INTEGER NOT NULL,idCaja INTEGER NOT NULL,fechaPago varchar(20),tipoComprobante INTEGER,idSucursal INTEGER NOT NULL,estado INTEGER)";
+                     PreparedStatement pstm16=dbConnection.prepareStatement(sql);
+                     pstm16.execute();
+                    pstm16.close();
+                    sql="CREATE TABLE APP.movimientosproveedores (numeroProveedor INTEGER NOT NULL,monto double not null,pagado INTEGER,numeroComprobante varchar(30),idRemito INTEGER,idUsuario INTEGER NOT NULL,idCaja INTEGER NOT NULL,fechaPago varchar(20),tipoComprobante INTEGER,idSucursal INTEGER NOT NULL,estado INTEGER)";
+                    PreparedStatement pstm17=dbConnection.prepareStatement(sql);
+                    pstm17.execute();
+                    pstm17.close();
+                    sql="CREATE TABLE APP.movimientosusuarios (numeroUsuario INTEGER NOT NULL,tipoAcceso INTEGER,entrada varchar(30) not null,estado INTEGER NOT NULL)";
+                    PreparedStatement pstm18=dbConnection.prepareStatement(sql);
+                    pstm18.execute();
+                    pstm18.close();
+                    sql="CREATE TABLE APP.movimientosdesucursales (depOrigen INTEGER,depDestino INTEGER,idArticulo INTEGER not null,cantidad double not null,confirmado INTEGER,numeroRemito INTEGER,idUsuario INTEGER,diferencia double,idUsuarioRecep INTEGER not null)";
+                    PreparedStatement pstm19=dbConnection.prepareStatement(sql);
+                    pstm19.execute();
+                    pstm19.close();
+                    
+                    /*
+                    Articulos.RecargarMap();
+                    Proveedores.cargarListadoProv();
+                    ClientesTango.cargarMap();
+                    ListasDePrecios.cargarMap();
+                    */ 
+                    Articulos.BackapearMap();
+                    Proveedores.BackapearProveedores();
+                    ClientesTango.BackapearClientes();
+                    ListasDePrecios.BackapearListasDePrecios();
+                    Cajas.BackapearCajas();
+                    Cajas.LeerCajaAdministradora();
+                    Usuarios.BackapearUsuarios();
+                    Sucursales.BackapearSucursales();
+                    Depositos.BackapearDepositos();
+                    
+                    Articulos.RecargarMap();
+                    Proveedores.cargarListadoProv();
+                    ClientesTango.cargarMap();
+                    ListasDePrecios.cargarMap();
+                    
                      JOptionPane.showMessageDialog(null,"BASE DE DATOS CORRECTAMENTE CREADA");
         } catch (SQLException ex) {
             Logger.getLogger(ConeccionLocal.class.getName()).log(Level.SEVERE, null, ex);

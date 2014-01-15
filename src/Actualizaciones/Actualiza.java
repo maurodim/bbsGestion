@@ -33,7 +33,7 @@ import objetos.Conecciones;
 public class Actualiza extends Thread{
     @Override
     public void run(){
-        Timer timer=new Timer(1000000,new ActionListener(){ 
+        Timer timer=new Timer(1500000,new ActionListener(){ 
             @Override
     public void actionPerformed(ActionEvent e) 
     { 
@@ -43,11 +43,7 @@ public class Actualiza extends Thread{
         //at.start();
         if(ProbarConeccion()){
             Inicio.coneccionRemota=true;
-            VerificarErrores();
-        Articulos.RecargarMap();
-        Proveedores.cargarListadoProv();
-        ClientesTango.cargarMap();
-        ListasDePrecios.cargarMap();
+            //VerificarErrores();
         
         Articulos.BackapearMap();
         Proveedores.BackapearProveedores();
@@ -58,6 +54,13 @@ public class Actualiza extends Thread{
         Usuarios.BackapearUsuarios();
         Sucursales.BackapearSucursales();
         Depositos.BackapearDepositos();
+        
+        
+        Articulos.RecargarMap();
+        Proveedores.cargarListadoProv();
+        ClientesTango.cargarMap();
+        ListasDePrecios.cargarMap();
+        BkDeConeccion.procesosDeCierre();
         /*
          * Usuarios
          * Sucursales

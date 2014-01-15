@@ -366,6 +366,16 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        /*
+         * ACA ALGO ESTA MAL
+         * 1- DEBO CARGAR EL MOVIMIENTO DE ENTREGA DE SALDO
+         * 2- GENERAR UNA VISTA CON EL TOTAL DE MOVIMIENTOS DE CAJA
+         * 3- DE AHI SALE LA DIFERENCIA DE CAJA QUE ES LO QUE TENGO QUE GRABAR EN LA BASE
+         * 4- ESE VA A SER EL SALDO FINAL
+         * 
+         */
+        
         Double saldoInicial=0.00;
         Double saldoFinal=0.00;
         Double diferencia=0.00;
@@ -382,7 +392,8 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         entrega=entrega * -1;
         cajas.setMontoMovimiento(entrega);
         diferencia=diferencia - entrega;
-        cajas.setSaldoFinal(diferencia);
+        cajas.setSaldoFinal(totalB);
+        
         //cajas.setTotalVentas(totalB);
         caj.CerrarCaja(cajas);
         this.dispose();

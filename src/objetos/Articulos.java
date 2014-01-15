@@ -37,7 +37,7 @@ public class Articulos implements Facturar,Editables{
     private Double precioDeCosto;
     private Double stockMinimo;
     private Double stockActual;
-    private Double precioServicio;
+    private Double precioServicio=0.00;
     private Boolean confirmado;
     private Double recargo;
     private Boolean modificaPrecio;
@@ -98,6 +98,9 @@ public class Articulos implements Facturar,Editables{
     }
 
     public void setPrecioServicio(Double precioServicio) {
+        if(precioServicio==null){
+            precioServicio=0.00;
+        }
         this.precioServicio = precioServicio;
     }
     
@@ -233,13 +236,15 @@ public class Articulos implements Facturar,Editables{
         //ArrayList resultado=new ArrayList();
         String sql="";
         Articulos articulo=null;
-        if(Inicio.coneccionRemota){
+        
+        if(listadoBarr.size()==0){
             tra=new Conecciones();
             sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0";
             
         }else{
+         
             tra=new ConeccionLocal();
-            sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCKS) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio from articulos where INHABILITADO=0";
+            sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCK) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio from articulos where INHABILITADO=0";
             
         }
         
@@ -273,11 +278,13 @@ public class Articulos implements Facturar,Editables{
             System.out.println("ACA DEBE LEER EN LE ARCHIVO");
             
         }
+        /*
         if(Inicio.coneccionRemota){
         sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0 order by NOMBRE";
         }else{
-            sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCKS) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio from articulos where INHABILITADO=0 order by NOMBRE";
-        }
+        */ 
+            sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCK) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio from articulos where INHABILITADO=0 order by NOMBRE";
+        //}
         rr=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rr.next()){
@@ -386,7 +393,7 @@ public class Articulos implements Facturar,Editables{
             if(articulo.getModificaPrecio())mod=1;
             if(articulo.getModificaServicio())serv=1;
             if(articulo.getDescripcionArticulo().equals(""))articulo.setDescripcionArticulo("--");
-            sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stocks,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0)";
+            sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0)";
             System.out.println("hash "+sql);
             tt.guardarRegistro(sql);
             

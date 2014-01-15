@@ -63,11 +63,13 @@ public class ListasDePrecios implements Editables{
     }
     public static void cargarMap(){
          Transaccionable tra;
+         /*
          if(Inicio.coneccionRemota){
              tra=new Conecciones();
          }else{
+         */ 
              tra=new ConeccionLocal();
-         }
+         //}
         String sql="select * from coeficienteslistas";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -88,7 +90,7 @@ public class ListasDePrecios implements Editables{
             Logger.getLogger(ListasDePrecios.class.getName()).log(Level.SEVERE, null, ex);
             
         }
-        if(Inicio.coneccionRemota)BackapearListasDePrecios();
+        //if(Inicio.coneccionRemota)BackapearListasDePrecios();
     }
     public static void BackapearListasDePrecios(){
         ListasDePrecios rs=new ListasDePrecios();

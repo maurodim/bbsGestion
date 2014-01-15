@@ -66,11 +66,13 @@ public class Billetes {
     public static void cargarLista(){
         
         Transaccionable tra;
+        /*
         if(Inicio.coneccionRemota){
             tra=new Conecciones();
         }else{
-            tra=new ConeccionLocal();
-        }
+        */
+        tra=new ConeccionLocal();
+        //}
         String sql="select * from billetes";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         

@@ -66,11 +66,13 @@ public class Operaciones {
     
     public static void cargarArrayCaja(){
         Transaccionable tra;
+        /*
         if(Inicio.coneccionRemota){
             tra=new Conecciones();
         }else{
+        * */
             tra=new ConeccionLocal();
-        }
+        //}
         String sql="select * from tipomovimientos where destinoOperacion=2";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -93,11 +95,13 @@ public class Operaciones {
     }
     public static void cargarArray(){
         Transaccionable tra;
+        /*
         if(Inicio.coneccionRemota){
             tra=new Conecciones();
         }else{
+        * */
             tra=new ConeccionLocal();
-        }
+        //}
         String sql="select * from tipomovimientos";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -113,7 +117,24 @@ public class Operaciones {
                 
             }
             rs.close();
-            
+            if(listOp.size()==0){
+                 tra=new Conecciones();
+        //}
+        sql="select * from tipomovimientos";
+        rs=tra.leerConjuntoDeRegistros(sql);
+        
+            listOp.clear();
+            while(rs.next()){
+                Operaciones operaciones=new Operaciones();
+                operaciones.setId(rs.getInt("id"));
+                operaciones.setDescripcion(rs.getString("descripcion"));
+                operaciones.setDestino(rs.getInt("destinoOperacion"));
+                operaciones.setValor(rs.getInt("multiploOp"));
+                System.err.println(" LISTADO OPERACIONES "+operaciones.getDescripcion());
+                listOp.add(operaciones);
+                
+            }   
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -41,11 +41,13 @@ public class Sucursales extends Administracion{
     public Sucursales(int numero) {
         this.numero = numero;
         Transaccionable tra;
+        /*
         if(Inicio.coneccionRemota){
             tra=new Conecciones();
         }else{
+        */ 
             tra=new ConeccionLocal();
-        }
+        //}
         String sql="select * from sucursal where numero="+numero;
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {

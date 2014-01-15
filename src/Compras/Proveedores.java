@@ -138,13 +138,13 @@ public class Proveedores implements Personalizable{
             listadoProv.clear();
             String sql="";
             Transaccionable tra;
-            if(Inicio.coneccionRemota){
-                tra=new Conecciones();
-                sql="select *,(select sum(movimientosproveedores.monto) from movimientosproveedores where pagado=0 and movimientosproveedores.numeroProveedor=proveedores.ID)as saldo from proveedores order by NOMBRE";
-            }else{
+            //if(Inicio.coneccionRemota){
+            //    tra=new Conecciones();
+            //    sql="select *,(select sum(movimientosproveedores.monto) from movimientosproveedores where pagado=0 and movimientosproveedores.numeroProveedor=proveedores.ID)as saldo from proveedores order by NOMBRE";
+            //}else{
                 tra=new ConeccionLocal();
                 sql="select * from proveedores order by NOMBRE";
-            }
+            //}
             ResultSet rr=tra.leerConjuntoDeRegistros(sql);
             while(rr.next()){
                 Proveedores prov=new Proveedores();
@@ -154,7 +154,8 @@ public class Proveedores implements Personalizable{
                 prov.setLocalidad(rr.getString("LOCALIDAD"));
                 prov.setMail(rr.getString("mail"));
                 prov.setTelefono(rr.getString("TELEFONO"));
-                if(Inicio.coneccionRemota)prov.setSaldo(rr.getDouble("saldo"));
+                prov.setSaldo(rr.getDouble("saldo"));
+              //  if(Inicio.coneccionRemota)prov.setSaldo(rr.getDouble("saldo"));
                 //prov.setCondicionDeIva(rr.getInt("condicionIva"));
                 //prov.setNumeroDeCuit(rr.getString("numeroCuit"));
                 //prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
@@ -163,7 +164,7 @@ public class Proveedores implements Personalizable{
                 listadoProv.put(prov.getNumero(),prov);
             }
             rr.close();
-            if(Inicio.coneccionRemota)BackapearProveedores();
+            //if(Inicio.coneccionRemota)BackapearProveedores();
         } catch (SQLException ex) {
             Logger.getLogger(Proveedores.class.getName()).log(Level.SEVERE, null, ex);
         }

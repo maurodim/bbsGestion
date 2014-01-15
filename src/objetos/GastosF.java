@@ -72,6 +72,7 @@ public class GastosF implements Editables{
     public static void cargarMap(){
       String sql="select * from movimientosgastosfijos where pagado=0";
       Transaccionable tra;
+      
       if(Inicio.coneccionRemota){
           tra=new Conecciones();
       

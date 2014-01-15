@@ -38,11 +38,13 @@ public class Depositos implements Personalizable, Trasladable{
     public Depositos(int numero) {
         this.numero = numero;
         Transaccionable tra;
+        /*
         if(Inicio.coneccionRemota){
             tra=new Conecciones();
         }else{
-            tra=new ConeccionLocal();
-        }
+        */
+        tra=new ConeccionLocal();
+        //}
         String sql1="select * from depositos where numero ="+numero;
         ResultSet rr=tra.leerConjuntoDeRegistros(sql1);
         try {

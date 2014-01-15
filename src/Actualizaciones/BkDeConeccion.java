@@ -24,6 +24,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import objetos.ConeccionLocal;
+import objetos.Conecciones;
 import objetos.Menus;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -44,7 +45,90 @@ public class BkDeConeccion implements Backpeable{
     private long caracteres;
     private long espaciosEnBlanco;
     
-
+    public static Boolean guardarSentencias(String sql){
+        Boolean verif=false;
+        Transaccionable tra=new Conecciones();
+        
+            verif=tra.guardarRegistro(sql);
+        
+        return verif;
+    }
+    public static Boolean procesosDeCierre(){
+        Boolean ver=false;
+        Transaccionable tra=new Conecciones();
+        Transaccionable tt=new ConeccionLocal();
+        String sql="select * from movimientosarticulos where estado is null";
+        String sentencia="";
+        ResultSet rs=tt.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                sentencia="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario,precioDeCosto,precioDeVenta,precioServicio) values ("+rs.getInt("tipomovimiento")+","+rs.getInt("idarticulo")+","+rs.getDouble("cantidad")+","+rs.getInt("numerodeposito")+","+rs.getInt("tipocomprobante")+","+rs.getInt("numerocomprobante")+","+rs.getInt("numerocliente")+",'"+rs.getString("fechacomprobante")+"',"+rs.getInt("numerousuario")+","+rs.getDouble("preciodecosto")+","+rs.getDouble("preciodeventa")+","+rs.getDouble("precioservicio")+")";
+                tra.guardarRegistro(sentencia);
+                
+            }
+            rs.close();
+            sql="update movimientosarticulos set estado=1";
+            tt.guardarRegistro(sql);
+            sql="select * from movimientoscaja where estado is null";
+            rs=tt.leerConjuntoDeRegistros(sql);
+            while(rs.next()){
+                sentencia="insert into movimientoscaja (numeroUsuario,idCliente,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,cantidad,pagado,observaciones,tipoCliente) values ("+rs.getInt("numerousuario")+","+rs.getInt("idcliente")+","+rs.getInt("numerosucursal")+","+rs.getInt("numerocomprobante")+","+rs.getInt("tipocomprobante")+","+rs.getDouble("monto")+","+rs.getInt("tipomovimiento")+","+rs.getInt("idcaja")+","+rs.getDouble("cantidad")+","+rs.getInt("pagado")+",'"+rs.getString("observaciones")+"',"+rs.getInt("tipocliente")+")";
+                tra.guardarRegistro(sentencia);
+            }
+            rs.close();
+            sql="update movimientoscaja set estado=1";
+            tt.guardarRegistro(sql);
+            sql="select * from movimientosclientes where estado is null";
+            rs=tt.leerConjuntoDeRegistros(sql);
+            while(rs.next()){
+                sentencia="insert into movimientosclientes (numeroProveedor,monto,pagado,numeroComprobante,idRemito,idUsuario,idCaja,tipoComprobante,idSucursal) values ("+rs.getInt("numeroproveedor")+","+rs.getDouble("monto")+","+rs.getInt("pagado")+","+rs.getInt("numerocomprobante")+","+rs.getInt("idRemito")+","+rs.getInt("idusuario")+","+rs.getInt("idcaja")+","+rs.getInt("tipocomprobante")+","+rs.getInt("idsucursal")+")";
+                tra.guardarRegistro(sentencia);
+            }
+            rs.close();
+            sql="update movimientosclientes set estado =1";
+            tt.guardarRegistro(sql);
+            sql="select * from movimientosproveedores where estado is null";
+            rs=tt.leerConjuntoDeRegistros(sql);
+            while(rs.next()){
+                sentencia="insert into movimientosproveedores (numeroProveedor,monto,pagado,numeroComprobante,idRemito,idUsuario,idCaja,fechaPago,tipoComprobante,idSucursal) values ("+rs.getInt("numeroproveedor")+","+rs.getDouble("monto")+","+rs.getInt("pagado")+","+rs.getInt("numerocomprobante")+","+rs.getInt("idRemito")+","+rs.getInt("idusuario")+","+rs.getInt("idcaja")+",'"+rs.getString("fechapago")+"',"+rs.getInt("tipocomprobante")+","+rs.getInt("idsucursal")+")";
+                tra.guardarRegistro(sentencia);
+            }
+            rs.close();
+            sql="update movimientosproveedores set estado=1";
+            tt.guardarRegistro(sql);
+            sql="select * from tipocomprobantes";
+            rs=tt.leerConjuntoDeRegistros(sql);
+            while(rs.next()){
+                sentencia="update tipoComprobantes set numeroActivo="+rs.getInt("numeroactivo")+" where numero="+rs.getInt("numero");
+                tra.guardarRegistro(sentencia);
+                
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(BkDeConeccion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return ver;
+    }
+    private Boolean ProbarConeccion(){
+        Boolean verif=false;
+        String sql="select * from articulos limit 0,1";
+        Transaccionable tra=new Conecciones();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                verif=true;
+                
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Actualiza.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ee){
+            return false;
+        }
+        return verif;
+    }
     @Override
     public Hashtable leerArticulos() {
         Hashtable art=new Hashtable();

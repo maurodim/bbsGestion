@@ -64,6 +64,14 @@ public class Inicio extends javax.swing.JFrame {
      * Creates new form Inicio
      */
     public Inicio(Integer nivel) {
+        Articulos.CargarMap();
+        //if(coneccionRemota){
+        //Articulos.CargarMap();
+        Proveedores.cargarListadoProv();
+        ClientesTango.cargarMap();
+        ListasDePrecios.cargarMap();
+        Cajas.BackapearCajas();
+        Cajas.LeerCajaAdministradora();
         DecimalFormat fr=new DecimalFormat("00");
         Calendar c1=Calendar.getInstance();
 	Calendar c2=new GregorianCalendar();
@@ -87,20 +95,15 @@ public class Inicio extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Articulos.CargarMap();
-        //if(coneccionRemota){
-        //Articulos.CargarMap();
-        Proveedores.cargarListadoProv();
-        ClientesTango.cargarMap();
-        ListasDePrecios.cargarMap();
-        GastosF.cargarMap();
+        
         //}else{
-            
-        //}
-        initComponents();
         
         Actualiza actu=new Actualiza();
         actu.start();
+        //}
+        initComponents();
+        
+        
  
         //permisos(nivel);
     }
@@ -440,16 +443,16 @@ public class Inicio extends javax.swing.JFrame {
        this.jMenuItem2.setEnabled(true);
        Cajeables caj=new Cajas();
        if(caj.VerificarCaja(usuario.getNumero(),sucursal.getNumero(),fechaDia)){
-           this.caja=(Cajas)caj.CargarCaja(usuario.getNumero(),sucursal.getNumero(),fechaDia);
+           Inicio.caja=(Cajas)caj.CargarCaja(usuario.getNumero(),sucursal.getNumero(),fechaDia);
        }else{
-       this.caja=new Cajas(1);
+       Inicio.caja=new Cajas(1);
        Double saldo=Double.parseDouble(JOptionPane.showInputDialog("Ingrese Saldo Inicial","0.00"));
        System.out.println("SALDO INGRESADO "+saldo);
-       this.caja.setSaldoInicial(saldo);
+       Inicio.caja.setSaldoInicial(saldo);
        
-       this.caja=(Cajas) caj.AbrirCaja(caja);
+       Inicio.caja=(Cajas) caj.AbrirCaja(caja);
        }
-       this.sucursal.setCaja(caja);
+       Inicio.sucursal.setCaja(caja);
        this.jMenuItem5.setEnabled(false);
        System.out.println("CAJA Nº "+caja.getNumero());
        

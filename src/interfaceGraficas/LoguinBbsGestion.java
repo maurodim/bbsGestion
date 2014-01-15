@@ -120,12 +120,12 @@ public class LoguinBbsGestion extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Usuarios usuario=new Usuarios();
         Usuarios usuarios=new Usuarios();
-        try{
-        usuarios=(Usuarios) usuario.validarClave(jTextField1.getText(),new String(jPasswordField1.getPassword()));
-        }catch(Exception ex){
+        //try{
+        //usuarios=(Usuarios) usuario.validarClave(jTextField1.getText(),new String(jPasswordField1.getPassword()));
+        //}catch(Exception ex){
             Backpeable bk=new BkDeConeccion();
-            usuarios=(Usuarios) bk.leerUsuarios(jTextField1.getText(),new String(jPasswordField1.getPassword()));
-        }
+            usuarios=(Usuarios) bk.leerUsuarios(jTextField1.getText().toUpperCase(),new String(jPasswordField1.getPassword()));
+        //}
         if(usuarios.getNumero()> 0){
         Inicio in=new Inicio(2);
         Inicio.niv=usuarios.getNivelDeAutorizacion();

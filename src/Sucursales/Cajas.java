@@ -4,6 +4,7 @@
  */
 package Sucursales;
 
+import Actualizaciones.BkDeConeccion;
 import Conversores.Numeros;
 import facturacion.clientes.ClientesTango;
 import interfaceGraficas.Inicio;
@@ -291,11 +292,13 @@ public class Cajas extends Sucursales implements Cajeables{
         Integer numeroAct=0;
         String sql="select tipocomprobantes.numeroActivo from tipocomprobantes where numero=12";
         Transaccionable tra;
+        /*
         if(Inicio.coneccionRemota){
             tra=new Conecciones();
         }else{
-            tra=new ConeccionLocal();
-        }
+        */
+        tra=new ConeccionLocal();
+        //}
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rr.next()){
@@ -316,11 +319,13 @@ public class Cajas extends Sucursales implements Cajeables{
     public static void LeerCajaAdministradora(){
         String sql="select caja.numero from caja where tipo=1 and estado=0";
         Transaccionable tra;
+        /*
         if(Inicio.coneccionRemota){
             tra=new Conecciones();
         }else{
-            tra=new ConeccionLocal();
-        }
+        */
+        tra=new ConeccionLocal();
+        //}
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
@@ -339,7 +344,7 @@ public class Cajas extends Sucursales implements Cajeables{
         
     }
     private static void ListarCajas(){
-        String sql="select * from caja where estado=0";
+        String sql="select * from caja order by numero desc limit 0,30";
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -352,6 +357,13 @@ public class Cajas extends Sucursales implements Cajeables{
                 caja.setFechaInicio(rs.getDate("fecha"));
                 caja.setSaldoInicial(rs.getDouble("saldoInicial"));
                 caja.setTipo(rs.getInt("tipo"));
+                Boolean esta=true;
+                if(rs.getInt("estado")==0){
+                    
+                }else{
+                    esta=false;
+                }
+                caja.setEstado(esta);
                 listadoGeneralDeCajas.add(caja);
                 
             }
@@ -361,6 +373,7 @@ public class Cajas extends Sucursales implements Cajeables{
             listadoDeComprobantes.clear();
             while(rs.next()){
                aa="";
+               
                aa="insert into tipocomprobantes (numero,descripcion,numeroactivo,numerosucursal) values ("+rs.getInt("numero")+",'"+rs.getString("descripcion")+"',"+rs.getInt("numeroActivo")+","+rs.getInt("numeroSucursal")+")";
                 //numeroDeComprobanteBk=rs.getInt("numeroActivo")
                listadoDeComprobantes.add(aa);
@@ -375,6 +388,7 @@ public class Cajas extends Sucursales implements Cajeables{
         numeroDeComprobanteBk++;
         if(numeroDeComprobanteBk==1){
         ListarCajas();
+        
         Iterator itL=listadoGeneralDeCajas.listIterator();
         Cajas caja=new Cajas();
         Transaccionable tra=new ConeccionLocal();
@@ -384,7 +398,13 @@ public class Cajas extends Sucursales implements Cajeables{
         while(itL.hasNext()){
             caja=(Cajas)itL.next();
             ff=Numeros.ConvertirFecha(caja.getFechaInicio());
-            sql="insert into caja(numero,numerosucursal,numerousuario,tipomovimiento,saldoinicial,estado,tipo) values ("+caja.getNumero()+","+caja.getSucursal().getNumero()+","+caja.getUsuario().getNumeroId()+","+caja.getTipoMovimiento()+","+caja.getSaldoInicial()+",0,"+caja.getTipo()+")";
+            int esta=0;
+                if(caja.getEstado()){
+                    
+                }else{
+                    esta=1;
+                }
+            sql="insert into caja(numero,numerosucursal,numerousuario,tipomovimiento,saldoinicial,estado,tipo) values ("+caja.getNumero()+","+caja.getSucursal().getNumero()+","+caja.getUsuario().getNumeroId()+","+caja.getTipoMovimiento()+","+caja.getSaldoInicial()+","+esta+","+caja.getTipo()+")";
             System.out.println("CAJA BACKAPEARCAJA --"+sql);
             tra.guardarRegistro(sql);
         }
@@ -399,34 +419,73 @@ public class Cajas extends Sucursales implements Cajeables{
     }
     @Override
     public Object AbrirCaja(Object caja) {
-        if(listadoCajas.size() > 0)listadoCajas.clear();
-        //listadoCajas.clear();
-        Cajas cajaNueva=(Cajas) caja;
-        Integer tipo=0;
-        if(Inicio.usuario.getNivelDeAutorizacion()==1){
-            tipo=1;
-        }
-        String sql="insert into caja (numeroSucursal,numeroUsuario,tipoMovimiento,saldoInicial,tipo) values ("+Inicio.sucursal.getNumero()+","+Inicio.usuario.getNumero()+",9,"+cajaNueva.saldoInicial+","+tipo+")";
-        Transaccionable tra=new Conecciones();
-        tra.guardarRegistro(sql);
-        sql="select LAST_INSERT_ID()";
-        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
-        try {
+        
+            if(listadoCajas.size() > 0)listadoCajas.clear();
+            //listadoCajas.clear();
+            Cajas cajaNueva=(Cajas) caja;
+            Integer tipo=0;
+            if(Inicio.usuario.getNivelDeAutorizacion()==1){
+                tipo=1;
+            }
+       try {
+            Transaccionable tra=new ConeccionLocal();
+            int cajaNumeroAct=0;
+            ResultSet rs=tra.leerConjuntoDeRegistros("select numero from caja");
             while(rs.next()){
-                cajaNueva.numero=rs.getInt(1);
-                System.out.println("ID CAJA "+cajaNueva.numero);
+                    cajaNumeroAct=rs.getInt("numero");
             }
             rs.close();
-            sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,monto,tipoMovimiento,idCaja) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+cajaNueva.getSaldoInicial()+",9,"+cajaNueva.getNumero()+")";
+            cajaNumeroAct++;
+            Double saldoI=cajaNueva.getSaldoInicial();
+            String sql="insert into caja (numero,numeroSucursal,numeroUsuario,tipoMovimiento,saldoInicial,tipo,estado) values ("+cajaNumeroAct+","+Inicio.sucursal.getNumero()+","+Inicio.usuario.getNumero()+",9,"+cajaNueva.saldoInicial+","+tipo+",0)";
             tra.guardarRegistro(sql);
-            int pos=cajaNueva.getTipoMovimiento();
-            Operaciones operacion=(Operaciones)listOperaciones.get(pos);
-            String desc=operacion.getDescripcion();
-            cajaNueva.setDescripcionMovimiento(desc);
+            //cajaNueva=new Cajas(cajaNumeroAct);
+            /*
+            sql="select LAST_INSERT_ID()";
+            rs=tra.leerConjuntoDeRegistros(sql);
+            try {
+                while(rs.next()){
+                    cajaNueva.numero=rs.getInt(1);
+                    System.out.println("ID CAJA "+cajaNueva.numero);
+                }
+            */
+                
+                int nume=NumeroDeComprobanteActivoMovCaja();
+                sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,monto,tipoMovimiento,idCaja,numerocomprobante,tipocomprobante,pagado) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+cajaNueva.getSaldoInicial()+",9,"+cajaNumeroAct+","+nume+",0,0)";
+                tra.guardarRegistro(sql);
+                cajaNueva.setNumero(cajaNumeroAct);
+                int pos=cajaNueva.getTipoMovimiento();
+                /*
+                if(listOperaciones.size()==0){
+                            Operaciones.cargarArray();
+                            listOperaciones=Operaciones.getListOp();
+                            }
+                 */ 
+                Operaciones operacion=(Operaciones)listOperaciones.get(pos);
+                String desc=operacion.getDescripcion();
+                cajaNueva.setDescripcionMovimiento(desc);
+            
+            listadoCajas.add(cajaNueva);
+            
+            sql="insert into caja (numero,numeroSucursal,numeroUsuario,tipoMovimiento,saldoInicial,tipo,estado) values ("+cajaNumeroAct+","+Inicio.sucursal.getNumero()+","+Inicio.usuario.getNumero()+",9,"+saldoI+","+tipo+",0)";
+            BkDeConeccion.guardarSentencias(sql);
+            /*
+            sql="select LAST_INSERT_ID()";
+            rs=tra.leerConjuntoDeRegistros(sql);
+            try {
+                while(rs.next()){
+                    cajaNueva.numero=rs.getInt(1);
+                    System.out.println("ID CAJA "+cajaNueva.numero);
+                }
+            */
+                
+                
+                //sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,monto,tipoMovimiento,idCaja,numerocomprobante,tipocomprobante,pagado) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+cajaNueva.getSaldoInicial()+",9,"+cajaNueva.getNumero()+","+nume+",0,0)";
+                //BkDeConeccion.guardarSentencias(sql);
+            // return cajaNueva;
         } catch (SQLException ex) {
             Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        listadoCajas.add(cajaNueva);
         return cajaNueva;
     }
 
@@ -434,30 +493,51 @@ public class Cajas extends Sucursales implements Cajeables{
     public Boolean CerrarCaja(Object caja) {
         Cajas cajj=(Cajas)caja;
         Boolean verif=false;
-        Transaccionable tra=new Conecciones();
+        Transaccionable tra=new ConeccionLocal();
         Double diferencia=0.00;
-        String sql="select * from saldofinalcaja where numero="+cajj.getNumero();
+        //String sql="select * from saldofinalcaja where numero="+cajj.getNumero();
+        String sql="select * from movimientoscaja where idcaja="+cajj.getNumero();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+                    Double dif2=0.00;
+
         try {
-            
+           
             Double totalVtas=0.00;
             Double totalGtos=0.00;
+            Double inicial=0.00;
             while(rs.next()){
-                totalVtas=rs.getDouble("totalVta");
-                totalGtos=rs.getDouble("totalgto");
+                switch (rs.getInt("tipomovimiento")){
+                    case 9:
+                        inicial=rs.getDouble("monto");
+                        break;
+                    case 7:
+                        totalVtas=totalVtas + rs.getDouble("monto");
+                        break;
+                    case 13:
+                        totalVtas=totalVtas + rs.getDouble("monto");
+                        break;
+                    case 1:
+                       totalVtas=totalVtas + rs.getDouble("monto");
+                        break;
+                    default:
+                        totalGtos=totalGtos + rs.getDouble("monto");
+                        break;
+                }
                 
                 
             }
             rs.close();
-            diferencia=totalVtas + totalGtos;
-            diferencia=diferencia + cajj.getMontoMovimiento();
+            diferencia=(inicial + totalVtas) + totalGtos;
+            diferencia=diferencia - cajj.getSaldoFinal();
+            dif2=diferencia - cajj.getMontoMovimiento();
         } catch (SQLException ex) {
             Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
         }
         //String sql="insert into"cajj.getSaldoFinal()
-        sql="update caja set saldoFinal="+diferencia+",estado=1,fechaCierre='"+Inicio.fechaDia+"' where numero="+cajj.getNumero();
+        sql="update caja set diferencia="+dif2+",saldoFinal="+diferencia+",estado=1,fechaCierre='"+Inicio.fechaDia+"' where numero="+cajj.getNumero();
         
         verif=tra.guardarRegistro(sql);
+        BkDeConeccion.guardarSentencias(sql);
         //tipoMovimiento 10
         sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+cajj.getNumeroDeComprobante()+","+cajj.getTipoDeComprobante()+","+cajj.getMontoMovimiento()+",10,"+cajj.getNumero()+",0,0,1)";
         verif=tra.guardarRegistro(sql);
@@ -489,7 +569,7 @@ public class Cajas extends Sucursales implements Cajeables{
             caj.setNumeroDeComprobante(NumeroDeComprobanteActivoMovCaja());
         }
         String sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+caj.getNumeroDeComprobante()+","+caj.getTipoDeComprobante()+","+caj.getMontoMovimiento()+","+caj.getTipoMovimiento()+","+caj.getNumero()+",0,0,1)";
-        Transaccionable tra=new Conecciones();
+        Transaccionable tra=new ConeccionLocal();
         ch=tra.guardarRegistro(sql);
         
         return ch;
@@ -512,12 +592,12 @@ public class Cajas extends Sucursales implements Cajeables{
         Cajas cajass=null;
         Double saldoFinal=cajas.saldoInicial;
         String sql="select * from movimientoscaja where idCaja="+cajas.numero;
-        Transaccionable tra=new Conecciones();
+        Transaccionable tra=new ConeccionLocal();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
                 cajass=new Cajas();
-                cajass.setNumero(rs.getInt("numero"));
+                cajass.setNumero(cajas.numero);
                 cajass.setNumeroDeComprobante(rs.getInt("numeroComprobante"));
                 cajass.setTipoMovimiento(rs.getInt("tipoMovimiento"));
                 cajass.setMontoMovimiento(rs.getDouble("monto"));
@@ -546,11 +626,13 @@ public class Cajas extends Sucursales implements Cajeables{
         Boolean verifi=false;
         String sql="select * from caja where numeroUsuario ="+numeroDeUsuario+" and numeroSucursal="+numeroDeSucursal+" and estado=0";
         Transaccionable tra;
+        /*
         if(Inicio.coneccionRemota){
             tra=new Conecciones();
         }else{
+        */ 
             tra=new ConeccionLocal();
-        }
+        //}
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
@@ -561,7 +643,7 @@ public class Cajas extends Sucursales implements Cajeables{
         } catch (SQLException ex) {
             Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(Inicio.coneccionRemota)BackapearCajas();
+        //if(Inicio.coneccionRemota)BackapearCajas();
         return verifi;
     }
 
@@ -570,11 +652,13 @@ public class Cajas extends Sucursales implements Cajeables{
         Cajas cajas=new Cajas();
         String sql="select * from caja where numeroUsuario ="+numeroDeUsuario+" and numeroSucursal="+numeroDeSucursal+" and estado=0";
         Transaccionable tra;
+        /*
         if(Inicio.coneccionRemota){
             tra=new Conecciones();
         }else{
+        */ 
             tra=new ConeccionLocal();
-        }
+        //}
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
@@ -594,24 +678,30 @@ public class Cajas extends Sucursales implements Cajeables{
        Cajas caj=(Cajas)factura;
         //Boolean ch=false;
        Integer num=caj.getNumeroDeComprobante();
-        if(num==0){
+        
             caj.setNumeroDeComprobante(NumeroDeComprobanteActivoMovCaja());
-        }
+       
         listadoCajas.add(caj);
         
         Double monto=caj.getMontoMovimiento() * (-1);
+        caj.setMontoMovimiento(monto);
         String sql="";
         
         
              Transaccionable tra;
-        if(Inicio.coneccionRemota){
+        /*
+             if(Inicio.coneccionRemota){
             tra=new Conecciones();
-            sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado,observaciones) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+caj.getNumeroDeComprobante()+","+caj.getTipoDeComprobante()+","+monto+","+caj.getTipoMovimiento()+","+caj.getNumero()+",0,2,0,'"+caj.getDescripcionMovimiento()+"')";
-        }else{
+        
+        */
+         sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado,observaciones) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+caj.getNumeroDeComprobante()+","+caj.getTipoDeComprobante()+","+monto+","+caj.getTipoMovimiento()+","+caj.getNumero()+",0,2,0,'"+caj.getDescripcionMovimiento()+"')";
+    /*    
+    }else{
+    */ 
             tra=new ConeccionLocal();
-            sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+caj.getNumeroDeComprobante()+","+caj.getTipoDeComprobante()+","+monto+","+caj.getTipoMovimiento()+","+caj.getNumero()+",0,2,0)";
-            sql="insert into fallas (st,estado) values ('"+sql+"',0)";
-        }
+      //      sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado) values ("+Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+caj.getNumeroDeComprobante()+","+caj.getTipoDeComprobante()+","+monto+","+caj.getTipoMovimiento()+","+caj.getNumero()+",0,2,0)";
+       //     sql="insert into fallas (st,estado) values ('"+sql+"',0)";
+        //}
         tra.guardarRegistro(sql);
         
         return caj;
@@ -621,15 +711,16 @@ public class Cajas extends Sucursales implements Cajeables{
     public DefaultListModel LeerComprobante(Integer idComprobante,Integer tipoComprobante,Integer tipoMovimiento) {
        ArrayList listado=new ArrayList();
        String sql="";
-       Transaccionable tra=new Conecciones();
+       Transaccionable tra=new ConeccionLocal();
        ResultSet rs;
        Cajas cajjaa=null;
        String resultado="";
        DefaultListModel modelo=new DefaultListModel();
+       //JOptionPane.showMessageDialog(null," tipo de movimienot "+tipoMovimiento);
         switch (tipoMovimiento){
            case 1:
                //ventas -- leo en articulos para sacar el detalle, devuelvo un objeto comprobantes
-               sql="select *,(select movimientoscaja.monto from movimientoscaja where movimientoscaja.tipoComprobante="+tipoComprobante+" and movimientoscaja.numeroComprobante="+idComprobante+" and movimientoscaja.numeroUsuario="+Inicio.usuario.getNumeroId()+" and movimientoscaja.tipoMovimiento=1)as total from movimientosarticulos where tipoComprobante="+tipoComprobante+" and numeroComprobante="+idComprobante+" and numerousuario="+Inicio.usuario.getNumeroId()+" and tipoMovimiento=1";
+               sql="select * from movimientosarticulos where tipoComprobante="+tipoComprobante+" and numeroComprobante="+idComprobante+" and numerousuario="+Inicio.usuario.getNumeroId()+" and tipoMovimiento=1";
                System.out.println(sql);
                rs=tra.leerConjuntoDeRegistros(sql);
                Comprobantes comprobante=new Comprobantes();
@@ -646,26 +737,26 @@ public class Cajas extends Sucursales implements Cajeables{
                 articulo=new Articulos();
                 cliente=new ClientesTango(String.valueOf(rs.getInt("numeroCliente")));
                 comprobante.setCliente(cliente);
-                comprobante.setFechaEmision(rs.getDate("fecha"));
+                //comprobante.setFechaEmision(rs.getDate("fecha"));
                 reg++;
                 articulo=(Articulos) fact.cargarPorCodigoAsignado(rs.getInt("idArticulo"));
                 cant=rs.getDouble("cantidad");
                 cant=cant * -1;
                 articulo.setPrecioUnitario(rs.getDouble("precioDeVenta"));
                 articulo.setPrecioServicio(rs.getDouble("precioServicio"));
-                total=rs.getDouble("total");
+                //total=rs.getDouble("total");
                 //articulo.setCantidad(cant);
                 //articulo.setPrecioUnitario(rs.getDouble("precioDeVenta"));
                 //articulo.setPrecioServicio(rs.getDouble("precioServicio"));
                 if(reg==1){
-                renglon="Cliente :"+cliente.getRazonSocial()+" Fecha:"+comprobante.getFechaEmision()+"";
+                renglon="Cliente :"+cliente.getRazonSocial();
                 modelo.addElement(renglon);
                 }
                 renglon="Articulo :"+articulo.getCodigoAsignado()+" descripcion:"+articulo.getDescripcionArticulo()+" cantidad:"+cant+" precio:"+articulo.getPrecioUnitario();
                 modelo.addElement(renglon);
             }
-            renglon="Total Comprobante :"+total;
-            modelo.addElement(renglon);
+            //renglon="Total Comprobante :"+total;
+            //modelo.addElement(renglon);
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
@@ -710,7 +801,7 @@ public class Cajas extends Sucursales implements Cajeables{
                rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
-               resultado="fecha :"+rs.getDate("fecha")+" Saldo Inicial\n\r";
+               resultado=" Saldo Inicial\n\r";
                Double monto=rs.getDouble("monto");
                resultado+="Monto :"+monto;
                modelo.addElement(resultado);
@@ -722,11 +813,12 @@ public class Cajas extends Sucursales implements Cajeables{
                break;
            case 10:
                //cierre caja -- leo en movimientos de caja, devuelvo un objeto caja
-               sql="select * from movimientoscaja where tipoComprobante="+tipoComprobante+" and numeroComprobante="+idComprobante+" and numeroUsuario="+Inicio.usuario.getNumeroId()+" and movimientoscaja.tipoMovimiento=10"; 
+               sql="select numerousuario,idcliente,numerosucursal,numerocomprobante,tipocomprobante,monto,tipomovimiento,idcaja,(select usuarios.nombre from usuarios where usuarios.NUMERO=movimientoscaja.numerousuario)as nombreU from movimientoscaja  where idcaja="+Inicio.caja.getNumero()+" and movimientoscaja.tipoMovimiento=10"; 
+               System.out.println(sql);
                rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
-               resultado="fecha :"+rs.getDate("fecha")+" Cierre de caja Nº :"+rs.getInt("idCaja") +"\n\r";
+               resultado=" Cierre de caja de :"+rs.getString("nombreU") +"\n\r";
                Double monto=rs.getDouble("monto");
                resultado+="Monto :"+monto;
                modelo.addElement(resultado);
@@ -758,7 +850,7 @@ public class Cajas extends Sucursales implements Cajeables{
                rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
-               resultado="fecha :"+rs.getDate("fecha")+" Gasto de Caja\n\r";
+               resultado=" Gasto de Caja\n\r";
                Double monto=rs.getDouble("monto")* -1;
                resultado+="Monto :"+monto+" Observaciones :"+rs.getString("observaciones");
                modelo.addElement(resultado);

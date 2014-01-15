@@ -56,16 +56,19 @@ public class InformeMensual {
         String ttx="celda numero :";
         HSSFRow fila=null;
         HSSFCell celda;
+        HSSFCell celda1;
         HSSFCell celda2;
         HSSFCell celda3;
         HSSFCell celda4;
         HSSFCell celda5;
+        HSSFCell celda6;
+        HSSFCell celda7;
         HSSFFont fuente=libro.createFont();
         //fuente.setFontHeight((short)21);
         fuente.setFontName(fuente.FONT_ARIAL);
         fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         String form=null;
-        String sql="select * from informemensualgeneral where fecha between '"+desde+"' and '"+hasta+"'";
+        String sql="select * from informemensualdecaja where fecha between '"+desde+"' and '"+hasta+"'";
         System.out.println(sql);
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
@@ -79,13 +82,15 @@ public class InformeMensual {
         int a=0;
             if(a==0){
                 fila=hoja.createRow(a);
-            
-            celda=fila.createCell(1);
+            celda=fila.createCell(0);
             celda.setCellStyle(titulo);
-            celda.setCellValue("Ventas");
+            celda.setCellValue("Cajero");
+            celda1=fila.createCell(1);
+            celda1.setCellStyle(titulo);
+            celda1.setCellValue("Inicial");
             celda2=fila.createCell(2);
             celda2.setCellStyle(titulo);
-            celda2.setCellValue("Pago a Proveedores");
+            celda2.setCellValue("Ventas");
             celda3=fila.createCell(3);
             celda3.setCellStyle(titulo);
             celda3.setCellValue("Gasto de caja");
@@ -95,7 +100,12 @@ public class InformeMensual {
             celda5=fila.createCell(5);
             celda5.setCellStyle(titulo);
             celda5.setCellValue("Fecha");
-            
+            celda6=fila.createCell(6);
+            celda6.setCellStyle(titulo);
+            celda6.setCellValue("diferencia");
+            celda7=fila.createCell(7);
+            celda7.setCellStyle(titulo);
+            celda7.setCellValue("Entrega de Efectivo");
             }
             while(rs.next()){
             a++;
@@ -109,19 +119,23 @@ public class InformeMensual {
                     break;
             }
             fila=hoja.createRow(a);
-            celda=fila.createCell(1);
+            celda=fila.createCell(0);
             ttx=ttx;
             celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-            celda.setCellValue(rs.getDouble("ventas"));
+            celda.setCellValue(rs.getString("nombreU"));
+            celda1=fila.createCell(1);
+            ttx=ttx;
+            celda1.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            celda1.setCellValue(rs.getDouble("saldoInicial"));
             celda2=fila.createCell(2);
             celda2.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-            celda2.setCellValue(rs.getDouble("gastos"));
+            celda2.setCellValue(rs.getDouble("ventas"));
             celda3=fila.createCell(3);
             celda3.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-            celda3.setCellValue(rs.getDouble("pago"));
+            celda3.setCellValue(rs.getDouble("gastosDeCaja"));
             celda4=fila.createCell(4);
             celda4.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-            celda4.setCellValue(rs.getDouble("cobro"));
+            celda4.setCellValue(rs.getDouble("cobroCtaCte"));
             
            
             celda5=fila.createCell(5);
@@ -129,7 +143,12 @@ public class InformeMensual {
             celda5.setCellType(HSSFCell.CELL_TYPE_STRING);
             celda5.setCellValue(" "+rs.getDate("fecha"));
             //celda5.setCellValue(rs.getDate("fecha"));
-            
+            celda6=fila.createCell(6);
+            celda6.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            celda6.setCellValue(rs.getDouble("diferencia"));
+            celda7=fila.createCell(7);
+            celda7.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            celda7.setCellValue(rs.getDouble("retiroEfectivo"));
         }
  
         rs.close();

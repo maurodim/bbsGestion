@@ -42,7 +42,7 @@ public class CajaAbm extends javax.swing.JInternalFrame {
         
         initComponents();
         this.jLabel5.setText("Saldo Inicial de Caja:"+Inicio.caja.getSaldoInicial());
-        
+        //this.jLabel8.setText("Total Efect en Caja :"+Inicio.caja.getSaldoFinal());
     }
     private void AgregarRenglonTabla(){
         this.jTable1.removeAll();
@@ -66,7 +66,7 @@ public class CajaAbm extends javax.swing.JInternalFrame {
             totalVentas=totalVentas + cajj.getMontoMovimiento();
             }else{
             if(cajj.getTipoMovimiento()==9){
-
+                //totalVentas=totalVentas + cajj.getMontoMovimiento();
             }else{
 
                 totalGastos=totalGastos + cajj.getMontoMovimiento();

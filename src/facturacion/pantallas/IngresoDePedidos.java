@@ -641,7 +641,9 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         comprobante.setUsuarioGenerador(Inicio.usuario.getNumero());
         comprobante.setIdSucursal(Inicio.sucursal.getNumero());
         comprobante.setIdDeposito(Inicio.deposito.getNumero());
-        comprobante.setIdCaja(Inicio.caja.getNumero());
+        Integer numeroCaja=Inicio.caja.getNumero();
+        System.out.println("EL NUMERO DE CAJA ESSSSSSSS "+numeroCaja);
+        comprobante.setIdCaja(numeroCaja);
         comprobante.setMontoTotal(montoTotal);
         int noFacturar=0;
         if(this.jCheckBox2.isSelected()){

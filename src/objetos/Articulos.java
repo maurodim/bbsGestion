@@ -236,17 +236,17 @@ public class Articulos implements Facturar,Editables{
         //ArrayList resultado=new ArrayList();
         String sql="";
         Articulos articulo=null;
-        
+        /*
         if(listadoBarr.size()==0){
             tra=new Conecciones();
             sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0";
             
         }else{
-         
+         */
             tra=new ConeccionLocal();
             sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCK) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio from articulos where INHABILITADO=0";
             
-        }
+        //}
         
         
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);

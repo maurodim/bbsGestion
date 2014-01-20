@@ -84,7 +84,7 @@ public class BbsGestion {
         */
         bk=new File("C:\\Gestion\\backUp.sql");
         //String sql="select * from movimientoscaja into outfile "+bk+" FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n\r'";
-        Transaccionable tra=new Conecciones();
+       // Transaccionable tra=new Conecciones();
         //tra.guardarRegistro(sql);
         
         try {
@@ -102,7 +102,7 @@ public class BbsGestion {
              
             System.out.println(linea);
            
-            if(tra.guardarRegistro(linea));
+           // if(tra.guardarRegistro(linea));
       }
         }
         }

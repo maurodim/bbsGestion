@@ -5,6 +5,8 @@
 package interfaceGraficas;
 
 import Excel.InformeMensual;
+import Excel.InformeProveedores;
+import Excel.InformesCajas;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -109,6 +111,11 @@ public class EmisorDeInformes extends javax.swing.JInternalFrame {
         jLabel4.setText("Hasta :");
 
         jButton2.setText("Emitir Informe Por Proveedor");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -148,7 +155,12 @@ public class EmisorDeInformes extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Hasta :");
 
-        jButton3.setText("Emitir Informe por Turno");
+        jButton3.setText("Emitir Informe de Ranking de Articulos");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -157,7 +169,7 @@ public class EmisorDeInformes extends javax.swing.JInternalFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
@@ -206,7 +218,7 @@ public class EmisorDeInformes extends javax.swing.JInternalFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(142, Short.MAX_VALUE))
+                .addContainerGap(146, Short.MAX_VALUE))
         );
 
         pack();
@@ -244,6 +256,70 @@ public class EmisorDeInformes extends javax.swing.JInternalFrame {
         this.dispose();
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        DecimalFormat fr=new DecimalFormat("00");
+        DecimalFormat formato=new DecimalFormat("####.##");
+        //SiderconCapaatos.listaPedidos.clear();
+        SimpleDateFormat dia=new SimpleDateFormat("dd/mm/yyyy");
+        //Date mes=Calendar.getInstance().getTime();
+        //dateChooserCombo1.setDateFormat(dia);
+        Calendar fechaNueva=dateChooserCombo5.getSelectedDate();
+        Calendar fechaHasta=dateChooserCombo6.getSelectedDate();
+        //mes=dia.format(fechaNueva,null,null);
+        Double pesoDia=0.00;
+        int ano=fechaNueva.get(Calendar.YEAR);
+        int mes=fechaNueva.get(Calendar.MONTH);
+        mes++;
+        int dd=fechaNueva.get(Calendar.DAY_OF_MONTH);
+        String fecha1=ano+"-"+mes+"-"+dd;
+        ano=fechaHasta.get(Calendar.YEAR);
+        mes=fechaHasta.get(Calendar.MONTH);
+        mes++;
+        dd=fechaHasta.get(Calendar.DAY_OF_MONTH);
+        String fecha2=ano+"-"+mes+"-"+dd;
+        
+        InformesCajas informes=new InformesCajas();
+        try {
+            
+            informes.GenerarInformeDeArticulos(fecha1,fecha2);
+        } catch (SQLException ex) {
+            Logger.getLogger(EmisorDeInformes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+             DecimalFormat fr=new DecimalFormat("00");
+        DecimalFormat formato=new DecimalFormat("####.##");
+        //SiderconCapaatos.listaPedidos.clear();
+        SimpleDateFormat dia=new SimpleDateFormat("dd/mm/yyyy");
+        //Date mes=Calendar.getInstance().getTime();
+        //dateChooserCombo1.setDateFormat(dia);
+        Calendar fechaNueva=dateChooserCombo3.getSelectedDate();
+        Calendar fechaHasta=dateChooserCombo4.getSelectedDate();
+        //mes=dia.format(fechaNueva,null,null);
+        Double pesoDia=0.00;
+        int ano=fechaNueva.get(Calendar.YEAR);
+        int mes=fechaNueva.get(Calendar.MONTH);
+        mes++;
+        int dd=fechaNueva.get(Calendar.DAY_OF_MONTH);
+        String fecha1=ano+"-"+mes+"-"+dd;
+        ano=fechaHasta.get(Calendar.YEAR);
+        mes=fechaHasta.get(Calendar.MONTH);
+        mes++;
+        dd=fechaHasta.get(Calendar.DAY_OF_MONTH);
+        String fecha2=ano+"-"+mes+"-"+dd;
+        
+        InformeProveedores informes=new InformeProveedores();
+        try {
+            
+            informes.GenerarInforme(fecha1,fecha2);
+        } catch (SQLException ex) {
+            Logger.getLogger(EmisorDeInformes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private datechooser.beans.DateChooserCombo dateChooserCombo1;

@@ -42,8 +42,12 @@ public class Actualiza extends Thread{
         //ActOt at=new ActOt();
         //at.start();
         if(ProbarConeccion()){
-            Inicio.coneccionRemota=true;
+            //Inicio.coneccionRemota=true;
             //VerificarErrores();
+        
+            //carga la lista remota
+            //Proveedores.cargarListadoProv1();
+        
         
         Articulos.BackapearMap();
         Proveedores.BackapearProveedores();
@@ -57,7 +61,7 @@ public class Actualiza extends Thread{
         
         
         Articulos.RecargarMap();
-        Proveedores.cargarListadoProv();
+        //Proveedores.cargarListadoProv();
         ClientesTango.cargarMap();
         ListasDePrecios.cargarMap();
         BkDeConeccion.procesosDeCierre();

@@ -344,6 +344,36 @@ public class Cajas extends Sucursales implements Cajeables{
         
     }
     private static void ListarCajas(){
+                String sql="select * from caja";
+        Transaccionable tra=new ConeccionLocal();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                Cajas caja=new Cajas();
+                caja.setNumero(rs.getInt("numero"));
+                caja.setSucursal(new Sucursales(rs.getInt("numeroSucursal")));
+                caja.setUsuario(new Usuarios(rs.getInt("numeroUsuario")));
+                caja.setTipoMovimiento(rs.getInt("tipoMovimiento"));
+                caja.setFechaInicio(rs.getDate("fecha"));
+                caja.setSaldoInicial(rs.getDouble("saldoInicial"));
+                caja.setTipo(rs.getInt("tipo"));
+                Boolean esta=true;
+                if(rs.getInt("estado")==0){
+                    
+                }else{
+                    esta=false;
+                }
+                caja.setEstado(esta);
+                listadoGeneralDeCajas.add(caja);
+                
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    private static void ListarCajas1(){
         String sql="select * from caja order by numero desc limit 0,30";
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
@@ -382,13 +412,15 @@ public class Cajas extends Sucursales implements Cajeables{
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(NullPointerException ee){
+            
         }
     }
     public static void BackapearCajas(){
         numeroDeComprobanteBk++;
         if(numeroDeComprobanteBk==1){
-        ListarCajas();
-        
+        ListarCajas1();
+        if(listadoGeneralDeCajas.size() > 0){
         Iterator itL=listadoGeneralDeCajas.listIterator();
         Cajas caja=new Cajas();
         Transaccionable tra=new ConeccionLocal();
@@ -414,6 +446,7 @@ public class Cajas extends Sucursales implements Cajeables{
         while(ilLl.hasNext()){
             sql=(String)ilLl.next();
             tra.guardarRegistro(sql);
+        }
         }
         }
     }

@@ -160,7 +160,7 @@ public class BkDeConeccion implements Backpeable{
     public Object leerUsuarios(String nombre, String clave) {
          Usuarios usu=new Usuarios();
         try {
-           Inicio.coneccionRemota=false;
+           Inicio.coneccionRemota=ProbarConeccion();
        Transaccionable tras=new ConeccionLocal();
                        String sql="select * from usuarios where nombreUsuario like '"+nombre+"' and clave like '"+clave+"'";
                        System.out.println(sql);

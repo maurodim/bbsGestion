@@ -245,7 +245,8 @@ public class FacturaProveedor implements Comprobable,Facturar,Adeudable{
         FacturaProveedor fact=(FacturaProveedor)oob;
         // ACA VOY A GUARDAR EN MOVIEMINTOS DE CAJA Y MODIFICAR EN MOVIMIENTOS DE PROVEEDORES
         Double monto=fact.getMontoFinal() * -1;
-        String sql="insert into movimientoscaja(numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,pagado,tipoCliente,idCliente) values ("+fact.getIdUsuario()+","+fact.getIdSucursal()+","+fact.getNumeroFactura()+",6,"+monto+",2,"+fact.getIdCaja()+","+fact.getPagada()+",2,"+fact.getNumeroProveedor()+")";
+        //insert into movimientoscaja(numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,pagado,tipoCliente,idCliente) values (1,1,(select tipocomprobantes.numeroActivo + 1 from tipocomprobantes where numero=11) ,6,1.00,2,1,1,2,1)
+        String sql="insert into movimientoscaja(numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,pagado,tipoCliente,idCliente) values ("+fact.getIdUsuario()+","+fact.getIdSucursal()+",(select tipocomprobantes.numeroActivo + 1 from tipocomprobantes where numero=11),6,"+monto+",2,"+fact.getIdCaja()+","+fact.getPagada()+",2,"+fact.getNumeroProveedor()+")";
         Transaccionable tra=new Conecciones();
         if(tra.guardarRegistro(sql))System.out.println(sql);
         sql="update movimientosproveedores set pagado="+fact.getPagada()+",fechaPago ='"+fact.getFecha()+"' where id="+fact.getId();

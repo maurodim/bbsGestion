@@ -33,6 +33,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
     private RemitosInternos remito;
     private FacturaProveedor facturaProveedor;
     private ArrayList listadoArt=new ArrayList();
+    private ArrayList listaProv=new ArrayList();
     private Articulos arti;
     private Proveedores proveedor;
     /**
@@ -102,7 +103,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         jLabel1.setText("Seleccione Proveedor");
 
         Proveedores proveedor=new Proveedores();
-        ArrayList listaProv=new ArrayList();
+        listaProv=new ArrayList();
         Personalizable per=new Proveedores();
         listaProv=per.listar();
         Iterator ilProv=listaProv.listIterator();
@@ -294,15 +295,12 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
                         .addComponent(jLabel3)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jCheckBox4)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel8)
+                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCheckBox4))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -379,7 +377,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jButton3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jLabel7))
         );
 
@@ -510,7 +508,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         if(facturaProveedor.getNumeroProveedor()==0){
            facturaProveedor.setNumeroProveedor(1);
            Personalizable per=new Proveedores();
-           proveedor=(Proveedores) per.buscarPorNumero(facturaProveedor.getNumeroProveedor()); 
+           proveedor=(Proveedores) per.buscarPorNumero(1); 
         }
         comprobante.setIdProveedor(proveedor.getNumero());
         comprobante.setNumeroDeposito(Inicio.deposito.getNumero());
@@ -546,10 +544,12 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
                 
                 facturaProveedor.setPagada(1);
                 facturaProveedor.setFecha(Date.valueOf(fecha2));
+                facturaProveedor.setIdCaja(Inicio.numeroCajaAdministradora);
                 fact.guardar(facturaProveedor);
             }else{
                 facturaProveedor.setPagada(0);
                 facturaProveedor.setFecha(Date.valueOf(fecha2));
+                facturaProveedor.setIdCaja(Inicio.numeroCajaAdministradora);
                 fact.guardar(facturaProveedor);
 
             }
@@ -570,7 +570,8 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        facturaProveedor.setNumeroProveedor(this.jComboBox1.getSelectedIndex());
+        Proveedores prov=(Proveedores)listaProv.get(this.jComboBox1.getSelectedIndex());
+        facturaProveedor.setNumeroProveedor(prov.getNumero());
         Personalizable per=new Proveedores();
         proveedor=(Proveedores) per.buscarPorNumero(facturaProveedor.getNumeroProveedor());
     }//GEN-LAST:event_jComboBox1ActionPerformed

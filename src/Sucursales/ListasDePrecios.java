@@ -147,6 +147,12 @@ public class ListasDePrecios implements Editables{
     public Boolean EliminacionDeObjeto(Object objeto) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+
+    @Override
+    public Boolean MovimientoDeAjusteDeCantidades(Object objeto, Double cantidadMovimiento, String observaciones) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     }
     
 

@@ -180,5 +180,10 @@ public class GastosF implements Editables{
         
         return verif;
     }
+
+    @Override
+    public Boolean MovimientoDeAjusteDeCantidades(Object objeto, Double cantidadMovimiento, String observaciones) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }

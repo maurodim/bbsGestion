@@ -99,7 +99,7 @@ public class BkDeConeccion implements Backpeable{
             sql="select * from tipocomprobantes";
             rs=tt.leerConjuntoDeRegistros(sql);
             while(rs.next()){
-                sentencia="update tipoComprobantes set numeroActivo="+rs.getInt("numeroactivo")+" where numero="+rs.getInt("numero");
+                sentencia="update tipocomprobantes set numeroActivo="+rs.getInt("numeroactivo")+" where numero="+rs.getInt("numero");
                 tra.guardarRegistro(sentencia);
                 
             }

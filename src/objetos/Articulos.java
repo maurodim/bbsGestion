@@ -400,6 +400,7 @@ public class Articulos implements Facturar,Editables{
             
         }
     }
+    
     @Override
     public Boolean guardar(Object oob) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -548,7 +549,13 @@ public class Articulos implements Facturar,Editables{
 
     @Override
     public Boolean EliminacionDeObjeto(Object objeto) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Articulos articulo=(Articulos)objeto;
+        Boolean verif=false;
+        String sql="update articulos set INHABILITADO=1 where ID="+articulo.getNumeroId();
+        Transaccionable tra=new Conecciones();
+        verif=tra.guardarRegistro(sql);
+        
+        return verif;
     }
 
     @Override
@@ -562,6 +569,18 @@ public class Articulos implements Facturar,Editables{
         String idd=String.valueOf(id);
         articulo=(Articulos)listadoCodigo.get(idd);
         return articulo;
+    }
+
+    @Override
+    public Boolean MovimientoDeAjusteDeCantidades(Object objeto, Double cantidadMovimiento, String observaciones) {
+        Articulos articulo=(Articulos)objeto;
+        Boolean verif=false;
+        String sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numerousuario,precioDeCosto,precioDeVenta,precioServicio,observaciones) values (14,"+articulo.getNumeroId()+","+cantidadMovimiento+","+Inicio.deposito.getNumero()+",18,(select tipocomprobantes.numeroActivo + 1 from tipocomprobantes where tipocomprobantes.numero=18),1,'"+Inicio.fechaDia+"',"+Inicio.usuario.getNumeroId()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getPrecioServicio()+",'"+observaciones+"')";
+        Transaccionable tra=new Conecciones();
+        verif=tra.guardarRegistro(sql);
+        sql="update tipocomprobantes set numeroActivo=numeroActivo + 1 where numero=18";
+        tra.guardarRegistro(sql);
+        return verif;
     }
     
     

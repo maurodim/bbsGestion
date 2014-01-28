@@ -103,7 +103,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         jLabel1.setText("Seleccione Proveedor");
 
         Proveedores proveedor=new Proveedores();
-        listaProv=new ArrayList();
+        //listaProv=new ArrayList();
         Personalizable per=new Proveedores();
         listaProv=per.listar();
         Iterator ilProv=listaProv.listIterator();
@@ -129,6 +129,11 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         }
         */
         jComboBox1.setName("jProveedores");
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -377,7 +382,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jButton3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(jLabel7))
         );
 
@@ -570,10 +575,12 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        /*
         Proveedores prov=(Proveedores)listaProv.get(this.jComboBox1.getSelectedIndex());
         facturaProveedor.setNumeroProveedor(prov.getNumero());
         Personalizable per=new Proveedores();
         proveedor=(Proveedores) per.buscarPorNumero(facturaProveedor.getNumeroProveedor());
+        */ 
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jTextField6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyPressed
@@ -638,6 +645,15 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
        arti=(Articulos)listadoArt.get(pos);
        arti.setPrecioUnitario(Numeros.ConvertirStringADouble(montoMod));
     }//GEN-LAST:event_jTable1FocusLost
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        if(this.jComboBox1.getSelectedIndex() > -1){
+        Proveedores prov=(Proveedores)listaProv.get(this.jComboBox1.getSelectedIndex());
+        facturaProveedor.setNumeroProveedor(prov.getNumero());
+        Personalizable per=new Proveedores();
+        proveedor=(Proveedores) per.buscarPorNumero(facturaProveedor.getNumeroProveedor());
+        }
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
 private void agregarRenglonTabla(){
         MiModeloTablaFacturacion busC=new MiModeloTablaFacturacion();
         this.jTable1.removeAll();

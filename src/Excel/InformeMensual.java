@@ -171,8 +171,8 @@ public class InformeMensual {
             if(a > 1){
             form="B"+a+"+C"+a+"+D"+a+"+E"+a+"+G"+a+"+H"+a;
             celda8=fila.createCell(8);
-            celda8.setCellType(HSSFCell.CELL_TYPE_FORMULA);
-            celda8.setCellFormula(form);
+            celda8.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            celda8.setCellValue(rs.getDouble("saldoFinal"));
             }
         }
             

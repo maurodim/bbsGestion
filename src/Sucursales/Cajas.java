@@ -567,7 +567,7 @@ public class Cajas extends Sucursales implements Cajeables{
             Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
         }
         //String sql="insert into"cajj.getSaldoFinal()
-        sql="update caja set diferencia="+dif2+",saldoFinal="+diferencia+",estado=1,fechaCierre='"+Inicio.fechaDia+"' where numero="+cajj.getNumero();
+        sql="update caja set diferencia="+dif2+",saldoFinal="+cajj.getCambioEnCaja()+",estado=1,fechaCierre='"+Inicio.fechaDia+"' where numero="+cajj.getNumero();
         
         verif=tra.guardarRegistro(sql);
         BkDeConeccion.guardarSentencias(sql);

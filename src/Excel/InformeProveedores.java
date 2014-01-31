@@ -29,6 +29,7 @@ public class InformeProveedores {
     public void GenerarInforme(String desde,String hasta) throws SQLException{
               HSSFWorkbook libro=new HSSFWorkbook();
         HSSFSheet hoja=libro.createSheet("Resumen");
+        HSSFSheet hoja1=libro.createSheet("Articulos");
         /*
          * GENERAR LAS SIGUIENTES HOJAS
          * 1- DETALLE DE MOVIMIENTOS DE CAJA - LEE EN MOVIMIENTOS CAJA INDENTIFICANDO EL TIPO DE MOVIMIENTO, USUARIOS Y 
@@ -130,8 +131,78 @@ public class InformeProveedores {
             celda6.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
             celda6.setCellValue(rs.getInt("idCaja"));
         }
+          /*
+           * segunda hoja
+           */  
+           
+            sql="SELECT *,(select articulos.NOMBRE from articulos where articulos.ID=movimientosarticulos.idArticulo)as descripcionArt,(select proveedores.nombre from proveedores where proveedores.numero=numeroCliente)as nombreP,sum(cantidad) as sumaCantidad,sum(precioDeCosto)as costo FROM `movimientosarticulos` where tipoMovimiento=5 and fecha between '"+desde+"' and '"+hasta+"' group by numeroCliente,idArticulo";
             
-             
+        //fuente.setFontHeight((short)21);
+        fuente.setFontName(fuente.FONT_ARIAL);
+        fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        form=null;
+        //String sql="SELECT *,(select proveedores.nombre from proveedores where proveedores.numero=movimientosproveedores.numeroProveedor)as nombreP,if(pagado=0,'pendiente','pagado')as estado FROM movimientosproveedores where fecha between '"+desde+"' and '"+hasta+"'";
+        System.out.println(sql);
+        //tra=new Conecciones();
+        rs=tra.leerConjuntoDeRegistros(sql);
+        titulo.setFont(fuente);
+        //titulo.setFillBackgroundColor((short)22);
+        titulo.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
+        titulo.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        //for(int a=0;a < 100;a++){
+        col=0;
+        a=0;
+            if(a==0){
+                fila=hoja1.createRow(a);
+            celda=fila.createCell(0);
+            celda.setCellStyle(titulo);
+            celda.setCellValue("Proveedor");
+            celda1=fila.createCell(1);
+            celda1.setCellStyle(titulo);
+            celda1.setCellValue("Codigo");
+            celda2=fila.createCell(2);
+            celda2.setCellStyle(titulo);
+            celda2.setCellValue("Descripcion Articulo");
+            celda3=fila.createCell(3);
+            celda3.setCellStyle(titulo);
+            celda3.setCellValue("Monto");
+            celda4=fila.createCell(4);
+            celda4.setCellStyle(titulo);
+            celda4.setCellValue("Cantidad");
+            }
+            while(rs.next()){
+            a++;
+            //col=rs.getInt("tipoMovimiento");
+            switch(col){
+                case 1:
+                    
+                    break;
+                default:
+                    
+                    break;
+            }
+            fila=hoja1.createRow(a);
+            celda=fila.createCell(0);
+            ttx=ttx;
+            celda.setCellType(HSSFCell.CELL_TYPE_STRING);
+            celda.setCellValue(rs.getString("nombreP"));
+            celda1=fila.createCell(1);
+            ttx=ttx;
+            celda1.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            celda1.setCellValue(rs.getInt("idArticulo"));
+            celda2=fila.createCell(2);
+            celda2.setCellType(HSSFCell.CELL_TYPE_STRING);
+            celda2.setCellValue(rs.getString("descripcionArt"));
+            celda3=fila.createCell(3);
+            celda3.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            celda3.setCellValue(rs.getDouble("costo"));
+            celda4=fila.createCell(4);
+            celda4.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            celda4.setCellValue(rs.getDouble("sumaCantidad"));
+            
+        } 
+            
+            
         rs.close();
         //texto+="\r\n";
         String ruta="C://Informes//informePorProveedor.xls";

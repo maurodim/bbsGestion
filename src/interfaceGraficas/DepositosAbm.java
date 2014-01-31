@@ -4,17 +4,26 @@
  */
 package interfaceGraficas;
 
+import Depositos.Depositos;
+import interfaces.Personalizable;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  *
  * @author mauro
  */
 public class DepositosAbm extends javax.swing.JInternalFrame {
-
-    /**
+    private ArrayList listado=new ArrayList();
+    private Depositos depSeleccionado=new Depositos();
+    private int nuevo=0;
+    
+    /*
      * Creates new form DepositosAbm
      */
     public DepositosAbm() {
         initComponents();
+        this.jPanel2.setVisible(false);
     }
 
     /**
@@ -44,7 +53,26 @@ public class DepositosAbm extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Seleccione el Deposito");
 
+        Personalizable per=new Depositos();
+        Depositos deposito=new Depositos();
+        listado=per.listar();
+        Iterator it=listado.listIterator();
+        while(it.hasNext()){
+            deposito=(Depositos)it.next();
+            jComboBox1.addItem(deposito.getDescripcion());
+        }
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
         jButton1.setText("Nuevo Deposito");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -72,9 +100,14 @@ public class DepositosAbm extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Nombre Deposito");
 
-        jLabel3.setText("Numero Remito");
+        jLabel3.setText("Direccion :");
 
         jButton2.setText("Guardar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -86,13 +119,12 @@ public class DepositosAbm extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                    .addComponent(jTextField2))
+                .addGap(18, 18, 18)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(295, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,11 +159,38 @@ public class DepositosAbm extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        //Depositos deposito=new Depositos();
+        this.jPanel2.setVisible(true);
+        depSeleccionado=(Depositos)listado.get(this.jComboBox1.getSelectedIndex());
+        this.jTextField1.setText(depSeleccionado.getDescripcion());
+        this.jTextField2.setText(depSeleccionado.getDireccion());
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        nuevo=1;
+        this.jPanel2.setVisible(true);
+        this.jTextField1.requestFocus();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       depSeleccionado.setDescripcion(this.jTextField1.getText());
+       depSeleccionado.setDireccion(this.jTextField2.getText());
+       Personalizable per=new Depositos();
+       if(nuevo==0){
+           if(per.modificar(depSeleccionado))this.dispose();
+       }else{
+           if(per.agregar(depSeleccionado))this.dispose();
+       }
+      
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

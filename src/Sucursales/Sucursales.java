@@ -7,6 +7,7 @@ package Sucursales;
 import Administracion.Administracion;
 import Depositos.Depositos;
 import interfaceGraficas.Inicio;
+import interfaces.Personalizable;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,7 +21,7 @@ import objetos.Conecciones;
  *
  * @author mauro
  */
-public class Sucursales extends Administracion{
+public class Sucursales extends Administracion implements Personalizable{
     private int numero;
     private String descripcion;
     private String direccion;
@@ -29,6 +30,7 @@ public class Sucursales extends Administracion{
     private Cajas caja;
     private Usuarios usuario;
     private ArrayList tipoComprobantes=new ArrayList();
+    
 
     public ArrayList getTipoComprobantes() {
         return tipoComprobantes;
@@ -143,6 +145,90 @@ public class Sucursales extends Administracion{
 
     public void setDepositos(Depositos depositos) {
         this.depositos = depositos;
+    }
+
+    @Override
+    public Boolean agregar(Object objeto) {
+         Boolean verif=false;
+        Sucursales deposito=(Sucursales)objeto;
+        String sql="insert into sucursal (descripcion,deposito) values ('"+deposito.getDescripcion()+"','"+deposito.getDepositos().getNumero()+"')";
+        Transaccionable tra=new Conecciones();
+        verif=tra.guardarRegistro(sql);
+        
+        return verif;
+    }
+
+    @Override
+    public Boolean modificar(Object objeto) {
+               Boolean verif=false;
+        Sucursales deposito=(Sucursales)objeto;
+        String sql="update sucursal set descripcion='"+deposito.getDescripcion()+"',deposito='"+deposito.getDepositos().getNumero()+"' where numero="+deposito.getNumero();
+        Transaccionable tra=new Conecciones();
+        verif=tra.guardarRegistro(sql);
+        
+        return verif;
+    }
+
+    @Override
+    public Boolean eliminar(Object objeto) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object buscarPorNumero(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object buscarPorNombre(String nombre) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object buscarPorCuit(String cuit) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList listar() {
+                Transaccionable tra;
+        /*
+        if(Inicio.coneccionRemota){
+            tra=new Conecciones();
+        }else{
+        */ 
+            tra=new Conecciones();
+            ArrayList listado=new ArrayList();
+        //}
+        String sql="select * from sucursal";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                Sucursales sucursal=new Sucursales();
+                sucursal.setDepositos(new Depositos(rs.getInt("deposito")));
+                sucursal.setDescripcion(rs.getString("descripcion"));
+                sucursal.setDireccion(rs.getString("direccion"));
+                sucursal.setTelefono(rs.getString("telefono"));
+                sucursal.setNumero(rs.getInt("numero"));
+                listado.add(sucursal);
+                            
+            }
+            
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Sucursales.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listado;
+    }
+
+    @Override
+    public ArrayList listarPorNombre(String nombre) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList listarPorCuit(String cuit) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     

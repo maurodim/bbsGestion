@@ -6,6 +6,7 @@ package Sucursales;
 
 import Administracion.TipoAcceso;
 import interfaceGraficas.Inicio;
+import interfaces.Personalizable;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +22,7 @@ import objetos.Menus;
  *
  * @author mauro
  */
-public class Usuarios extends TipoAcceso{
+public class Usuarios extends TipoAcceso implements Personalizable{
     private int numeroId;
     private String nombre;
     private String direccion;
@@ -238,6 +239,7 @@ public class Usuarios extends TipoAcceso{
                 us.setNivelDeAutorizacion(rr.getInt("autorizacion"));
                 System.err.println("USUARIOS "+us.nombre);
                 us.setMenu(new Menus(rr.getBoolean("menu1"),rr.getBoolean("menu2"),rr.getBoolean("menu3"),rr.getBoolean("menu4"),rr.getBoolean("menu5"),rr.getBoolean("menu6"),rr.getBoolean("menu7")));
+                us.setSucursal(new Sucursales(rr.getInt("sucursal")));
                 listadoUsuarios.add(us);
                 
             }
@@ -322,12 +324,24 @@ public class Usuarios extends TipoAcceso{
 
     @Override
     public Boolean modificarDatosUsuario(Object objeto) {
-        return super.modificarDatosUsuario(objeto);
+        Boolean verif=false;
+        Usuarios usuario=(Usuarios)objeto;
+        Transaccionable tra=new Conecciones();
+        String sql="update usuarios set nombre='"+usuario.getNombre()+"',direccion='"+usuario.getDireccion()+"',telefono='"+usuario.getTelefono()+"',mail='"+usuario.getMail()+"',nombreUsuario='"+usuario.getNombreDeUsuario()+"',clave='"+usuario.getClave()+"',autorizacion="+usuario.getNivelDeAutorizacion()+",numeroTipoAcceso="+usuario.getNivelDeAutorizacion()+",sucursal="+usuario.getSucursal().getNumero()+" where numero="+usuario.getNumeroId();
+        verif=tra.guardarRegistro(sql);
+        
+        return verif;
     }
 
     @Override
     public Boolean nuevoUsuario(Object objeto) {
-        return super.nuevoUsuario(objeto);
+        Boolean verif=false;
+        Usuarios usuario=(Usuarios)objeto;
+        Transaccionable tra=new Conecciones();
+        String sql="insert into usuarios (nombre,direccion,telefono,mail,nombreUsuario,clave,autorizacion,numeroTipoAcceso,sucursal) values ('"+usuario.getNombre()+"','"+usuario.getDireccion()+"','"+usuario.getTelefono()+"','"+usuario.getMail()+"','"+usuario.getNombreDeUsuario()+"','"+usuario.getClave()+"',"+usuario.getNivelDeAutorizacion()+","+usuario.getNivelDeAutorizacion()+","+usuario.getSucursal().getNumero()+")";
+        verif=tra.guardarRegistro(sql);
+        
+        return verif;
     }
 
     @Override
@@ -364,6 +378,63 @@ public class Usuarios extends TipoAcceso{
             Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
         return usu;
+    }
+
+    @Override
+    public Boolean agregar(Object objeto) {
+        Boolean verif=false;
+        Usuarios usuario=(Usuarios)objeto;
+        Transaccionable tra=new Conecciones();
+        String sql="insert into usuarios (nombre,direccion,telefono,mail,nombreUsuario,clave,autorizacion,numeroTipoAcceso,sucursal) values ('"+usuario.getNombre()+"','"+usuario.getDireccion()+"','"+usuario.getTelefono()+"','"+usuario.getMail()+"','"+usuario.getNombreDeUsuario().toUpperCase()+"','"+usuario.getClave()+"',"+usuario.getNivelDeAutorizacion()+","+usuario.getNivelDeAutorizacion()+","+usuario.getSucursal().getNumero()+")";
+        verif=tra.guardarRegistro(sql);
+        
+        return verif;
+    }
+
+    @Override
+    public Boolean modificar(Object objeto) {
+        Boolean verif=false;
+        Usuarios usuario=(Usuarios)objeto;
+        Transaccionable tra=new Conecciones();
+        String sql="update usuarios set nombre='"+usuario.getNombre()+"',direccion='"+usuario.getDireccion()+"',telefono='"+usuario.getTelefono()+"',mail='"+usuario.getMail()+"',nombreUsuario='"+usuario.getNombreDeUsuario().toUpperCase()+"',clave='"+usuario.getClave()+"',autorizacion="+usuario.getNivelDeAutorizacion()+",numeroTipoAcceso="+usuario.getNivelDeAutorizacion()+",sucursal="+usuario.getSucursal().getNumero()+" where numero="+usuario.getNumeroId();
+        verif=tra.guardarRegistro(sql);
+        
+        return verif;
+    }
+
+    @Override
+    public Boolean eliminar(Object objeto) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object buscarPorNumero(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object buscarPorNombre(String nombre) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object buscarPorCuit(String cuit) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList listar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList listarPorNombre(String nombre) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ArrayList listarPorCuit(String cuit) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

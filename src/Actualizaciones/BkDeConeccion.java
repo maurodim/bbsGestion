@@ -179,6 +179,7 @@ public class BkDeConeccion implements Backpeable{
                              
                         }
                         sql="select * from tipoacceso where numero="+usu.getNivelDeAutorizacion();
+                        System.out.println(sql);
                         rs=tras.leerConjuntoDeRegistros(sql);
                         while(rs.next()){
                                usu.setMenu(new Menus(rs.getBoolean("menu1"),rs.getBoolean("menu2"),rs.getBoolean("menu3"),rs.getBoolean("menu4"),rs.getBoolean("menu5"),rs.getBoolean("menu6"),rs.getBoolean("menu7")));                    

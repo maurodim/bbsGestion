@@ -4,17 +4,28 @@
  */
 package interfaceGraficas;
 
+import Depositos.Depositos;
+import Sucursales.Sucursales;
+import interfaces.Personalizable;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  *
  * @author mauro
  */
 public class SucursalesAbm extends javax.swing.JInternalFrame {
-
+    private Sucursales sucursalSeleccionada=new Sucursales();
+    private ArrayList listado=new ArrayList();
+    private ArrayList listadoDep=new ArrayList();
+    private int nuevo=0;
+    
     /**
      * Creates new form SucursalesAbm
      */
     public SucursalesAbm() {
         initComponents();
+        this.jPanel2.setVisible(false);
     }
 
     /**
@@ -44,7 +55,26 @@ public class SucursalesAbm extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Seleccione Sucursal");
 
+        Personalizable per=new Sucursales();
+        listado=per.listar();
+        Iterator it=listado.listIterator();
+        Sucursales sucursal=new Sucursales();
+        while(it.hasNext()){
+            sucursal=(Sucursales)it.next();
+            jComboBox1.addItem(sucursal.getDescripcion());
+        }
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
         jButton1.setText("Nueva Sucursal");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -72,11 +102,23 @@ public class SucursalesAbm extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Nombre Sucursal :");
 
-        jTextField1.setText("jTextField1");
-
         jLabel3.setText("Deposito Asignado");
 
+        Personalizable pers=new Depositos();
+        Depositos deposito=new Depositos();
+        listadoDep=pers.listar();
+        Iterator itL=listadoDep.listIterator();
+        while(itL.hasNext()){
+            deposito=(Depositos)itL.next();
+            jComboBox2.addItem(deposito.getDescripcion());
+        }
+
         jButton2.setText("Guardar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -128,11 +170,38 @@ public class SucursalesAbm extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        sucursalSeleccionada=(Sucursales)listado.get(this.jComboBox1.getSelectedIndex());
+        this.jPanel2.setVisible(true);
+        this.jTextField1.setText(sucursalSeleccionada.getDescripcion());
+        int dep=sucursalSeleccionada.getDepositos().getNumero() - 1;
+       this.jComboBox2.setSelectedIndex(dep);
+       this.jTextField1.requestFocus();
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        nuevo=1;
+        this.jPanel2.setVisible(true);
+        this.jTextField1.requestFocus();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        sucursalSeleccionada.setDescripcion(this.jTextField1.getText());
+        sucursalSeleccionada.setDepositos((Depositos)listadoDep.get(this.jComboBox2.getSelectedIndex()));
+        Personalizable per=new Sucursales();
+        if(nuevo==0){
+            if(per.modificar(sucursalSeleccionada))this.dispose();
+        }else{
+            if(per.agregar(sucursalSeleccionada))this.dispose();
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

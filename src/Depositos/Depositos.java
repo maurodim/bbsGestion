@@ -137,12 +137,28 @@ public class Depositos implements Personalizable, Trasladable{
     }
     @Override
     public Boolean agregar(Object objeto) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //
+        Boolean verif=false;
+        Depositos deposito=(Depositos)objeto;
+        String sql="insert into depositos (descripcion,direccion) values ('"+deposito.getDescripcion()+"','"+deposito.getDireccion()+"')";
+        Transaccionable tra=new Conecciones();
+        verif=tra.guardarRegistro(sql);
+        
+        return verif;
+        
     }
 
     @Override
     public Boolean modificar(Object objeto) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //
+        Boolean verif=false;
+        Depositos deposito=(Depositos)objeto;
+        String sql="update depositos set descripcion='"+deposito.getDescripcion()+"',direccion='"+deposito.getDireccion()+"' where numero="+deposito.getNumero();
+        Transaccionable tra=new Conecciones();
+        verif=tra.guardarRegistro(sql);
+        
+        return verif;
+
     }
 
     @Override

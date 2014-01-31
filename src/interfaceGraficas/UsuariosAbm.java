@@ -4,22 +4,31 @@
  */
 package interfaceGraficas;
 
+import Sucursales.Sucursales;
 import Sucursales.Usuarios;
 import interfaces.Personalizable;
 import java.util.ArrayList;
 import java.util.Iterator;
+import objetos.Menus;
 
 /**
  *
  * @author mauro
  */
 public class UsuariosAbm extends javax.swing.JInternalFrame {
-    private Usuarios usuario;
+    private Usuarios usuario=new Usuarios();
+    private ArrayList listadoU=new ArrayList();
+    private ArrayList listadoM=new ArrayList();
+    private ArrayList listadoS=new ArrayList();
+    private Sucursales sucursal=new Sucursales();
+    private Menus menu=new Menus();
+    private int nuevo=0;
     /**
      * Creates new form UsuariosAbm
      */
     public UsuariosAbm() {
         initComponents();
+        this.jPanel2.setVisible(false);
     }
 
     /**
@@ -54,6 +63,10 @@ public class UsuariosAbm extends javax.swing.JInternalFrame {
         jLabel7 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jCheckBox5 = new javax.swing.JCheckBox();
+        jCheckBox6 = new javax.swing.JCheckBox();
+        jCheckBox7 = new javax.swing.JCheckBox();
+        jLabel8 = new javax.swing.JLabel();
+        jComboBox3 = new javax.swing.JComboBox();
 
         setClosable(true);
         setMaximizable(true);
@@ -63,7 +76,6 @@ public class UsuariosAbm extends javax.swing.JInternalFrame {
         jLabel1.setText("Seleccione Usuario");
 
         Usuarios usuario=new Usuarios();
-        ArrayList listadoU=new ArrayList();
         listadoU=usuario.listarUsuario();
         Iterator ilU=listadoU.listIterator();
         while(ilU.hasNext()){
@@ -71,7 +83,6 @@ public class UsuariosAbm extends javax.swing.JInternalFrame {
             jComboBox1.addItem(usuario.getNombre());
         }
         jComboBox1.setName("comboUsuarios");
-        this.jPanel2.setVisible(false);
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox1ItemStateChanged(evt);
@@ -84,6 +95,11 @@ public class UsuariosAbm extends javax.swing.JInternalFrame {
         });
 
         jButton1.setText("Nuevo Usuario");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -115,6 +131,20 @@ public class UsuariosAbm extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Nivel de Acceso");
 
+        Personalizable per=new Menus();
+        Menus menu=new Menus();
+        listadoM=per.listar();
+        Iterator itL=listadoM.listIterator();
+        while(itL.hasNext()){
+            menu=(Menus)itL.next();
+            jComboBox2.addItem(menu.getNombre());
+        }
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+
         jCheckBox1.setText("Administracion");
 
         jCheckBox2.setText("Stock");
@@ -124,6 +154,11 @@ public class UsuariosAbm extends javax.swing.JInternalFrame {
         jCheckBox4.setText("Usuarios");
 
         jButton2.setText("Guardar Modificaciones");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Direccion :");
 
@@ -133,19 +168,36 @@ public class UsuariosAbm extends javax.swing.JInternalFrame {
 
         jCheckBox5.setText("Parametros");
 
+        jCheckBox6.setText("Clientes");
+
+        jCheckBox7.setText("Gastos Fijos");
+
+        jLabel8.setText("Sucursal :");
+
+        Personalizable perso=new Sucursales();
+        Sucursales suc=new Sucursales();
+        listadoS=perso.listar();
+        Iterator itS=listadoS.listIterator();
+        while(itS.hasNext()){
+            suc=(Sucursales)itS.next();
+            jComboBox3.addItem(suc.getDescripcion());
+        }
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel8))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTextField1)
@@ -153,16 +205,21 @@ public class UsuariosAbm extends javax.swing.JInternalFrame {
                     .addComponent(jComboBox2, 0, 200, Short.MAX_VALUE)
                     .addComponent(jTextField3)
                     .addComponent(jTextField4)
-                    .addComponent(jTextField5))
+                    .addComponent(jTextField5)
+                    .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jCheckBox4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-                    .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCheckBox3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCheckBox5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jCheckBox7)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jCheckBox4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                            .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jCheckBox3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jCheckBox5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCheckBox6))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -197,8 +254,15 @@ public class UsuariosAbm extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(87, Short.MAX_VALUE))
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBox6))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jCheckBox7)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel8)
+                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -230,24 +294,70 @@ public class UsuariosAbm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        usuario=new Usuarios();
-        int numeroUs=this.jComboBox1.getSelectedIndex();
-        numeroUs++;
-        System.err.println("usuario "+numeroUs);
-        usuario=(Usuarios) usuario.cargarUsuario(numeroUs);
+        //usuario=new Usuarios();
+        //int numeroUs=this.jComboBox1.getSelectedIndex();
+        //numeroUs++;
+        //System.err.println("usuario "+numeroUs);
+        usuario=(Usuarios)listadoU.get(this.jComboBox1.getSelectedIndex());
         this.jPanel2.setVisible(true);
         this.jTextField1.setText(usuario.getNombre());
         this.jTextField2.setText(usuario.getClave());
         this.jTextField3.setText(usuario.getDireccion());
         this.jTextField4.setText(usuario.getTelefono());
         this.jTextField5.setText(usuario.getMail());
+        int acceso=usuario.getNivelDeAutorizacion() -1;
+        this.jComboBox2.setSelectedIndex(acceso);
+        System.err.println(" NUMERO SUCURSAL "+usuario.getSucursal().getNumero());
+        int sucu=usuario.getSucursal().getNumero() -1;
+        
+        this.jComboBox3.setSelectedIndex(sucu);
         this.jCheckBox1.setSelected(usuario.getMenu().getMenu1());
         this.jCheckBox2.setSelected(usuario.getMenu().getMenu2());
         this.jCheckBox3.setSelected(usuario.getMenu().getMenu3());
         this.jCheckBox4.setSelected(usuario.getMenu().getMenu4());
         this.jCheckBox5.setSelected(usuario.getMenu().getMenu5());
+        this.jCheckBox6.setSelected(usuario.getMenu().getMenu6());
+        this.jCheckBox7.setSelected(usuario.getMenu().getMenu7());
+       
         this.jTextField1.requestFocus();
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        //Menus menu=new Menus();
+        menu=(Menus)listadoM.get(this.jComboBox2.getSelectedIndex());
+        this.jCheckBox1.setSelected(menu.getMenu1());
+        this.jCheckBox2.setSelected(menu.getMenu2());
+        this.jCheckBox3.setSelected(menu.getMenu3());
+        this.jCheckBox4.setSelected(menu.getMenu4());
+        this.jCheckBox5.setSelected(menu.getMenu5());
+        this.jCheckBox6.setSelected(menu.getMenu6());
+        this.jCheckBox7.setSelected(menu.getMenu7());
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        nuevo=1;
+        this.jPanel2.setVisible(true);
+        this.jTextField1.requestFocus();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        usuario.setNombre(this.jTextField1.getText());
+        usuario.setNombreDeUsuario(this.jTextField1.getText());
+        usuario.setClave(this.jTextField2.getText());
+        menu=(Menus)listadoM.get(this.jComboBox2.getSelectedIndex());
+        usuario.setNivelDeAutorizacion(menu.getNumero());
+        usuario.setDireccion(this.jTextField3.getText());
+        usuario.setTelefono(this.jTextField4.getText());
+        usuario.setMail(this.jTextField5.getText());
+        sucursal=(Sucursales)listadoS.get(this.jComboBox3.getSelectedIndex());
+        usuario.setSucursal(sucursal);
+        Personalizable person=new Usuarios();
+        if(nuevo==0){
+            if(person.modificar(usuario))this.dispose();
+        }else{
+            if(person.agregar(usuario))this.dispose();
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -257,8 +367,11 @@ public class UsuariosAbm extends javax.swing.JInternalFrame {
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
     private javax.swing.JCheckBox jCheckBox5;
+    private javax.swing.JCheckBox jCheckBox6;
+    private javax.swing.JCheckBox jCheckBox7;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JComboBox jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -266,6 +379,7 @@ public class UsuariosAbm extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField1;

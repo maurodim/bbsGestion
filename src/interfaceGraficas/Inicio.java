@@ -352,6 +352,11 @@ public class Inicio extends javax.swing.JFrame {
         jMenu5.setText("Parametros");
 
         jMenuItem15.setText("Tipos de Accesos");
+        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem15ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem15);
 
         jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
@@ -596,6 +601,13 @@ public class Inicio extends javax.swing.JFrame {
         gastos.setVisible(true);
         gastos.toFront();
     }//GEN-LAST:event_jMenuItem22ActionPerformed
+
+    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+        TipoAccesoAbm tipo=new TipoAccesoAbm();
+        jDesktopPane1.add(tipo);
+        tipo.setVisible(true);
+        tipo.toFront();
+    }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     /**
      * @param args the command line arguments

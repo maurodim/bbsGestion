@@ -400,7 +400,14 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         cajas.setMontoMovimiento(entrega);
         diferencia=diferencia - entrega;
         cajas.setSaldoFinal(totalB);
-        Double quedaEnCaja=totalB - entrega;
+        /*
+         * OJO ACA ES DONDE ESTA CALCULANDO MAL, EN ALGUN PUNTO ME ESTA SUMANDO AL SALDO EN CAJA
+         * TODO EL MONTO DE TOTALB + EL MONTO A RETIRAR Y NO MUESTRA EL SALDO EN CAJA
+         * PUEDE QUE SEA EL - QUE BA PUESTO, LO CAMBIE POR UN +
+         * 
+         */
+        
+        Double quedaEnCaja=totalB + entrega;
         
         cajas.setCambioEnCaja(quedaEnCaja);
         

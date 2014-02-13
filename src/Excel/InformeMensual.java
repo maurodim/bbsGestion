@@ -84,7 +84,7 @@ public class InformeMensual {
         fuente.setFontName(fuente.FONT_ARIAL);
         fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         String form=null;
-        String sql="select * from informemensualdecaja where fecha between '"+desde+"' and '"+hasta+"'";
+        String sql="select *,(select movimientoscaja.monto from movimientoscaja where movimientoscaja.tipoMovimiento=10 and movimientoscaja.idCaja=informemensualdecaja.numero and movimientoscaja.monto < 0)as cierre from informemensualdecaja where fecha between '"+desde+"' and '"+hasta+"'";
         System.out.println(sql);
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
@@ -165,9 +165,12 @@ public class InformeMensual {
             celda6=fila.createCell(6);
             celda6.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
             celda6.setCellValue(rs.getDouble("diferencia"));
+            Double retiro=rs.getDouble("retiroEfectivo");
+            Double retFinal=rs.getDouble("cierre");
+            Double tota=retiro + retFinal;
             celda7=fila.createCell(7);
             celda7.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-            celda7.setCellValue(rs.getDouble("retiroEfectivo"));
+            celda7.setCellValue(tota);
             if(a > 1){
             form="B"+a+"+C"+a+"+D"+a+"+E"+a+"+G"+a+"+H"+a;
             celda8=fila.createCell(8);

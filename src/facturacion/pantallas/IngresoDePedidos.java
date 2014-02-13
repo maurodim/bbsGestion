@@ -555,6 +555,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
     private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
             Double cantt=Double.parseDouble(this.jTextField2.getText());
+            if(cantt < 1000){
             if(arti.getModificaPrecio()){
                 this.jTextField4.requestFocus();
             }else{
@@ -585,6 +586,9 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             this.jTextField1.requestFocus();
                 }
                 }
+            }else{
+                JOptionPane.showMessageDialog(this,"LA CANTIDAD INGRESADA ES EXCESIVA, POR FAVOR VERIFÍQUELA");
+            }
         }
     }//GEN-LAST:event_jTextField2KeyPressed
 

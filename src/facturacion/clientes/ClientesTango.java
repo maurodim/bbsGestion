@@ -99,6 +99,7 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
             if(signal==1){
                 tra=new Conecciones();
                 sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo from listcli";    
+                System.err.println("LEER CLIENTES - "+sql);
                 signal=0;
             }else{
              
@@ -146,7 +147,11 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
         } catch (SQLException ex) {
             Logger.getLogger(ClientesTango.class.getName()).log(Level.SEVERE, null, ex);
         }
-            if(Inicio.coneccionRemota)BackapearClientes();
+            if(signal==1){
+            if(Inicio.coneccionRemota)BackapearClientes();    
+            }else{
+            
+            }
     }   
 
     public ClientesTango(String codigoCliente) {
@@ -381,6 +386,14 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
         }
         
     }
+    public void ajustarSaldo(ClientesTango cli,Double ajuste){
+        numeroActualRecibo();
+       numeroRecibo++;
+        Transaccionable tra=new Conecciones();
+        String sql="insert into movimientosclientes (numeroProveedor,monto,numeroComprobante,idUsuario,tipoComprobante,idSucursal,idRemito) values ("+cli.getCodigoId()+","+ajuste+","+numeroRecibo+","+Inicio.usuario.getNumeroId()+",15,"+Inicio.sucursal.getNumero()+",0)";
+        tra.guardarRegistro(sql);
+        
+    }
     public ArrayList listarPorVehiculo(int numeroVehiculo,String fecha) throws SQLException{
         ArrayList lista=new ArrayList();
         //String sql="select * from clientes where RAZON_SOCI like";
@@ -390,10 +403,10 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
         return lista;
     }
     public static void BackapearClientes(){
-        if(listadoPorNom.size()==0){
+        //if(listadoPorNom.size()==0){
             signal=1;
             cargarMap();
-        }
+        //}
         ArrayList listado=new ArrayList();
         Busquedas bus=new ClientesTango();
         ClientesTango cli=new ClientesTango();

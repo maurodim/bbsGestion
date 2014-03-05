@@ -128,6 +128,14 @@ public class AbmClientes extends javax.swing.JInternalFrame {
         cliente.setDireccion(String.valueOf(this.jTable1.getValueAt(posicion, 2)));
         cliente.setTelefono(String.valueOf(this.jTable1.getValueAt(posicion,3)));
         cliente.setCupoDeCredito(Numeros.ConvertirStringADouble(String.valueOf(this.jTable1.getValueAt(posicion,4))));
+        Double sal=Numeros.ConvertirStringADouble(String.valueOf(this.jTable1.getValueAt(posicion,5)));
+        Double saldoOriginal=cliente.getSaldo();
+        Double ajuste=sal - saldoOriginal;
+        if(ajuste == 0){
+            
+        }else{
+            cliente.ajustarSaldo(cliente, ajuste);
+        }
         if(cliente.getCupoDeCredito()>0){
             cliente.setCondicionDeVenta(2);
         }else{
@@ -137,7 +145,7 @@ public class AbmClientes extends javax.swing.JInternalFrame {
         cliente.setListaDePrecios((Integer.parseInt(String.valueOf(this.jTable1.getValueAt(posicion,6)))));
         Facturar fact=new ClientesTango();
         fact.modificarDatosDelCliente(cliente);
-        this.dispose();
+        //this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

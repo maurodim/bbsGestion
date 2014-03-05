@@ -398,7 +398,7 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         entrega=Numeros.ConvertirStringADouble(this.jFormattedTextField1.getText());
         entrega=entrega * -1;
         cajas.setMontoMovimiento(entrega);
-        diferencia=diferencia - entrega;
+        diferencia=diferencia + entrega;
         cajas.setSaldoFinal(totalB);
         /*
          * OJO ACA ES DONDE ESTA CALCULANDO MAL, EN ALGUN PUNTO ME ESTA SUMANDO AL SALDO EN CAJA

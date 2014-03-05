@@ -33,7 +33,7 @@ import objetos.Conecciones;
 public class Actualiza extends Thread{
     @Override
     public void run(){
-        Timer timer=new Timer(500000,new ActionListener(){ 
+        Timer timer=new Timer(250000,new ActionListener(){ 
             @Override
     public void actionPerformed(ActionEvent e) 
     { 

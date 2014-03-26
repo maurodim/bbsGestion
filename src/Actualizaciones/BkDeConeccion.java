@@ -16,8 +16,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -44,6 +46,12 @@ public class BkDeConeccion implements Backpeable{
     private long attributes;
     private long caracteres;
     private long espaciosEnBlanco;
+    private ArrayList listadoSentenciasArt=new ArrayList();
+    private ArrayList listadoSentenciasCaja=new ArrayList();
+    private ArrayList listadoSentenciasClientes=new ArrayList();
+    private ArrayList listadoSentenciasProveedores=new ArrayList();
+    private ArrayList listadoSentenciasComprobantes=new ArrayList();
+    
     
     public static Boolean guardarSentencias(String sql){
         Boolean verif=false;
@@ -53,8 +61,13 @@ public class BkDeConeccion implements Backpeable{
         
         return verif;
     }
-    public static Boolean procesosDeCierre(){
+    public synchronized Boolean procesosDeCierre(){
         Boolean ver=false;
+        Boolean ver1=false;
+        Boolean ver2=false;
+        Boolean ver3=false;
+        Boolean ver4=false;
+        Boolean ver5=false;
         Transaccionable tra=new Conecciones();
         Transaccionable tt=new ConeccionLocal();
         String sql="select * from movimientosarticulos where estado is null";
@@ -63,47 +76,105 @@ public class BkDeConeccion implements Backpeable{
         try {
             while(rs.next()){
                 sentencia="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario,precioDeCosto,precioDeVenta,precioServicio) values ("+rs.getInt("tipomovimiento")+","+rs.getInt("idarticulo")+","+rs.getDouble("cantidad")+","+rs.getInt("numerodeposito")+","+rs.getInt("tipocomprobante")+","+rs.getInt("numerocomprobante")+","+rs.getInt("numerocliente")+",'"+rs.getString("fechacomprobante")+"',"+rs.getInt("numerousuario")+","+rs.getDouble("preciodecosto")+","+rs.getDouble("preciodeventa")+","+rs.getDouble("precioservicio")+")";
-                tra.guardarRegistro(sentencia);
+                listadoSentenciasArt.add(sentencia);
                 
             }
             rs.close();
-            sql="update movimientosarticulos set estado=1";
-            tt.guardarRegistro(sql);
+            
             sql="select * from movimientoscaja where estado is null";
             rs=tt.leerConjuntoDeRegistros(sql);
             while(rs.next()){
                 sentencia="insert into movimientoscaja (numeroUsuario,idCliente,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,cantidad,pagado,observaciones,tipoCliente) values ("+rs.getInt("numerousuario")+","+rs.getInt("idcliente")+","+rs.getInt("numerosucursal")+","+rs.getInt("numerocomprobante")+","+rs.getInt("tipocomprobante")+","+rs.getDouble("monto")+","+rs.getInt("tipomovimiento")+","+rs.getInt("idcaja")+","+rs.getDouble("cantidad")+","+rs.getInt("pagado")+",'"+rs.getString("observaciones")+"',"+rs.getInt("tipocliente")+")";
-                tra.guardarRegistro(sentencia);
+                listadoSentenciasCaja.add(sentencia);
             }
             rs.close();
-            sql="update movimientoscaja set estado=1";
-            tt.guardarRegistro(sql);
+
             sql="select * from movimientosclientes where estado is null";
             rs=tt.leerConjuntoDeRegistros(sql);
             while(rs.next()){
                 sentencia="insert into movimientosclientes (numeroProveedor,monto,pagado,numeroComprobante,idRemito,idUsuario,idCaja,tipoComprobante,idSucursal) values ("+rs.getInt("numeroproveedor")+","+rs.getDouble("monto")+","+rs.getInt("pagado")+","+rs.getInt("numerocomprobante")+","+rs.getInt("idRemito")+","+rs.getInt("idusuario")+","+rs.getInt("idcaja")+","+rs.getInt("tipocomprobante")+","+rs.getInt("idsucursal")+")";
-                tra.guardarRegistro(sentencia);
+                listadoSentenciasClientes.add(sentencia);
             }
             rs.close();
-            sql="update movimientosclientes set estado =1";
-            tt.guardarRegistro(sql);
+            
             sql="select * from movimientosproveedores where estado is null";
             rs=tt.leerConjuntoDeRegistros(sql);
             while(rs.next()){
                 sentencia="insert into movimientosproveedores (numeroProveedor,monto,pagado,numeroComprobante,idRemito,idUsuario,idCaja,fechaPago,tipoComprobante,idSucursal) values ("+rs.getInt("numeroproveedor")+","+rs.getDouble("monto")+","+rs.getInt("pagado")+","+rs.getInt("numerocomprobante")+","+rs.getInt("idRemito")+","+rs.getInt("idusuario")+","+rs.getInt("idcaja")+",'"+rs.getString("fechapago")+"',"+rs.getInt("tipocomprobante")+","+rs.getInt("idsucursal")+")";
-                tra.guardarRegistro(sentencia);
+               listadoSentenciasProveedores.add(sentencia);
             }
             rs.close();
-            sql="update movimientosproveedores set estado=1";
-            tt.guardarRegistro(sql);
+
             sql="select * from tipocomprobantes";
             rs=tt.leerConjuntoDeRegistros(sql);
             while(rs.next()){
                 sentencia="update tipocomprobantes set numeroActivo="+rs.getInt("numeroactivo")+" where numero="+rs.getInt("numero");
-                tra.guardarRegistro(sentencia);
+                listadoSentenciasComprobantes.add(sentencia);
                 
             }
             rs.close();
+            
+            //ACA COMIENZAN LOS UPDATES
+            //if(ProbarConeccion()){
+            
+            
+                       
+            
+            
+           
+            String st=null;
+            Iterator itA=listadoSentenciasArt.listIterator();
+            while(itA.hasNext()){
+                st=(String)itA.next();
+                ver1=tra.guardarRegistro(st);
+            }
+            if(ver1){
+             sql="update movimientosarticulos set estado=1";
+            tt.guardarRegistro(sql);  
+            }
+            Iterator itCa=listadoSentenciasCaja.listIterator();
+            while(itCa.hasNext()){
+                st=(String)itCa.next();
+                ver2=tra.guardarRegistro(st);
+            }
+            if(ver2){
+               sql="update movimientoscaja set estado=1";
+            tt.guardarRegistro(sql);
+  
+            }
+            Iterator itCl=listadoSentenciasClientes.listIterator();
+            while(itCl.hasNext()){
+                st=(String)itCl.next();
+                ver3=tra.guardarRegistro(st);
+                
+            }
+            if(ver3){
+            sql="update movimientosclientes set estado =1";
+            tt.guardarRegistro(sql);    
+            }
+            Iterator itP=listadoSentenciasProveedores.listIterator();
+            while(itP.hasNext()){
+                st=(String)itP.next();
+                ver4=tra.guardarRegistro(st);
+            }
+            if(ver4){
+               sql="update movimientosproveedores set estado=1";
+            tt.guardarRegistro(sql);  
+            }
+            Iterator itCo=listadoSentenciasComprobantes.listIterator();
+            while(itCo.hasNext()){
+                st=(String)itCo.next();
+                tra.guardarRegistro(st);
+            }
+            
+            listadoSentenciasArt.clear();
+            listadoSentenciasCaja.clear();
+            listadoSentenciasClientes.clear();
+            listadoSentenciasProveedores.clear();
+            listadoSentenciasComprobantes.clear();
+            ver=true;
+            
+            
         } catch (SQLException ex) {
             Logger.getLogger(BkDeConeccion.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -160,7 +231,7 @@ public class BkDeConeccion implements Backpeable{
     public Object leerUsuarios(String nombre, String clave) {
          Usuarios usu=new Usuarios();
         try {
-           Inicio.coneccionRemota=ProbarConeccion();
+           //Inicio.coneccionRemota=ProbarConeccion();
        Transaccionable tras=new ConeccionLocal();
                        String sql="select * from usuarios where nombreUsuario like '"+nombre+"' and clave like '"+clave+"'";
                        System.out.println(sql);

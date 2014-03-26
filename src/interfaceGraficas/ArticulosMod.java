@@ -29,6 +29,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         this.jTextField5.setText(String.valueOf(arti.getPrecioUnitarioNeto()));
         this.jTextField7.setText(String.valueOf(arti.getCodigoDeBarra()));
         this.jTextField6.setText(String.valueOf(arti.getPrecioServicio()));
+        this.jTextField9.setText(String.valueOf(arti.getPrecioServicio1()));
         this.jCheckBox1.setSelected(arti.getModificaPrecio());
         this.jCheckBox2.setSelected(arti.getModificaServicio());
         this.jPanel2.setVisible(false);
@@ -85,6 +86,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         jButton4 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jLabel10 = new javax.swing.JLabel();
+        jTextField9 = new javax.swing.JTextField();
 
         setClosable(true);
         setMaximizable(true);
@@ -112,6 +115,11 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         jLabel6.setText("Costo Servicio :");
 
         jTextField6.setText("0");
+        jTextField6.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField6FocusLost(evt);
+            }
+        });
 
         jButton1.setText("Guardar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -194,6 +202,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        jLabel10.setText("Servicio nueva Suc.:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -225,7 +235,13 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
@@ -265,14 +281,17 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
                         .addComponent(jCheckBox1))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jCheckBox2)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBox2)
+                    .addComponent(jLabel10)
+                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton3))
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -308,6 +327,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         arti.setPrecioUnitarioNeto(cant);
         cant=Numeros.ConvertirStringADouble(this.jTextField6.getText());
         arti.setPrecioServicio(cant);
+        cant=Numeros.ConvertirStringADouble(this.jTextField9.getText());
+        arti.setPrecioServicio1(cant);
         arti.setModificaPrecio(this.jCheckBox1.isSelected());
         arti.setModificaServicio(this.jCheckBox2.isSelected());
         Editables edit=new Articulos();
@@ -350,6 +371,15 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jTextField6FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField6FocusLost
+       Double serv=Double.parseDouble(this.jTextField6.getText());
+       if(arti.getPrecioServicio1()==0){
+       this.jTextField9.setText(String.valueOf(serv));
+       this.jTextField9.selectAll();
+       this.jTextField9.requestFocus();
+       }
+    }//GEN-LAST:event_jTextField6FocusLost
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -358,6 +388,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -378,5 +409,6 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
 }

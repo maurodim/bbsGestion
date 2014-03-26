@@ -48,15 +48,16 @@ public class Actualiza extends Thread{
             //carga la lista remota
             //Proveedores.cargarListadoProv1();
         
-        Articulos.RecargarMap();
+        Usuarios.BackapearUsuarios();
+        Sucursales.BackapearSucursales();
+            Articulos.RecargarMap();
         Articulos.BackapearMap();
         Proveedores.BackapearProveedores();
         ClientesTango.BackapearClientes();
         ListasDePrecios.BackapearListasDePrecios();
         Cajas.BackapearCajas();
         Cajas.LeerCajaAdministradora();
-        Usuarios.BackapearUsuarios();
-        Sucursales.BackapearSucursales();
+        
         Depositos.BackapearDepositos();
         
         
@@ -64,7 +65,8 @@ public class Actualiza extends Thread{
         Proveedores.cargarListadoProv();
         ClientesTango.cargarMap();
         ListasDePrecios.cargarMap();
-        BkDeConeccion.procesosDeCierre();
+        BkDeConeccion bk=new BkDeConeccion();
+        bk.procesosDeCierre();
         /*
          * Usuarios
          * Sucursales

@@ -30,8 +30,17 @@ public class Sucursales extends Administracion implements Personalizable{
     private Cajas caja;
     private Usuarios usuario;
     private ArrayList tipoComprobantes=new ArrayList();
-    
+    private int servicio;
 
+    public int getServicio() {
+        return servicio;
+    }
+
+    public void setServicio(int servicio) {
+        this.servicio = servicio;
+    }
+    
+    
     public ArrayList getTipoComprobantes() {
         return tipoComprobantes;
     }

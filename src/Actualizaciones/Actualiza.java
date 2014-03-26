@@ -33,7 +33,7 @@ import objetos.Conecciones;
 public class Actualiza extends Thread{
     @Override
     public void run(){
-        Timer timer=new Timer(750000,new ActionListener(){ 
+        Timer timer=new Timer(850000,new ActionListener(){ 
             @Override
     public void actionPerformed(ActionEvent e) 
     { 
@@ -41,7 +41,7 @@ public class Actualiza extends Thread{
         System.err.println("COMIENZO DEL CICLO DE RELOJ *******************************");
         //ActOt at=new ActOt();
         //at.start();
-        if(ProbarConeccion()){
+        
             //Inicio.coneccionRemota=true;
             //VerificarErrores();
         
@@ -51,13 +51,13 @@ public class Actualiza extends Thread{
         Usuarios.BackapearUsuarios();
         Sucursales.BackapearSucursales();
             Articulos.RecargarMap();
-        Articulos.BackapearMap();
+        
         Proveedores.BackapearProveedores();
         ClientesTango.BackapearClientes();
         ListasDePrecios.BackapearListasDePrecios();
         Cajas.BackapearCajas();
         Cajas.LeerCajaAdministradora();
-        
+        Articulos.BackapearMap();
         Depositos.BackapearDepositos();
         
         
@@ -74,9 +74,7 @@ public class Actualiza extends Thread{
          * Comprobante
          * ACTUALIZAR EL NUMERO DE CAJA ADMINISTRADORA
          */
-        }else{
-            Inicio.coneccionRemota=false;
-        }
+      
      } 
 }); 
         timer.start();

@@ -245,6 +245,9 @@ public class Articulos implements Facturar,Editables{
     
     public static void CargarMap(){
         // ACA SE CARGA EL MAP PARA TENER ACCESO A LOS ARTICULOS SIN ESTAR CONECTADO , LA CLAVE EL CODIGO DE BARRA
+        listadoBarr.clear();
+             listadoNom.clear();
+             listadoCodigo.clear();
         Transaccionable tra;
         //ArrayList resultado=new ArrayList();
         String sql="";
@@ -321,15 +324,17 @@ public class Articulos implements Facturar,Editables{
                 //resultado.add(articulo);
             }
             rr.close();
+            System.out.println(" CANTIDAD MAP inicial "+listadoBarr.size());
+           
         } catch (SQLException ex) {
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(Inicio.coneccionRemota)BackapearMap();
+        //if(Inicio.coneccionRemota)BackapearMap();
     }
-    public static void RecargarMap(){
+    public static synchronized void RecargarMap(){
         
 
-        System.out.println(" CANTIDAD MAP "+listadoBarr1.size());
+        System.out.println(" CANTIDAD MAP 1 - "+listadoBarr1.size());
         // ACA SE CARGA EL MAP PARA TENER ACCESO A LOS ARTICULOS SIN ESTAR CONECTADO , LA CLAVE EL CODIGO DE BARRA
         Transaccionable tra=new Conecciones();
         //ArrayList resultado=new ArrayList();
@@ -395,12 +400,7 @@ public class Articulos implements Facturar,Editables{
                 //resultado.add(articulo);
             }
             rr.close();
-            listadoBarr.clear();
-             listadoNom.clear();
-             listadoCodigo.clear();
-             listadoBarr=listadoBarr1;
-             listadoNom=listadoNom1;
-             listadoCodigo=listadoCodigo1;
+            
         } catch (SQLException ex) {
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -408,7 +408,7 @@ public class Articulos implements Facturar,Editables{
     }
     public static synchronized void BackapearMap(){
         Transaccionable tt=new ConeccionLocal();
-        System.out.println(" CANTIDAD MAP "+listadoBarr1.size());
+        System.out.println(" CANTIDAD MAP back "+listadoBarr1.size());
         String sql="delete from articulos";
         tt.guardarRegistro(sql);
         String criterio="";
@@ -429,6 +429,7 @@ public class Articulos implements Facturar,Editables{
             
             
         }
+        CargarMap();
     }
     
     @Override

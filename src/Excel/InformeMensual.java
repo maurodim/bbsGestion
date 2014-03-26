@@ -84,7 +84,7 @@ public class InformeMensual {
         fuente.setFontName(fuente.FONT_ARIAL);
         fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         String form=null;
-        String sql="select *,(select movimientoscaja.monto from movimientoscaja where movimientoscaja.tipoMovimiento=10 and movimientoscaja.idCaja=informemensualdecaja.numero and movimientoscaja.monto < 0)as cierre from informemensualdecaja where fecha between '"+desde+"' and '"+hasta+"'";
+        String sql="select *,(select movimientoscaja.monto from movimientoscaja where movimientoscaja.tipoMovimiento=10 and movimientoscaja.idCaja=informemensualdecaja.numero and movimientoscaja.monto < 0 limit 0,1)as cierre from informemensualdecaja where fecha between '"+desde+"' and '"+hasta+"'";
         System.out.println(sql);
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
@@ -161,22 +161,31 @@ public class InformeMensual {
             //celda5.setCellFormula(rs.getString("observaciones"));
             celda5.setCellType(HSSFCell.CELL_TYPE_STRING);
             celda5.setCellValue(" "+rs.getDate("fecha"));
-            //celda5.setCellValue(rs.getDate("fecha"));
-            celda6=fila.createCell(6);
-            celda6.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-            celda6.setCellValue(rs.getDouble("diferencia"));
+
             Double retiro=rs.getDouble("retiroEfectivo");
             Double retFinal=rs.getDouble("cierre");
             Double tota=retiro + retFinal;
             celda7=fila.createCell(7);
             celda7.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
             celda7.setCellValue(tota);
-            if(a > 1){
-            form="B"+a+"+C"+a+"+D"+a+"+E"+a+"+G"+a+"+H"+a;
             celda8=fila.createCell(8);
             celda8.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            if(a > 1){
+            //form="B"+a+"+C"+a+"+D"+a+"+E"+a+"+G"+a+"+H"+a;
+            
             celda8.setCellValue(rs.getDouble("saldoFinal"));
+            }else{
+            celda8.setCellValue(0.00);    
             }
+            
+                        //celda5.setCellValue(rs.getDate("fecha"));
+            // aca tengo que hacer una formula
+            form="sum("+celda1.getNumericCellValue()+"+"+celda2.getNumericCellValue()+"+"+celda3.getNumericCellValue()+"+"+celda4.getNumericCellValue()+"+"+celda7.getNumericCellValue()+"-"+celda8.getNumericCellValue()+")";
+            celda6=fila.createCell(6);
+            celda6.setCellFormula(form);
+            celda6.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+            celda6.setCellFormula(form);
+
         }
             
             /*

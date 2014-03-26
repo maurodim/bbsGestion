@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Wed Mar 05 11:24:05 ART 2014:
- Arrancando Derby versión The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instancia a816c00e-0144-92a1-3f3e-000000807b98 
-en el directorio de base de datos C:\Gestion\DB\respaldo.db  con el cargador de clases sun.misc.Launcher$AppClassLoader@108786b
+Wed Mar 26 14:51:30 ART 2014:
+ Arrancando Derby versión The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instancia a816c00e-0144-ff84-b2bb-000000a2dd40 
+en el directorio de base de datos C:\Gestion\DB\respaldo.db  con el cargador de clases sun.misc.Launcher$AppClassLoader@16930e2
 
 java.vendor=Oracle Corporation
 java.runtime.version=1.7.0_06-b24

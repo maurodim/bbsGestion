@@ -5,6 +5,7 @@
 package interfaceGraficas;
 
 import Actualizaciones.Actualiza;
+import Actualizaciones.BkDeConeccion;
 import Compras.Proveedores;
 import Depositos.Depositos;
 import Excel.InformeMensual;
@@ -67,6 +68,7 @@ public class Inicio extends javax.swing.JFrame {
         Articulos.CargarMap();
         //if(coneccionRemota){
         //Articulos.CargarMap();
+        Inicio.coneccionRemota=false;
         if(Inicio.coneccionRemota){
             Proveedores.cargarListadoProv1();
         }else{
@@ -175,6 +177,8 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem20 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenuItem22 = new javax.swing.JMenuItem();
+        jMenu8 = new javax.swing.JMenu();
+        jMenuItem23 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SISITEMA DE GESTION BAMBU SOFTWARE");
@@ -397,6 +401,18 @@ public class Inicio extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu7);
 
+        jMenu8.setText("Bases de Datos");
+
+        jMenuItem23.setText("Ejecutar sincronizacion");
+        jMenuItem23.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem23ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem23);
+
+        jMenuBar1.add(jMenu8);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -609,6 +625,28 @@ public class Inicio extends javax.swing.JFrame {
         tipo.toFront();
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
+    private void jMenuItem23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem23ActionPerformed
+         Usuarios.BackapearUsuarios();
+        Sucursales.BackapearSucursales();
+            Articulos.RecargarMap();
+        
+        Proveedores.BackapearProveedores();
+        ClientesTango.BackapearClientes();
+        ListasDePrecios.BackapearListasDePrecios();
+        Cajas.BackapearCajas();
+        Cajas.LeerCajaAdministradora();
+        Articulos.BackapearMap();
+        Depositos.BackapearDepositos();
+        
+        
+        
+        Proveedores.cargarListadoProv();
+        ClientesTango.cargarMap();
+        ListasDePrecios.cargarMap();
+        BkDeConeccion bk=new BkDeConeccion();
+        bk.procesosDeCierre();
+    }//GEN-LAST:event_jMenuItem23ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -673,6 +711,7 @@ public class Inicio extends javax.swing.JFrame {
     public static javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
@@ -689,6 +728,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem20;
     private javax.swing.JMenuItem jMenuItem21;
     private javax.swing.JMenuItem jMenuItem22;
+    private javax.swing.JMenuItem jMenuItem23;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

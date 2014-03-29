@@ -46,7 +46,7 @@ public class Articulos implements Facturar,Editables{
     private static Hashtable listadoCodigo=new Hashtable();
     private Double diferenciaRemitida;
     private Boolean modificaServicio;
-    private Double precioServicio1;
+    private Double precioServicio1=0.00;
     private static Hashtable listadoBarr1=new Hashtable();
     private static Hashtable listadoNom1=new Hashtable();
     private static Hashtable listadoCodigo1=new Hashtable();
@@ -572,7 +572,7 @@ public class Articulos implements Facturar,Editables{
     public Boolean ModificaionObjeto(Object objeto) {
         Articulos articulo=(Articulos)objeto;
         Boolean ch=false;
-        String sql="update articulos set NOMBRE='"+articulo.getDescripcionArticulo()+"',SERVICIO="+articulo.getPrecioServicio()+",SERVICIO1="+articulo.getPrecioServicio1()+"COSTO="+articulo.getPrecioDeCosto()+",PRECIO="+articulo.getPrecioUnitarioNeto()+",MINIMO="+articulo.getStockMinimo()+",BARRAS ='"+articulo.getCodigoDeBarra()+"',modificaPrecio="+articulo.getModificaPrecio()+",modificaServicio="+articulo.getModificaServicio()+" where ID="+articulo.getNumeroId();
+        String sql="update articulos set NOMBRE='"+articulo.getDescripcionArticulo()+"',SERVICIO="+articulo.getPrecioServicio()+",SERVICIO1="+articulo.getPrecioServicio1()+",COSTO="+articulo.getPrecioDeCosto()+",PRECIO="+articulo.getPrecioUnitarioNeto()+",MINIMO="+articulo.getStockMinimo()+",BARRAS ='"+articulo.getCodigoDeBarra()+"',modificaPrecio="+articulo.getModificaPrecio()+",modificaServicio="+articulo.getModificaServicio()+" where ID="+articulo.getNumeroId();
         Transaccionable tra=new Conecciones();
         ch=tra.guardarRegistro(sql);
         return ch;

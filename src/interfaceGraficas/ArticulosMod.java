@@ -204,6 +204,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
 
         jLabel10.setText("Servicio nueva Suc.:");
 
+        jTextField9.setText("0");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -291,7 +293,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
                     .addComponent(jButton3))
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

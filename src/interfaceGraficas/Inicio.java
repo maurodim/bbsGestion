@@ -5,6 +5,7 @@
 package interfaceGraficas;
 
 import Actualizaciones.Actualiza;
+import Actualizaciones.Actualiza1;
 import Actualizaciones.BkDeConeccion;
 import Compras.Proveedores;
 import Depositos.Depositos;
@@ -106,6 +107,8 @@ public class Inicio extends javax.swing.JFrame {
         
         Actualiza actu=new Actualiza();
         actu.start();
+        Actualiza1 actu1=new Actualiza1();
+        actu1.start();
         //}
         initComponents();
         
@@ -155,6 +158,7 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenuItem21 = new javax.swing.JMenuItem();
+        jMenuItem24 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
@@ -249,6 +253,14 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem21);
+
+        jMenuItem24.setText("Blanquear Base");
+        jMenuItem24.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem24ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem24);
 
         jMenuBar1.add(jMenu1);
 
@@ -647,6 +659,11 @@ public class Inicio extends javax.swing.JFrame {
         bk.procesosDeCierre();
     }//GEN-LAST:event_jMenuItem23ActionPerformed
 
+    private void jMenuItem24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem24ActionPerformed
+        BkDeConeccion bkC=new BkDeConeccion();
+        bkC.limpiarBasesLocal();
+    }//GEN-LAST:event_jMenuItem24ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -729,6 +746,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem21;
     private javax.swing.JMenuItem jMenuItem22;
     private javax.swing.JMenuItem jMenuItem23;
+    private javax.swing.JMenuItem jMenuItem24;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

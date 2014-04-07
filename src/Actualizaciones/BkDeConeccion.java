@@ -200,6 +200,20 @@ public class BkDeConeccion implements Backpeable{
         }
         return verif;
     }
+    public void limpiarBasesLocal(){
+        Transaccionable tra=new ConeccionLocal();
+        String sql="delete from movimientosarticulos where estado=1";
+        tra.guardarRegistro(sql);
+        sql="delete from movimientoscaja where estado=1";
+        tra.guardarRegistro(sql);
+        sql="delete from movimientosclientes where estado=1";
+        tra.guardarRegistro(sql);
+        sql="delete from movimientosproveedores where estado=1";
+        tra.guardarRegistro(sql);
+        //sql="delete from movimientosdesucursales where estado=1";
+        //tra.guardarRegistro(sql);
+        
+    }
     @Override
     public Hashtable leerArticulos() {
         Hashtable art=new Hashtable();

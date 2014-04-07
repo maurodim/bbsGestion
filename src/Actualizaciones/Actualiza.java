@@ -50,14 +50,14 @@ public class Actualiza extends Thread{
         
         Usuarios.BackapearUsuarios();
         Sucursales.BackapearSucursales();
-            Articulos.RecargarMap();
+            //Articulos.RecargarMap();
         
         Proveedores.BackapearProveedores();
         ClientesTango.BackapearClientes();
         ListasDePrecios.BackapearListasDePrecios();
         Cajas.BackapearCajas();
         Cajas.LeerCajaAdministradora();
-        Articulos.BackapearMap();
+        //Articulos.BackapearMap();
         Depositos.BackapearDepositos();
         
         

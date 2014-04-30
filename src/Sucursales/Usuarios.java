@@ -204,7 +204,7 @@ public class Usuarios extends TipoAcceso implements Personalizable{
                 us.sucursal=new Sucursales(rr.getInt("sucursal"));
                 us.setNivel(rr.getInt("autorizacion"));
                 us.setNivelDeAutorizacion(rr.getInt("autorizacion"));
-                System.err.println("USUARIOS "+us.nombre);
+                //System.err.println("USUARIOS "+us.nombre);
                 us.setMenu(new Menus(rr.getBoolean("menu1"),rr.getBoolean("menu2"),rr.getBoolean("menu3"),rr.getBoolean("menu4"),rr.getBoolean("menu5"),rr.getBoolean("menu6"),rr.getBoolean("menu7")));
                 lista.add(us);
                 
@@ -237,7 +237,7 @@ public class Usuarios extends TipoAcceso implements Personalizable{
                 us.clave=rr.getString("clave");
                 us.setNivel(rr.getInt("autorizacion"));
                 us.setNivelDeAutorizacion(rr.getInt("autorizacion"));
-                System.err.println("USUARIOS "+us.nombre);
+                //System.err.println("USUARIOS "+us.nombre);
                 us.setMenu(new Menus(rr.getBoolean("menu1"),rr.getBoolean("menu2"),rr.getBoolean("menu3"),rr.getBoolean("menu4"),rr.getBoolean("menu5"),rr.getBoolean("menu6"),rr.getBoolean("menu7")));
                 us.setSucursal(new Sucursales(rr.getInt("sucursal")));
                 listadoUsuarios.add(us);

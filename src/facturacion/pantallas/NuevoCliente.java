@@ -7,6 +7,7 @@ package facturacion.pantallas;
 import facturacion.clientes.ClientesTango;
 import facturacion.clientes.ListasDePrecios;
 import interfaces.Personalizable;
+import interfacesPrograma.Facturar;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -188,6 +189,8 @@ public class NuevoCliente extends javax.swing.JInternalFrame {
        cli.setCondicionIva(condicion);
        cli.setNumeroDeCuit(this.jTextField3.getText());
        cli.setTelefono(this.jTextField4.getText());
+       Facturar fact=new ClientesTango();
+        fact.guardarNuevoCliente(cli);
        IngresoDePedidos.jCheckBox2.setSelected(true);
        IngresoDePedidos.jCheckBox2.setEnabled(false);
        IngresoDePedidos.cliT=cli;

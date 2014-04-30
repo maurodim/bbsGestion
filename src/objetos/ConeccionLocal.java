@@ -136,7 +136,7 @@ public class ConeccionLocal implements Transaccionable{
                 String strUrl = "jdbc:derby:C:\\Gestion\\DB\\respaldo.db;create=true";
                     Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
                      dbConnection = DriverManager.getConnection (strUrl,"maurodim","mau*2012");
-                     String sql="CREATE TABLE APP.articulos( ID  INTEGER not null primary key, BARRAS   varchar(30) default NULL, NOMBRE   varchar(49) default NULL, SERVICIO   double default NULL, COSTO   double default NULL, PRECIO   double default NULL, MINIMO   INTEGER default NULL, STOCK  INTEGER default NULL, PROVEEDOR  INTEGER default NULL, RUBRON  varchar(12) default NULL, ALTA  varchar(19) default NULL, INHABILITADO  INTEGER not null , idRubro   INTEGER not null,equivalencia  double not null, modificaPrecio  INTEGER not null, modificaServicio INTEGER not null,recargo double not null)";
+                     String sql="CREATE TABLE APP.articulos( ID  INTEGER not null primary key, BARRAS   varchar(30) default NULL, NOMBRE   varchar(49) default NULL, SERVICIO   double default NULL, COSTO   double default NULL, PRECIO   double default NULL, MINIMO   INTEGER default NULL, STOCK  INTEGER default NULL, PROVEEDOR  INTEGER default NULL, RUBRON  varchar(12) default NULL, ALTA  varchar(19) default NULL, INHABILITADO  INTEGER not null , idRubro   INTEGER not null,equivalencia  double not null, modificaPrecio  INTEGER not null, modificaServicio INTEGER not null,recargo double not null,servicio1 Double default 0.00)";
                      //st=dbConnection.createStatement();
                      PreparedStatement pstm=dbConnection.prepareStatement(sql);
                      pstm.execute();
@@ -180,10 +180,13 @@ public class ConeccionLocal implements Transaccionable{
                      sql="CREATE TABLE APP.tipocomprobantes  (numero  INTEGER not null primary key,descripcion  varchar(50) not null,numeroActivo  INTEGER not null,numeroSucursal  INTEGER not null)";
                      PreparedStatement pstm10=dbConnection.prepareStatement(sql);
                      pstm10.execute();
+                     
+                    
                      pstm10.close();
                      sql="CREATE TABLE APP.usuarios  (numero INTEGER not null primary key,nombre  varchar(70) not null,direccion  varchar(200) not null,localidad  varchar(70) not null,telefono  varchar(100) not null,mail  varchar(100) not null,nombreUsuario  varchar(100) not null,clave  varchar(100) not null,autorizacion  INTEGER not null,numeroTipoAcceso  INTEGER not null,sucursal  INTEGER not null)";
                      PreparedStatement pstm11=dbConnection.prepareStatement(sql);
                      pstm11.execute();
+                    
                      pstm11.close();
                      sql="CREATE TABLE APP.fallas (st varchar(300) not null,estado INTEGER not null)";
                      PreparedStatement pstm12=dbConnection.prepareStatement(sql);
@@ -217,6 +220,12 @@ public class ConeccionLocal implements Transaccionable{
                     PreparedStatement pstm19=dbConnection.prepareStatement(sql);
                     pstm19.execute();
                     pstm19.close();
+                    /*
+                    sql="insert into APP.usuarios (numero,nombre,direccion,telefono,mail,nombreusuario,clave,autorizacion,numerotipoacceso,localidad,sucursal) values (1,'administrador','piedras 6738','155451500','contacto@maurodi.com.ar','MM','mm',1,1,'santa fe',1)";
+                    PreparedStatement pstm20=dbConnection.prepareStatement(sql);
+                    pstm20.execute();
+                    pstm20.close();
+                    */
                     
                     /*
                     Articulos.RecargarMap();

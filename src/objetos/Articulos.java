@@ -261,7 +261,7 @@ public class Articulos implements Facturar,Editables{
          */
             tra=new ConeccionLocal();
             
-            sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCK) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio from articulos where INHABILITADO=0";
+            sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCK) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio,articulos.SERVICIO1 from articulos where INHABILITADO=0";
             
         //}
         
@@ -284,6 +284,7 @@ public class Articulos implements Facturar,Editables{
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
+                articulo.setPrecioServicio1(rr.getDouble("servicio1"));
                 listadoBarr.put(articulo.getCodigoDeBarra(),articulo);
                 codA=articulo.getCodigoAsignado();
                 listadoCodigo.put(codA,articulo);
@@ -300,7 +301,7 @@ public class Articulos implements Facturar,Editables{
         sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0 order by NOMBRE";
         }else{
         */ 
-            sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCK) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio from articulos where INHABILITADO=0 order by NOMBRE";
+            sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCK) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio,articulos.servicio1 from articulos where INHABILITADO=0 order by NOMBRE";
         //}
         rr=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -319,6 +320,7 @@ public class Articulos implements Facturar,Editables{
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
+                articulo.setPrecioServicio1(rr.getDouble("SERVICIO1"));
                 String nom=rr.getString("NOMBRE");
                 listadoNom.put(nom,articulo);
                 //resultado.add(articulo);
@@ -357,11 +359,16 @@ public class Articulos implements Facturar,Editables{
                 articulo.setPrecioDeCosto(rr.getDouble("COSTO"));
                 articulo.setStockMinimo(rr.getDouble("MINIMO"));
                 articulo.setStockActual(rr.getDouble("stock"));
-                System.out.println(Inicio.sucursal.getDireccion());
+//                System.out.println(Inicio.sucursal.getDireccion());
+                try{
                 if(Inicio.sucursal.getDireccion().equals("1")){
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 }else{
                     articulo.setPrecioServicio(rr.getDouble("SERVICIO1"));
+                }
+                }catch(NullPointerException nEx){
+                    articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
+                    articulo.setPrecioServicio1(rr.getDouble("SERVICIO1"));
                 }
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
@@ -388,10 +395,15 @@ public class Articulos implements Facturar,Editables{
                 articulo.setPrecioDeCosto(rr.getDouble("COSTO"));
                 articulo.setStockMinimo(rr.getDouble("MINIMO"));
                 articulo.setStockActual(rr.getDouble("stock"));
+                try{
                 if(Inicio.sucursal.getDireccion().equals("1")){
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 }else{
                     articulo.setPrecioServicio(rr.getDouble("SERVICIO1"));
+                }
+                }catch(NullPointerException nEx){
+                    articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
+                    articulo.setPrecioServicio1(rr.getDouble("SERVICIO1"));
                 }
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
@@ -423,7 +435,7 @@ public class Articulos implements Facturar,Editables{
             if(articulo.getModificaPrecio())mod=1;
             if(articulo.getModificaServicio())serv=1;
             if(articulo.getDescripcionArticulo().equals(""))articulo.setDescripcionArticulo("--");
-            sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0)";
+            sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro,servicio1) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0,"+articulo.getPrecioServicio1()+")";
             System.out.println("hash "+sql);
             tt.guardarRegistro(sql);
             

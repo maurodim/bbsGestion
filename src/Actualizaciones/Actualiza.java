@@ -114,7 +114,7 @@ public class Actualiza extends Thread{
         String sentencia="";
         try {
             while(rr.next()){
-                sentencia=rr.getString("st");
+                sentencia=(String)rr.getString("st");
                 fallas.add(sentencia);
                 
             }

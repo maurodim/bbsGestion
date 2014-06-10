@@ -11,6 +11,7 @@ import Sucursales.ListasDePrecios;
 import Sucursales.Sucursales;
 import Sucursales.Usuarios;
 import facturacion.clientes.ClientesTango;
+import interfaceGraficas.Inicio;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
@@ -38,11 +39,11 @@ public class Actualiza1 extends Thread{
             //carga la lista remota
             //Proveedores.cargarListadoProv1();
         
-        
+        if(Inicio.actualizable==1){
             Articulos.RecargarMap();
         
         Articulos.BackapearMap();
-        
+        }
         /*
          * Usuarios
          * Sucursales

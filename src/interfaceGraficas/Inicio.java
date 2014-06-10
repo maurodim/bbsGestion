@@ -55,6 +55,7 @@ public class Inicio extends javax.swing.JFrame {
     public static Integer numeroCajaAdministradora=0;
     private BufferedImage img;
     public static Boolean coneccionRemota=true;
+    public static Integer actualizable=0;
 
     public void setNiv(Integer nive) {
         niv = nive;

@@ -639,7 +639,8 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     private void jMenuItem23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem23ActionPerformed
-         Usuarios.BackapearUsuarios();
+        Inicio.actualizable=1;
+        Usuarios.BackapearUsuarios();
         Sucursales.BackapearSucursales();
             Articulos.RecargarMap();
         
@@ -658,6 +659,7 @@ public class Inicio extends javax.swing.JFrame {
         ListasDePrecios.cargarMap();
         BkDeConeccion bk=new BkDeConeccion();
         bk.procesosDeCierre();
+        Inicio.actualizable=0;
     }//GEN-LAST:event_jMenuItem23ActionPerformed
 
     private void jMenuItem24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem24ActionPerformed

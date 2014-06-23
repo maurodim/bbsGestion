@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.Comprobantes;
@@ -59,8 +60,8 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
         private Double cupoDeCredito;
         private Double saldoActual;
         private static Integer numeroRecibo;
-        private static Hashtable listadoClientes=new Hashtable();
-        private static Hashtable listadoPorNom=new Hashtable();
+        private static ConcurrentHashMap listadoClientes=new ConcurrentHashMap();
+        private static ConcurrentHashMap listadoPorNom=new ConcurrentHashMap();
         private static int signal=0;
         
         
@@ -140,8 +141,8 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
                 System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
                 codigo=cli.getCodigoCliente();
                 nombre=cli.getRazonSocial();
-                listadoClientes.put(codigo,cli);
-                listadoPorNom.put(nombre,cli);
+                listadoClientes.putIfAbsent(codigo,cli);
+                listadoPorNom.putIfAbsent(nombre,cli);
             }
             rs.close();
         } catch (SQLException ex) {

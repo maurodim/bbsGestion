@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.Articulos;
@@ -36,7 +37,7 @@ public class Proveedores implements Personalizable{
     private int condicionIngresosBrutos;
     private String numeroIngresosBrutos;
     private Double saldo=0.00;
-    private static Hashtable listadoProv=new Hashtable();
+    private static ConcurrentHashMap listadoProv=new ConcurrentHashMap();
 
     public Double getSaldo() {
         return saldo;
@@ -161,7 +162,7 @@ public class Proveedores implements Personalizable{
                 //prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
                 //prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
                 System.err.println("PROV "+prov.getNombre());
-                listadoProv.put(prov.getNumero(),prov);
+                listadoProv.putIfAbsent(prov.getNumero(),prov);
             }
             rr.close();
             //if(Inicio.coneccionRemota)BackapearProveedores();
@@ -197,7 +198,7 @@ public class Proveedores implements Personalizable{
                 //prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
                 //prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
                 System.err.println("PROV "+prov.getNombre());
-                listadoProv.put(prov.getNumero(),prov);
+                listadoProv.putIfAbsent(prov.getNumero(),prov);
             }
             rr.close();
             //if(Inicio.coneccionRemota)BackapearProveedores();
@@ -241,7 +242,7 @@ public class Proveedores implements Personalizable{
                 }
                 rs.close();
                 prov.setNumero(numero);
-                listadoProv.put(numero,prov);
+                listadoProv.putIfAbsent(numero,prov);
             } catch (SQLException ex) {
                 Logger.getLogger(Proveedores.class.getName()).log(Level.SEVERE, null, ex);
             }

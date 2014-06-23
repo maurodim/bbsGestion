@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -33,7 +34,7 @@ import java.util.logging.Logger;
  */
 public class Conecciones implements Transaccionable{
     private Connection con;
-    private Statement st;
+    private PreparedStatement st;
 
     public Conecciones() {
                 MysqlDataSource dataSource=new MysqlDataSource();
@@ -44,7 +45,7 @@ public class Conecciones implements Transaccionable{
                     dataSource.setPassword("mau*2012");//mau*2012
                     dataSource.setServerName("201.235.253.65");//201.235.253.65
                     con=dataSource.getConnection();
-                    st=con.createStatement();
+                    //st=con.createStatement();
                  }catch(Exception ex){
                     
                 String cod1=String.valueOf(ex);
@@ -91,14 +92,15 @@ public class Conecciones implements Transaccionable{
     public Boolean guardarRegistro(String sql) {
         Boolean coneccion=true;
         try {
-            System.out.println("SENTENCIA "+sql);
-            if(st==null){
+            //System.out.println("SENTENCIA "+sql);
+            if(con==null){
                 Transaccionable tt=new ConeccionLocal();
             String ss="insert into fallas (st,estado) values ('"+sql+"',0)";
             tt.guardarRegistro(ss);
             Inicio.coneccionRemota=false;
             }else{
-            st.executeUpdate(sql);
+             st=con.prepareStatement(sql);   
+            st.executeUpdate();
             Inicio.coneccionRemota=true;
             }
             //this.st.executeQuery(sql);
@@ -167,7 +169,8 @@ public class Conecciones implements Transaccionable{
             }else{
              */
             //System.out.println("ERROR EN SENTENCIA "+sql);
-            st.execute(sql);
+            st=con.prepareStatement(sql);
+            st.execute();
             rs=st.getResultSet();
             //}
         } catch (SQLException ex) {
@@ -186,7 +189,7 @@ public class Conecciones implements Transaccionable{
     }
     private Boolean ValidarConeccion(){
         Boolean verificar=true;
-        if(st==null)verificar=false;
+        //if(st==null)verificar=false;
         if(con==null)verificar=false;
         return verificar;
     }

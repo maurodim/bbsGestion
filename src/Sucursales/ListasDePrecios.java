@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.ConeccionLocal;
@@ -22,7 +23,7 @@ import objetos.Conecciones;
  * @author mauro
  */
 public class ListasDePrecios implements Editables{
-    private static Hashtable listadoDeListas=new Hashtable();
+    private static ConcurrentHashMap listadoDeListas=new ConcurrentHashMap();
     private Integer id;
     private Double coeficiente;
     private String desccripcion;
@@ -81,7 +82,7 @@ public class ListasDePrecios implements Editables{
                 lista.setDesccripcion(rs.getString("descripcion"));
                 lista.setCoeficiente(rs.getDouble("coeficiente"));
                 numero=lista.getId();
-                listadoDeListas.put(numero,lista);
+                listadoDeListas.putIfAbsent(numero,lista);
                 
             }
             rs.close();

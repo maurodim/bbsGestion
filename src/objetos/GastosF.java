@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,7 +26,7 @@ public class GastosF implements Editables{
     private Proveedores proveedor;
     private Double monto;
     private Date fechaVencimiento;
-    private static Hashtable listadoVencimientos=new Hashtable();
+    private static ConcurrentHashMap listadoVencimientos=new ConcurrentHashMap();
     private String numeroFactura;
     private static Integer numeroComprobanteInt;
 
@@ -89,7 +90,7 @@ public class GastosF implements Editables{
                 gastos.setMonto(rs.getDouble("monto"));
                 gastos.setNumeroFactura(rs.getString("numeroFactura"));
                 gastos.setProveedor(new Proveedores(rs.getInt("idProveedor")));
-                listadoVencimientos.put(id,gastos);
+                listadoVencimientos.putIfAbsent(id,gastos);
                 
             }
             rs.close();

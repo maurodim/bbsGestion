@@ -442,7 +442,7 @@ public class Articulos implements Facturar,Editables{
             
             
         }
-        CargarMap();
+        //CargarMap();
     }
     
     @Override
@@ -480,16 +480,40 @@ public class Articulos implements Facturar,Editables{
         ArrayList resultado=new ArrayList();
         Articulos articulo=null;
         criterio=criterio.toUpperCase();
-        Enumeration<Articulos> elementos=listadoNom.elements();
-        while(elementos.hasMoreElements()){
-            articulo=(Articulos)elementos.nextElement();
-            int pos=articulo.getDescripcionArticulo().indexOf(criterio);
-            System.out.println("hash "+articulo.getDescripcionArticulo()+" "+pos);
-            if(pos==-1){
-                
-            }else{
+        String sql="select * from articulos where nombre like '%"+criterio+"%'";
+        Transaccionable tra=new ConeccionLocal();
+        ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rr.next()){
+                articulo=new Articulos();
+                articulo.setCodigoAsignado(rr.getString("ID"));
+                articulo.setDescripcionArticulo(rr.getString("NOMBRE"));
+                articulo.setNumeroId(rr.getInt("ID"));
+                articulo.setCodigoDeBarra(rr.getString("BARRAS"));
+                articulo.setRecargo(rr.getDouble("recargo"));
+                articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
+                articulo.setEquivalencia(rr.getDouble("equivalencia"));
+                articulo.setPrecioDeCosto(rr.getDouble("COSTO"));
+                articulo.setStockMinimo(rr.getDouble("MINIMO"));
+                articulo.setStockActual(rr.getDouble("stock"));
+                try{
+                    if(Inicio.sucursal.getDireccion().equals("1")){
+                        articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
+                    }else{
+                        articulo.setPrecioServicio(rr.getDouble("SERVICIO1"));
+                    }
+                }catch(NullPointerException nEx){
+                    articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
+                    articulo.setPrecioServicio1(rr.getDouble("SERVICIO1"));
+                }
+                articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
+                articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
+                String nom=rr.getString("NOMBRE");
                 resultado.add(articulo);
             }
+            rr.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
         /*
         Transaccionable tra=new Conecciones();

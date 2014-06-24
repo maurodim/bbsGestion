@@ -67,7 +67,7 @@ public class Inicio extends javax.swing.JFrame {
      * Creates new form Inicio
      */
     public Inicio(Integer nivel) {
-        Articulos.CargarMap();
+        //Articulos.CargarMap();
         //if(coneccionRemota){
         //Articulos.CargarMap();
         Inicio.coneccionRemota=false;

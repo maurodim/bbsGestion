@@ -401,14 +401,19 @@ public class Cajas extends Sucursales implements Cajeables{
             rs=tra.leerConjuntoDeRegistros(sql);
             String aa;
             listadoDeComprobantes.clear();
+            aa="";
+            aa="insert into tipocomprobantes (numero,descripcion,numeroactivo,numerosucursal) values";
             while(rs.next()){
-               aa="";
+               //aa="";
                
-               aa="insert into tipocomprobantes (numero,descripcion,numeroactivo,numerosucursal) values ("+rs.getInt("numero")+",'"+rs.getString("descripcion")+"',"+rs.getInt("numeroActivo")+","+rs.getInt("numeroSucursal")+")";
+               aa+="("+rs.getInt("numero")+",'"+rs.getString("descripcion")+"',"+rs.getInt("numeroActivo")+","+rs.getInt("numeroSucursal")+"),";
                 //numeroDeComprobanteBk=rs.getInt("numeroActivo")
-               listadoDeComprobantes.add(aa);
+               
             }
-                    
+            int tam=aa.length();
+            tam=tam - 1;
+            aa=aa.substring(0,tam);
+               listadoDeComprobantes.add(aa);     
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
@@ -446,6 +451,7 @@ public class Cajas extends Sucursales implements Cajeables{
         while(ilLl.hasNext()){
             sql=(String)ilLl.next();
             tra.guardarRegistro(sql);
+            System.out.println(sql);
         }
         }
         }

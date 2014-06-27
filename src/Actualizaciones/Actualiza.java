@@ -47,7 +47,7 @@ public class Actualiza extends Thread{
         
             //carga la lista remota
             //Proveedores.cargarListadoProv1();
-        
+        if(Inicio.actualizable==1){
         Usuarios.BackapearUsuarios();
         Sucursales.BackapearSucursales();
             //Articulos.RecargarMap();
@@ -65,8 +65,10 @@ public class Actualiza extends Thread{
         Proveedores.cargarListadoProv();
         ClientesTango.cargarMap();
         ListasDePrecios.cargarMap();
+        }
         BkDeConeccion bk=new BkDeConeccion();
         bk.procesosDeCierre();
+        
         /*
          * Usuarios
          * Sucursales

@@ -129,7 +129,7 @@ public class BkDeConeccion implements Backpeable{
                 ver1=tra.guardarRegistro(st);
             }
             if(ver1){
-             sql="update movimientosarticulos set estado=1";
+             sql="update movimientosarticulos set estado=1 where estado is null";
             tt.guardarRegistro(sql);  
             }
             Iterator itCa=listadoSentenciasCaja.listIterator();
@@ -138,7 +138,7 @@ public class BkDeConeccion implements Backpeable{
                 ver2=tra.guardarRegistro(st);
             }
             if(ver2){
-               sql="update movimientoscaja set estado=1";
+               sql="update movimientoscaja set estado=1 where estado is null";
             tt.guardarRegistro(sql);
   
             }
@@ -149,7 +149,7 @@ public class BkDeConeccion implements Backpeable{
                 
             }
             if(ver3){
-            sql="update movimientosclientes set estado =1";
+            sql="update movimientosclientes set estado =1 where estado is null";
             tt.guardarRegistro(sql);    
             }
             Iterator itP=listadoSentenciasProveedores.listIterator();
@@ -158,7 +158,7 @@ public class BkDeConeccion implements Backpeable{
                 ver4=tra.guardarRegistro(st);
             }
             if(ver4){
-               sql="update movimientosproveedores set estado=1";
+               sql="update movimientosproveedores set estado=1 where estado is null";
             tt.guardarRegistro(sql);  
             }
             Iterator itCo=listadoSentenciasComprobantes.listIterator();

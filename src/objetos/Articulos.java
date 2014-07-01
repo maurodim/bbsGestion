@@ -582,16 +582,9 @@ public class Articulos implements Facturar,Editables{
                 articulo.setPrecioDeCosto(rr.getDouble("COSTO"));
                 articulo.setStockMinimo(rr.getDouble("MINIMO"));
                 articulo.setStockActual(rr.getDouble("stock"));
-                try{
-                    if(Inicio.sucursal.getDireccion().equals("1")){
+                
                         articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
-                    }else{
-                        articulo.setPrecioServicio(rr.getDouble("SERVICIO1"));
-                    }
-                }catch(NullPointerException nEx){
-                    articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
-                    articulo.setPrecioServicio1(rr.getDouble("SERVICIO1"));
-                }
+                
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
                 String nom=rr.getString("NOMBRE");

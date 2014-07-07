@@ -257,7 +257,7 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            System.err.println("FUE PRESIONADO EL ENTEERRRRRRRRRRRRRRRRRRRRR");
+            //System.err.println("FUE PRESIONADO EL ENTEERRRRRRRRRRRRRRRRRRRRR");
         }
     }//GEN-LAST:event_jTextField1KeyPressed
 
@@ -281,7 +281,7 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
         cliT.setDescuento(desc);
         cliT.setCondicionDeVenta(condicionVta);
         cliT.setListaDePrecios(listaDePrecio);
-        System.out.println(" DESCUENTO PANTALLA CLIENTE"+desc);
+        //System.out.println(" DESCUENTO PANTALLA CLIENTE"+desc);
         IngresoDePedidos.cliT=cliT;
         IngresoDePedidos.jLabel6.setText(cliT.getRazonSocial());
         IngresoDePedidos.jTextField1.requestFocus();

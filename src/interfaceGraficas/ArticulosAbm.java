@@ -157,7 +157,7 @@ public class ArticulosAbm extends javax.swing.JInternalFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         Articulos articulo=(Articulos)listadoA.get(this.jTable1.getSelectedRow());
-        System.out.println(" codigo elegido "+articulo.getCodigoAsignado());
+        //System.out.println(" codigo elegido "+articulo.getCodigoAsignado());
         ArticulosMod articM=new ArticulosMod(articulo);
         Inicio.jDesktopPane1.add(articM);
         articM.setVisible(true);
@@ -174,7 +174,7 @@ public class ArticulosAbm extends javax.swing.JInternalFrame {
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_F1){
-            System.out.println("ENTRO CON F1¡¡¡¡¡");
+            //System.out.println("ENTRO CON F1¡¡¡¡¡");
         Facturar fart=new Articulos();
         ArrayList listadoDeBusqueda=fart.listadoBusqueda(this.jTextField1.getText().toUpperCase());
         cargarLista(listadoDeBusqueda);    
@@ -215,7 +215,7 @@ public class ArticulosAbm extends javax.swing.JInternalFrame {
     Articulos art=new Articulos();
     while(il.hasNext()){
         art=(Articulos)il.next();
-        System.out.println("DESCRIPCION "+art.getDescripcionArticulo());
+        //System.out.println("DESCRIPCION "+art.getDescripcionArticulo());
         modelo.addElement(art.getCodigoAsignado()+" "+art.getDescripcionArticulo());
     }
     ListadoDeArticulos1 listadoDeArt=new ListadoDeArticulos1();
@@ -224,7 +224,7 @@ public class ArticulosAbm extends javax.swing.JInternalFrame {
     listadoDeArt.jList1.requestFocus();
     int posicion=listadoDeArt.jList1.getSelectedIndex();
     Articulos articulo=(Articulos)lista.get(posicion);
-    System.out.println(" codigo elegido "+articulo.getCodigoAsignado());
+    //System.out.println(" codigo elegido "+articulo.getCodigoAsignado());
         ArticulosMod articM=new ArticulosMod(articulo);
         Inicio.jDesktopPane1.add(articM);
         articM.setVisible(true);

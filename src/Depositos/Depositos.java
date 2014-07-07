@@ -60,7 +60,7 @@ public class Depositos implements Personalizable, Trasladable{
             rr=tra.leerConjuntoDeRegistros(sql1);
             while(rr.next()){
                 numeroRemitoInterno=rr.getInt("numeroRemito");
-                System.out.println("REMITO INTERNO LEIDOOOOOO "+numeroRemitoInterno);
+                //System.out.println("REMITO INTERNO LEIDOOOOOO "+numeroRemitoInterno);
                 JOptionPane.showMessageDialog(null,"USTED TIENE REMITOS INTERNOS A CONFIRMAR");
                 remitosInternos.add(numeroRemitoInterno);
             }

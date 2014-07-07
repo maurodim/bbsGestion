@@ -152,7 +152,7 @@ public class RecepcionDeRemitoInterno extends javax.swing.JInternalFrame {
                 cant.setConfirmado(false);
             }
             
-            System.err.println(this.jTable1.getValueAt(i, 2)+" "+cant.getCantidad());
+            //System.err.println(this.jTable1.getValueAt(i, 2)+" "+cant.getCantidad());
         }
         Comprobable comp=new RemitosInternos();
         comp.modificarComprobante(remitoInterno);

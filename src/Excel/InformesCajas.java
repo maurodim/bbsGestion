@@ -55,7 +55,7 @@ public class InformesCajas {
         fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         String form=null;
         String sql="SELECT idArticulo,cantidad,(select articulos.NOMBRE from articulos where articulos.ID=movimientosarticulos.idArticulo)as descA,(sum(cantidad)* -1)as total FROM movimientosarticulos where tipoMovimiento =1 and fecha between '"+desde+"' and '"+hasta+"' group by idArticulo";
-        System.out.println(sql);
+        //System.out.println(sql);
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         HSSFCellStyle titulo=libro.createCellStyle();

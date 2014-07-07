@@ -93,7 +93,7 @@ public class Inicio extends javax.swing.JFrame {
         dia=fr.format(da);
         mes=fr.format(me);
         fechaDia=ano+"-"+mes+"-"+dia;
-	System.err.println(fechaDia);
+	//System.err.println(fechaDia);
         //fecha="23/12/2011";
         String fh=ano+"-"+mes+"-"+dia;
         SimpleDateFormat ff=new SimpleDateFormat("yyyy-mm-dd");
@@ -485,14 +485,14 @@ public class Inicio extends javax.swing.JFrame {
        }else{
        Inicio.caja=new Cajas(1);
        Double saldo=Double.parseDouble(JOptionPane.showInputDialog("Ingrese Saldo Inicial","0.00"));
-       System.out.println("SALDO INGRESADO "+saldo);
+       //System.out.println("SALDO INGRESADO "+saldo);
        Inicio.caja.setSaldoInicial(saldo);
        
        Inicio.caja=(Cajas) caj.AbrirCaja(caja);
        }
        Inicio.sucursal.setCaja(caja);
        this.jMenuItem5.setEnabled(false);
-       System.out.println("CAJA Nº "+caja.getNumero());
+       //System.out.println("CAJA Nº "+caja.getNumero());
        
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
@@ -529,7 +529,7 @@ public class Inicio extends javax.swing.JFrame {
        }else{
        this.caja=new Cajas(1);
        Double saldo=Double.parseDouble(JOptionPane.showInputDialog("Ingrese Saldo Inicial","0.00"));
-       System.out.println("SALDO INGRESADO "+saldo);
+       //System.out.println("SALDO INGRESADO "+saldo);
        this.caja.setSaldoInicial(saldo);
        
        this.caja=(Cajas) caj.AbrirCaja(caja);
@@ -714,7 +714,7 @@ public class Inicio extends javax.swing.JFrame {
        }else{
        this.caja=new Cajas(1);
        Double saldo=Double.parseDouble(JOptionPane.showInputDialog("Ingrese Saldo Inicial","0.00"));
-       System.out.println("SALDO INGRESADO "+saldo);
+       //System.out.println("SALDO INGRESADO "+saldo);
        this.caja.setSaldoInicial(saldo);
        
        this.caja=(Cajas) caj.AbrirCaja(caja);

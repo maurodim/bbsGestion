@@ -102,7 +102,7 @@ public class ListasDePrecios implements Editables{
             while(elementos.hasMoreElements()){
                 rs=(ListasDePrecios)elementos.nextElement();
                 sql="insert into coeficienteslistas (id,coeficiente,descripcion) values ("+rs.getId()+","+rs.getCoeficiente()+",'"+rs.getDesccripcion()+"')";
-                System.out.println("LISTAS DE PRECIOS  BACKAPEARLISTAS --"+sql);
+                //System.out.println("LISTAS DE PRECIOS  BACKAPEARLISTAS --"+sql);
                 tra.guardarRegistro(sql);
                 
                 }

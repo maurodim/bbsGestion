@@ -179,7 +179,7 @@ public class NuevosGastoFijo extends javax.swing.JInternalFrame {
         int dd=fechaNueva.get(Calendar.DAY_OF_MONTH);
         String fecha1=ano+"-"+mes+"-"+dd;
         String vencimiento=fecha1;
-        System.out.println("FECHA SELECCIONADA :"+vencimiento);
+        //System.out.println("FECHA SELECCIONADA :"+vencimiento);
         nuevoGasto.setFechaVencimiento(Numeros.ConvertirStringEnDate(vencimiento));
         nuevoGasto.setProveedor((Proveedores)listaProv.get(this.jComboBox1.getSelectedIndex()) );
         Double monto=Numeros.ConvertirStringADouble(this.jTextField1.getText());

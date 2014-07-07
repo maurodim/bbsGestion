@@ -535,7 +535,7 @@ public class CajaAbm extends javax.swing.JInternalFrame {
     
     }
     private void OtrosMovimientos(){
-        System.err.println("operacion elegida :"+operacionSelect);
+        //System.err.println("operacion elegida :"+operacionSelect);
         this.jLabel2.setVisible(false);
         this.jComboBox2.setVisible(false);
         this.jLabel3.setText("MONTO");

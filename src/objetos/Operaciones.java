@@ -112,7 +112,7 @@ public class Operaciones {
                 operaciones.setDescripcion(rs.getString("descripcion"));
                 operaciones.setDestino(rs.getInt("destinoOperacion"));
                 operaciones.setValor(rs.getInt("multiploOp"));
-                System.err.println(" LISTADO OPERACIONES "+operaciones.getDescripcion());
+                //System.err.println(" LISTADO OPERACIONES "+operaciones.getDescripcion());
                 listOp.add(operaciones);
                 
             }
@@ -130,7 +130,7 @@ public class Operaciones {
                 operaciones.setDescripcion(rs.getString("descripcion"));
                 operaciones.setDestino(rs.getInt("destinoOperacion"));
                 operaciones.setValor(rs.getInt("multiploOp"));
-                System.err.println(" LISTADO OPERACIONES "+operaciones.getDescripcion());
+                //System.err.println(" LISTADO OPERACIONES "+operaciones.getDescripcion());
                 listOp.add(operaciones);
                 
             }   

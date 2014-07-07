@@ -85,7 +85,7 @@ public class InformeMensual {
         fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         String form=null;
         String sql="select *,(select movimientoscaja.monto from movimientoscaja where movimientoscaja.tipoMovimiento=10 and movimientoscaja.idCaja=informemensualdecaja.numero and movimientoscaja.monto < 0 limit 0,1)as cierre from informemensualdecaja where fecha between '"+desde+"' and '"+hasta+"'";
-        System.out.println(sql);
+        //System.out.println(sql);
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         HSSFCellStyle titulo=libro.createCellStyle();
@@ -194,7 +194,7 @@ public class InformeMensual {
  
         form=null;
         sql="SELECT *,(select usuarios.nombre from usuarios where usuarios.numero=movimientoscaja.numeroUsuario) as nombreU,(select tipomovimientos.descripcion from tipomovimientos where tipomovimientos.id=movimientoscaja.tipoMovimiento)as descripcionMovimiento,(select listcli.RAZON_SOCI from listcli where listcli.codMMd=movimientoscaja.idCliente)as nombreC FROM movimientoscaja where fecha between '"+desde+"' and '"+hasta+"'";
-        System.out.println(sql);
+        //System.out.println(sql);
         //tra=new Conecciones();
         rs=tra.leerConjuntoDeRegistros(sql);
         //HSSFCellStyle titulo=libro.createCellStyle();
@@ -295,7 +295,7 @@ public class InformeMensual {
              */
         form=null;
         sql="SELECT *,(select listcli.RAZON_SOCI from listcli where listcli.codMMd=movimientosarticulos.numeroCliente)as nombreC,(select articulos.NOMBRE from articulos where articulos.ID=movimientosarticulos.idArticulo)as descA,(select usuarios.nombre from usuarios where usuarios.numero=movimientosarticulos.numeroUsuario) as nombreU FROM movimientosarticulos where tipoMovimiento =1 and fecha between '"+desde+"' and '"+hasta+"'";
-        System.out.println(sql);
+        //System.out.println(sql);
         //tra=new Conecciones();
         rs=tra.leerConjuntoDeRegistros(sql);
         //HSSFCellStyle titulo=libro.createCellStyle();
@@ -392,7 +392,7 @@ public class InformeMensual {
              */
         form=null;
         sql="SELECT *,(select usuarios.nombre from usuarios where usuarios.numero=movimientoscaja.numeroUsuario) as nombreU,(select tipomovimientos.descripcion from tipomovimientos where tipomovimientos.id=movimientoscaja.tipoMovimiento)as descripcionMovimiento,(select listcli.RAZON_SOCI from listcli where listcli.codMMd=movimientoscaja.idCliente)as nombreC FROM movimientoscaja where tipoMovimiento=12 and fecha between '"+desde+"' and '"+hasta+"'";
-        System.out.println(sql);
+        //System.out.println(sql);
         //tra=new Conecciones();
         rs=tra.leerConjuntoDeRegistros(sql);
         //HSSFCellStyle titulo=libro.createCellStyle();

@@ -100,7 +100,7 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
             if(signal==1){
                 tra=new Conecciones();
                 sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo from listcli";    
-                System.err.println("LEER CLIENTES - "+sql);
+                //System.err.println("LEER CLIENTES - "+sql);
                 signal=0;
             }else{
              
@@ -108,7 +108,7 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
                 sql="select codMMd,listcli.COD_CLIENT,listcli.RAZON_SOCI,listcli.DOMICILIO,listcli.COND_VTA,(listcli.LISTADEPRECIO)as NRO_LISTA,(listcli.NUMERODECUIT)as IDENTIFTRI,listcli.empresa,listcli.TELEFONO_1,listcli.coeficiente,(listcli.CUPODECREDITO) AS CUPO_CREDI,listcli.saldo,listcli.TIPO_IVA from listcli order by RAZON_SOCI";
             }
             //sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo from listcli";
-            System.out.println("CLIENTES "+sql);
+            //System.out.println("CLIENTES "+sql);
             //String sql="select pedidos_carga1.COD_CLIENT,pedidos_carga1.RAZON_SOC,pedidos_carga1.NRO_PEDIDO,pedidos_carga1.numero,pedidos_carga1.LEYENDA_2 from pedidos_carga1 where RAZON_SOC like '"+cliente+"%' group by COD_CLIENT order by RAZON_SOC";
             ResultSet rs=tra.leerConjuntoDeRegistros(sql);
             try{
@@ -138,7 +138,7 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
                 cli.setSaldoActual(rs.getDouble("saldo"));
                 //cli.setNumeroPedido(rs.getString(3));
                 //cli.setObservaciones(rs.getString(5));
-                System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
+                //System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
                 codigo=cli.getCodigoCliente();
                 nombre=cli.getRazonSocial();
                 listadoClientes.putIfAbsent(codigo,cli);
@@ -420,7 +420,7 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
             cli=(ClientesTango)ilC.next();
             
             sql="insert into listcli (codmmd,cod_client,razon_soci,domicilio,telefono_1,cond_vta,listadeprecio,numerodecuit,empresa,coeficiente,cupodecredito,saldo,saldoactual,tipo_iva) values ("+cli.getCodigoId()+",'"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','"+cli.getTelefono()+"',"+cli.getCondicionDeVenta()+","+cli.getListaDePrecios()+",'"+cli.getNumeroDeCuit()+"','"+cli.getEmpresa()+"',"+cli.getCoeficienteListaDeprecios()+","+cli.getCupoDeCredito()+","+cli.getSaldo()+","+cli.getSaldoActual()+",1)";
-            System.out.println("CLIENTES TANGO - "+sql);
+            //System.out.println("CLIENTES TANGO - "+sql);
             tt.guardarRegistro(sql);
         }
     }
@@ -460,7 +460,7 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
                 cli=rs;
                 //cli.setNumeroPedido(rs.getString(3));
                 //cli.setObservaciones(rs.getString(5));
-                System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
+                //System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
                 ped.add(cli);
                 }
             }
@@ -567,7 +567,7 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
                 cli=rs;
                 //cli.setNumeroPedido(rs.getString(3));
                 //cli.setObservaciones(rs.getString(5));
-                System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
+                //System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
                 ped.add(cli);
                 }
             }
@@ -615,7 +615,7 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
        Double montt=factProv.getMontoTotal() * -1;
        String sql="insert into movimientosclientes (numeroProveedor,monto,numeroComprobante,idUsuario,tipoComprobante,idSucursal,idRemito) values ("+factProv.getCliente().getCodigoId()+","+montt+","+numeroRecibo+","+factProv.getUsuarioGenerador()+",11,"+factProv.getIdSucursal()+",0)";
        //String sql="update movimientosproveedores set pagado=1,numeroComprobante="+numeroRecibo+",idCaja="+Inicio.caja.getNumero()+",fechaPago='"+fech+"',idSucursal="+Inicio.sucursal.getNumero()+" where id="+factProv.getId();
-       System.out.println("VEAMOS "+sql);
+       //System.out.println("VEAMOS "+sql);
        tra.guardarRegistro(sql);
        //String ttx="PAGO A PROVEEDOR "+factProv.getNombreProveedor();
        Double monto=factProv.getMontoTotal();

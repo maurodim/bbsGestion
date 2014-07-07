@@ -307,7 +307,7 @@ public class UsuariosAbm extends javax.swing.JInternalFrame {
         this.jTextField5.setText(usuario.getMail());
         int acceso=usuario.getNivelDeAutorizacion() -1;
         this.jComboBox2.setSelectedIndex(acceso);
-        System.err.println(" NUMERO SUCURSAL "+usuario.getSucursal().getNumero());
+        //System.err.println(" NUMERO SUCURSAL "+usuario.getSucursal().getNumero());
         int sucu=usuario.getSucursal().getNumero() -1;
         
         this.jComboBox3.setSelectedIndex(sucu);

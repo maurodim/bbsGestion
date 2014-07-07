@@ -57,7 +57,7 @@ public class Numeros {
     }
     public static Double ConvertirStringADouble(String num){
         num=num.replace(",",".");
-        System.out.println(" rsultado "+num);
+        //System.out.println(" rsultado "+num);
         Double dd=Double.parseDouble(num);
         return dd;
     }

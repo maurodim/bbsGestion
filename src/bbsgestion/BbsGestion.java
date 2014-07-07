@@ -55,10 +55,10 @@ public class BbsGestion {
             
         }
         if(!folder.isDirectory()){
-            System.out.println("EXISTE EL DIRECTORIO");
+            //System.out.println("EXISTE EL DIRECTORIO");
             folder.mkdirs();
         }else{
-            System.out.println("NOOOOOOOOOOOOOOO EXISTE EL DIRECTORIO");
+            //System.out.println("NOOOOOOOOOOOOOOO EXISTE EL DIRECTORIO");
             
         }
         if(!archivos.isDirectory())archivos.mkdirs();
@@ -100,7 +100,7 @@ public class BbsGestion {
           //Transaccionable tra=new Conecciones();
          while((linea=br.readLine())!=null){
              
-            System.out.println(linea);
+            //System.out.println(linea);
            
            // if(tra.guardarRegistro(linea));
       }

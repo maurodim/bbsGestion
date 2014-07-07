@@ -56,7 +56,7 @@ public class InformeProveedores {
         fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         String form=null;
         String sql="SELECT *,(select proveedores.nombre from proveedores where proveedores.numero=movimientosproveedores.numeroProveedor)as nombreP,if(pagado=0,'pendiente','pagado')as estado FROM movimientosproveedores where fecha between '"+desde+"' and '"+hasta+"'";
-        System.out.println(sql);
+        //System.out.println(sql);
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         HSSFCellStyle titulo=libro.createCellStyle();
@@ -142,7 +142,7 @@ public class InformeProveedores {
         fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         form=null;
         //String sql="SELECT *,(select proveedores.nombre from proveedores where proveedores.numero=movimientosproveedores.numeroProveedor)as nombreP,if(pagado=0,'pendiente','pagado')as estado FROM movimientosproveedores where fecha between '"+desde+"' and '"+hasta+"'";
-        System.out.println(sql);
+        //System.out.println(sql);
         //tra=new Conecciones();
         rs=tra.leerConjuntoDeRegistros(sql);
         titulo.setFont(fuente);

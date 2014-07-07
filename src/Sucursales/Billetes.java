@@ -83,12 +83,12 @@ public class Billetes {
                 billetes.setDescripcion(rs.getString("descripcion"));
                 billetes.setId(rs.getInt("id"));
                 billetes.setValor(rs.getDouble("valor"));
-                System.out.println(" DESCRIPCION DE BILLETES "+billetes.descripcion);
+                //System.out.println(" DESCRIPCION DE BILLETES "+billetes.descripcion);
                 listadoBill.add(billetes);
             
                 
             }
-            System.out.println(" TOTAL ARRAY BILLETES "+listadoBill.size());
+            //System.out.println(" TOTAL ARRAY BILLETES "+listadoBill.size());
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(Billetes.class.getName()).log(Level.SEVERE, null, ex);

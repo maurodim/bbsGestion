@@ -151,7 +151,7 @@ public class Usuarios extends TipoAcceso implements Personalizable{
         String sql="delete from usuarios";
         tra.guardarRegistro(sql);
         Usuarios usu=new Usuarios();
-        System.out.println("TAMAÑO LISTA "+lista.size());
+        //System.out.println("TAMAÑO LISTA "+lista.size());
         Iterator itUs=lista.listIterator();
         String parteSentencia="";
         while(itUs.hasNext()){
@@ -292,10 +292,10 @@ public class Usuarios extends TipoAcceso implements Personalizable{
             
         } catch (SQLException ex) {
             try {
-                System.out.println("NO SE CONECTA, ACA CARGA LOS OBJETOS"); 
+                //System.out.println("NO SE CONECTA, ACA CARGA LOS OBJETOS"); 
                 Transaccionable tras=new ConeccionLocal();
                 String sql="select *,(select tipoacceso.menu1 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu1,(select tipoacceso.menu2 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu2,(select tipoacceso.menu3 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu3,(select tipoacceso.menu4 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu4,(select tipoacceso.menu5 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu5,(select tipoacceso.menu6 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu6,(select tipoacceso.menu7 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu7 from usuarios where nombreUsuario like '"+usuario+"' and clave like '"+clave+"'";
-                System.out.println(sql);
+                //System.out.println(sql);
                 ResultSet rs=tras.leerConjuntoDeRegistros(sql);
             
                     

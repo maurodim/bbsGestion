@@ -43,14 +43,14 @@ public class NuevoRemitoInterno extends javax.swing.JInternalFrame {
     Articulos art=new Articulos();
     while(il.hasNext()){
         art=(Articulos)il.next();
-        System.out.println("DESCRIPCION "+art.getDescripcionArticulo());
+        //System.out.println("DESCRIPCION "+art.getDescripcionArticulo());
         modelo.addElement(art.getCodigoAsignado()+" "+art.getDescripcionArticulo());
     }
     ListadoDeArticulos listadoDeArticulos=new ListadoDeArticulos();
     listadoDeArticulos.jList1.setModel(modelo);
     listadoDeArticulos.setVisible(true);
     int posicion=listadoDeArticulos.jList1.getSelectedIndex();
-    System.out.println(" POSICION LISTA "+posicion);
+    //System.out.println(" POSICION LISTA "+posicion);
     this.jTextField1.setText("");
     arti=(Articulos)lista.get(posicion);
     jTextField1.setText(arti.getCodigoAsignado());
@@ -296,7 +296,7 @@ public class NuevoRemitoInterno extends javax.swing.JInternalFrame {
         remitoInterno.setDepositoDestino(depDestino);
         remitoInterno.setArticulos(listadoArt);
         Comprobable comp=new RemitosInternos();
-        System.out.println(" REMITO GENERADO "+comp.nuevoComprobante(remitoInterno));
+        //System.out.println(" REMITO GENERADO "+comp.nuevoComprobante(remitoInterno));
         listadoArt.clear();
         agregarRenglonEnTabla();
     }//GEN-LAST:event_jButton1ActionPerformed

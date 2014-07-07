@@ -441,7 +441,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
 
     private void jTextField3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyPressed
             if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            System.out.println("ENTRO CON EL ENTER¡¡¡¡¡¡");
+            //System.out.println("ENTRO CON EL ENTER¡¡¡¡¡¡");
             arti=new Articulos();
             Facturar fart=new Articulos();
             arti=(Articulos)fart.cargarPorCodigoDeBarra(jTextField3.getText());
@@ -623,12 +623,12 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
 
     private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
         
-        System.out.println("INGRESO AL TENER EL FOCO ");
+        //System.out.println("INGRESO AL TENER EL FOCO ");
     }//GEN-LAST:event_formFocusGained
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         recargarBox();
-        System.out.println("INGRESO AL TENER EL shown 1");
+        //System.out.println("INGRESO AL TENER EL shown 1");
     }//GEN-LAST:event_formComponentShown
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -641,7 +641,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
     private void jTable1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTable1FocusLost
        int pos=this.jTable1.getSelectedRow();
        String montoMod=(String) this.jTable1.getValueAt(pos,4);
-       System.out.println(" monto corregidoooooooooo "+montoMod);
+       //System.out.println(" monto corregidoooooooooo "+montoMod);
        arti=(Articulos)listadoArt.get(pos);
        arti.setPrecioUnitario(Numeros.ConvertirStringADouble(montoMod));
     }//GEN-LAST:event_jTable1FocusLost
@@ -679,7 +679,7 @@ private void agregarRenglonTabla(){
             fila[2]=pedidos.getCantidad();
             Double precioUnitario=1.00;
             Double valor=pedidos.getPrecioUnitario() * pedidos.getCantidad();
-            System.err.println("precio neto "+pedidos.getPrecioUnitario());
+            //System.err.println("precio neto "+pedidos.getPrecioUnitario());
             //precioUnitario= pedidos.getPrecioUnitario() * cliT.getCoeficienteListaDeprecios();
             //Double valor=(pedidos.getCantidad() * precioUnitario);
             //valor=valor * cliT.getCoeficienteListaDeprecios();
@@ -690,7 +690,7 @@ private void agregarRenglonTabla(){
             fila[4]=Numeros.ConvertirNumero(cost);
             Double cantTotal=0.00;
             cantTotal=pedidos.getStockActual()+pedidos.getCantidad();
-            System.err.println(" actual "+pedidos.getStockActual()+" agregar "+pedidos.getCantidad()+" total "+cantTotal);
+            //System.err.println(" actual "+pedidos.getStockActual()+" agregar "+pedidos.getCantidad()+" total "+cantTotal);
             cost=pedidos.getPrecioUnitarioNeto();
             fila[5]=Numeros.ConvertirNumero(cost);
             fila[6]=Numeros.ConvertirNumero(cantTotal);
@@ -722,7 +722,7 @@ private void cargarLista(){
     Articulos art=new Articulos();
     while(il.hasNext()){
         art=(Articulos)il.next();
-        System.out.println("DESCRIPCION "+art.getDescripcionArticulo());
+        //System.out.println("DESCRIPCION "+art.getDescripcionArticulo());
         modelo.addElement(art.getCodigoAsignado()+" "+art.getDescripcionArticulo());
     }
     ListadoDeArticulos listadoDeArticulos=new ListadoDeArticulos();
@@ -730,7 +730,7 @@ private void cargarLista(){
     listadoDeArticulos.setVisible(true);
     listadoDeArticulos.jList1.requestFocus();
     int posicion=listadoDeArticulos.jList1.getSelectedIndex();
-    System.out.println(" POSICION LISTA "+posicion);
+    //System.out.println(" POSICION LISTA "+posicion);
     this.jTextField3.setText("");
     arti=(Articulos)lista.get(posicion);
     jTextField3.setText(arti.getCodigoAsignado());

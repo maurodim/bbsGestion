@@ -395,7 +395,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            System.out.println("ENTRO CON EL ENTER¡¡¡¡¡¡");
+            //System.out.println("ENTRO CON EL ENTER¡¡¡¡¡¡");
             listadoDeBusqueda.clear();
             Facturar fart=new Articulos();
             arti=new Articulos();
@@ -429,13 +429,13 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                     this.jCheckBox1.setVisible(true);
                     Calendar calendario=new GregorianCalendar();
                     int hora=calendario.get(Calendar.HOUR_OF_DAY);
-                    System.out.println("LA HORA ACTUAL ES :"+hora);
+                    //System.out.println("LA HORA ACTUAL ES :"+hora);
                     if(hora >= 0 || hora < 8){
                         if(arti.getModificaServicio()){
-                         System.err.println("SI TIENE QUE MODIFICAR EL SERVICIO");  
+                         //System.err.println("SI TIENE QUE MODIFICAR EL SERVICIO");  
                          this.jCheckBox1.setEnabled(false);
                         }else{
-                        System.err.println("NO DEBE MODIFICAR EL SERVICIO");
+                        //System.err.println("NO DEBE MODIFICAR EL SERVICIO");
                             this.jCheckBox1.setEnabled(true);
                         }
                         }
@@ -448,7 +448,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             }
         }
         if(evt.getKeyCode()==KeyEvent.VK_F1){
-            System.out.println("ENTRO CON F1¡¡¡¡¡");
+            //System.out.println("ENTRO CON F1¡¡¡¡¡");
         Facturar fart=new Articulos();
         listadoDeBusqueda=fart.listadoBusqueda(this.jTextField1.getText());
         cargarLista(listadoDeBusqueda);    
@@ -484,7 +484,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         //comp.setFechaComprobante(fecha2);
         //comp.setFechaComprobante(fecha);
         int comprobanteTipo=(int) Inicio.sucursal.getTipoComprobantes().get(0);
-        System.out.println("COMPROBANTEEEEEEE "+comprobanteTipo);
+        //System.out.println("COMPROBANTEEEEEEE "+comprobanteTipo);
         if(cliT.getCondicionIva().equals("RI "))comprobanteTipo=(int)Inicio.sucursal.getTipoComprobantes().get(1);
         Comprobantes comprobante=new Comprobantes();
         comprobante.setCliente(cliT);
@@ -543,7 +543,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
         int posicion=this.jList1.getSelectedIndex();
         arti=(Articulos)listadoDeBusqueda.get(posicion);
-        System.err.println("ARTICULO SELECCIONADO :"+arti.getDescripcionArticulo()+" "+arti.getCodigoDeBarra());
+        //System.err.println("ARTICULO SELECCIONADO :"+arti.getDescripcionArticulo()+" "+arti.getCodigoDeBarra());
         String codBar=arti.getCodigoDeBarra();
         jTextField1.setText(codBar.trim());
       
@@ -578,7 +578,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
 //                Double montoTotalX=(arti.getPrecioUnitario() * arti.getCantidad());
 //                montoTotal=montoTotal + montoTotalX;
                  montrarMonto();
-                 System.err.println("MONTO TOTAL "+montoTotal);
+                 //System.err.println("MONTO TOTAL "+montoTotal);
                  this.jLabel8.setText("");
                  this.jList1.removeAll();
                 this.jButton1.setVisible(true);
@@ -647,7 +647,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         comprobante.setIdSucursal(Inicio.sucursal.getNumero());
         comprobante.setIdDeposito(Inicio.deposito.getNumero());
         Integer numeroCaja=Inicio.caja.getNumero();
-        System.out.println("EL NUMERO DE CAJA ESSSSSSSS "+numeroCaja);
+        //System.out.println("EL NUMERO DE CAJA ESSSSSSSS "+numeroCaja);
         comprobante.setIdCaja(numeroCaja);
         comprobante.setMontoTotal(montoTotal);
         int noFacturar=0;
@@ -762,7 +762,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
 //                Double montoTotalX=(arti.getPrecioUnitario() * arti.getCantidad());
 //                montoTotal=montoTotal + montoTotalX;
                  montrarMonto();
-                 System.err.println("MONTO TOTAL "+montoTotal);
+                 //System.err.println("MONTO TOTAL "+montoTotal);
                  this.jLabel8.setText("");
                  this.jList1.removeAll();
                 this.jButton1.setVisible(true);
@@ -782,7 +782,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
                     int posicion=this.jList1.getSelectedIndex();
         arti=(Articulos)listadoDeBusqueda.get(posicion);
-        System.err.println("ARTICULO SELECCIONADO :"+arti.getDescripcionArticulo()+" "+arti.getCodigoDeBarra());
+        //System.err.println("ARTICULO SELECCIONADO :"+arti.getDescripcionArticulo()+" "+arti.getCodigoDeBarra());
         String codBar=arti.getCodigoDeBarra();
         jTextField1.setText(codBar.trim());
       
@@ -799,7 +799,7 @@ private void cargarLista(ArrayList lista){
     Articulos art=new Articulos();
     while(il.hasNext()){
         art=(Articulos)il.next();
-        System.out.println("DESCRIPCION "+art.getDescripcionArticulo());
+        //System.out.println("DESCRIPCION "+art.getDescripcionArticulo());
         modelo.addElement(art.getCodigoAsignado()+" "+art.getDescripcionArticulo());
     }
     this.jList1.setModel(modelo);
@@ -848,7 +848,7 @@ private void agregarRenglonTabla(){
         this.jCheckBox1.setVisible(false);
 }
 private void montrarMonto(){
-    System.err.println("DESCUENTO :"+cliT.getDescuento());
+    //System.err.println("DESCUENTO :"+cliT.getDescuento());
     Double total=montoTotal;
     //Double total=montoTotal * cliT.getDescuento();
     //comp.setMontoTotal(total);
@@ -871,7 +871,7 @@ private void verificar(){
         Double tot=precioUni;
         art.setPrecioUnitario(tot);
         //montoTotal=montoTotal + tot;
-        System.err.println("nimero "+ah+" decripcion "+descripcion+" limite "+cantidad);
+        //System.err.println("nimero "+ah+" decripcion "+descripcion+" limite "+cantidad);
     }
 }
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -161,7 +161,7 @@ public class Proveedores implements Personalizable{
                 //prov.setNumeroDeCuit(rr.getString("numeroCuit"));
                 //prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
                 //prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
-                System.err.println("PROV "+prov.getNombre());
+                //System.err.println("PROV "+prov.getNombre());
                 listadoProv.putIfAbsent(prov.getNumero(),prov);
             }
             rr.close();
@@ -197,7 +197,7 @@ public class Proveedores implements Personalizable{
                 //prov.setNumeroDeCuit(rr.getString("numeroCuit"));
                 //prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
                 //prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
-                System.err.println("PROV "+prov.getNombre());
+                //System.err.println("PROV "+prov.getNombre());
                 listadoProv.putIfAbsent(prov.getNumero(),prov);
             }
             rr.close();
@@ -222,7 +222,7 @@ public class Proveedores implements Personalizable{
         while(ilP.hasNext()){
             proveedores=(Proveedores)ilP.next();
             sql="insert into proveedores (id,nombre,domicilio,localidad,telefono,inhabilitado,numero,mail) values ("+proveedores.getNumero()+",'"+proveedores.getNombre()+"','"+proveedores.getDireccion()+"','"+proveedores.getLocalidad()+"','"+proveedores.getTelefono()+"',0,"+proveedores.getNumero()+",'"+proveedores.getMail()+"')";
-            System.out.println("PROVEEDORES backapearProveedores---"+sql);
+            //System.out.println("PROVEEDORES backapearProveedores---"+sql);
             tra.guardarRegistro(sql);
         }
     }
@@ -374,10 +374,10 @@ public class Proveedores implements Personalizable{
         *    articulo=(Articulos)elementos.nextElement();
          */
             Enumeration<Proveedores> elementos=listadoProv.elements();
-            System.out.println(" ELEMENTOS PROVEEDORES "+listadoProv.size());
+            //System.out.println(" ELEMENTOS PROVEEDORES "+listadoProv.size());
             while(elementos.hasMoreElements()){
                 Proveedores prov=(Proveedores)elementos.nextElement();
-                System.out.println(" PROVEEDORES "+prov.getNombre());
+                //System.out.println(" PROVEEDORES "+prov.getNombre());
                 //prov.setCondicionDeIva(rr.getInt("condicionIva"));
                 //prov.setNumeroDeCuit(rr.getString("numeroCuit"));
                 //prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));

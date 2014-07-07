@@ -241,7 +241,7 @@ public class Articulos implements Facturar,Editables{
     public void setPrecioUnitarioNeto(Double precioUnitarioNeto) {
       
         this.precioUnitarioNeto = precioUnitarioNeto;
-        System.err.println("RECIBIDO "+precioUnitarioNeto+" resultado "+this.precioUnitarioNeto+" recargo "+this.recargo+"\n");
+        //System.err.println("RECIBIDO "+precioUnitarioNeto+" resultado "+this.precioUnitarioNeto+" recargo "+this.recargo+"\n");
     }
     
     public static void CargarMap(){
@@ -294,7 +294,7 @@ public class Articulos implements Facturar,Editables{
             }
                   } catch (SQLException ex) {
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("ACA DEBE LEER EN LE ARCHIVO");
+            //System.out.println("ACA DEBE LEER EN LE ARCHIVO");
             
         }
         /*
@@ -327,7 +327,7 @@ public class Articulos implements Facturar,Editables{
                 //resultado.add(articulo);
             }
             rr.close();
-            System.out.println(" CANTIDAD MAP inicial "+listadoBarr.size());
+            //System.out.println(" CANTIDAD MAP inicial "+listadoBarr.size());
            
         } catch (SQLException ex) {
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
@@ -337,7 +337,7 @@ public class Articulos implements Facturar,Editables{
     public static synchronized void RecargarMap(){
         
 
-        System.out.println(" CANTIDAD MAP 1 - "+listadoBarr1.size());
+        //System.out.println(" CANTIDAD MAP 1 - "+listadoBarr1.size());
         // ACA SE CARGA EL MAP PARA TENER ACCESO A LOS ARTICULOS SIN ESTAR CONECTADO , LA CLAVE EL CODIGO DE BARRA
         Transaccionable tra=new Conecciones();
         //ArrayList resultado=new ArrayList();

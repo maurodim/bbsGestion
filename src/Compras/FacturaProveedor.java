@@ -248,9 +248,9 @@ public class FacturaProveedor implements Comprobable,Facturar,Adeudable{
         //insert into movimientoscaja(numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,pagado,tipoCliente,idCliente) values (1,1,(select tipocomprobantes.numeroActivo + 1 from tipocomprobantes where numero=11) ,6,1.00,2,1,1,2,1)
         String sql="insert into movimientoscaja(numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,pagado,tipoCliente,idCliente) values ("+fact.getIdUsuario()+","+fact.getIdSucursal()+",(select tipocomprobantes.numeroActivo + 1 from tipocomprobantes where numero=11),6,"+monto+",2,"+fact.getIdCaja()+","+fact.getPagada()+",2,"+fact.getNumeroProveedor()+")";
         Transaccionable tra=new Conecciones();
-        if(tra.guardarRegistro(sql))System.out.println(sql);
+        if(tra.guardarRegistro(sql))//System.out.println(sql);
         sql="update movimientosproveedores set pagado="+fact.getPagada()+",fechaPago ='"+fact.getFecha()+"' where id="+fact.getId();
-        if(tra.guardarRegistro(sql))System.out.println(sql);       
+        if(tra.guardarRegistro(sql));//System.out.println(sql);       
         
         return verif;
         
@@ -363,7 +363,7 @@ public class FacturaProveedor implements Comprobable,Facturar,Adeudable{
        Transaccionable tra=new Conecciones();
        String sql="insert into movimientosproveedores (numeroProveedor,monto,numeroComprobante,idUsuario,tipoComprobante,idSucursal,idRemito) values ("+factProv.getNumeroProveedor()+","+factProv.getMontoFinal()+","+numeroRecibo+","+factProv.getIdUsuario()+",11,"+factProv.getIdSucursal()+",0)";
        //String sql="update movimientosproveedores set pagado=1,numeroComprobante="+numeroRecibo+",idCaja="+Inicio.caja.getNumero()+",fechaPago='"+fech+"',idSucursal="+Inicio.sucursal.getNumero()+" where id="+factProv.getId();
-       System.out.println("VEAMOS "+sql);
+       //System.out.println("VEAMOS "+sql);
        tra.guardarRegistro(sql);
        String ttx="PAGO A PROVEEDOR "+factProv.getNombreProveedor();
        Double monto=factProv.getMontoFinal();

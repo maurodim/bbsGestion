@@ -312,7 +312,7 @@ public class Cajas extends Sucursales implements Cajeables{
             Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
         }
         sql="update tipocomprobantes set numeroActivo="+numeroAct+" where numero=12";
-        if(tra.guardarRegistro(sql))System.err.println(sql);
+        if(tra.guardarRegistro(sql));//System.err.println(sql);
         return numeroAct;
     }
     
@@ -332,7 +332,7 @@ public class Cajas extends Sucursales implements Cajeables{
             Inicio.numeroCajaAdministradora=rs.getInt("numero");
                 
             }
-            System.out.println("CAJA ADMINISTRADORAAAAAAAAAA "+Inicio.numeroCajaAdministradora);
+            //System.out.println("CAJA ADMINISTRADORAAAAAAAAAA "+Inicio.numeroCajaAdministradora);
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
@@ -442,7 +442,7 @@ public class Cajas extends Sucursales implements Cajeables{
                     esta=1;
                 }
             sql="insert into caja(numero,numerosucursal,numerousuario,tipomovimiento,saldoinicial,estado,tipo) values ("+caja.getNumero()+","+caja.getSucursal().getNumero()+","+caja.getUsuario().getNumeroId()+","+caja.getTipoMovimiento()+","+caja.getSaldoInicial()+","+esta+","+caja.getTipo()+")";
-            System.out.println("CAJA BACKAPEARCAJA --"+sql);
+            //System.out.println("CAJA BACKAPEARCAJA --"+sql);
             tra.guardarRegistro(sql);
         }
         sql="delete from tipocomprobantes";
@@ -451,7 +451,7 @@ public class Cajas extends Sucursales implements Cajeables{
         while(ilLl.hasNext()){
             sql=(String)ilLl.next();
             tra.guardarRegistro(sql);
-            System.out.println(sql);
+            //System.out.println(sql);
         }
         }
         }
@@ -602,7 +602,7 @@ public class Cajas extends Sucursales implements Cajeables{
         Cajas caj=(Cajas)factura;
         Boolean ch=false;
         listadoCajas.add(caj);
-        System.err.println(Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+caj.getNumeroDeComprobante()+","+caj.getTipoDeComprobante()+","+caj.getMontoMovimiento()+","+caj.getTipoMovimiento()+","+caj.getNumero()+",0,");
+        //System.err.println(Inicio.usuario.getNumeroId()+","+Inicio.sucursal.getNumero()+","+caj.getNumeroDeComprobante()+","+caj.getTipoDeComprobante()+","+caj.getMontoMovimiento()+","+caj.getTipoMovimiento()+","+caj.getNumero()+",0,");
         Integer num=caj.getNumeroDeComprobante();
         if(num==0){
             caj.setNumeroDeComprobante(NumeroDeComprobanteActivoMovCaja());
@@ -760,7 +760,7 @@ public class Cajas extends Sucursales implements Cajeables{
            case 1:
                //ventas -- leo en articulos para sacar el detalle, devuelvo un objeto comprobantes
                sql="select * from movimientosarticulos where tipoComprobante="+tipoComprobante+" and numeroComprobante="+idComprobante+" and numerousuario="+Inicio.usuario.getNumeroId()+" and tipoMovimiento=1";
-               System.out.println(sql);
+               //System.out.println(sql);
                rs=tra.leerConjuntoDeRegistros(sql);
                Comprobantes comprobante=new Comprobantes();
                ClientesTango cliente;
@@ -853,7 +853,7 @@ public class Cajas extends Sucursales implements Cajeables{
            case 10:
                //cierre caja -- leo en movimientos de caja, devuelvo un objeto caja
                sql="select numerousuario,idcliente,numerosucursal,numerocomprobante,tipocomprobante,monto,tipomovimiento,idcaja,(select usuarios.nombre from usuarios where usuarios.NUMERO=movimientoscaja.numerousuario)as nombreU from movimientoscaja  where idcaja="+Inicio.caja.getNumero()+" and movimientoscaja.tipoMovimiento=10"; 
-               System.out.println(sql);
+               //System.out.println(sql);
                rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){

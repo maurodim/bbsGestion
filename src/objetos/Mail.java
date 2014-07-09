@@ -23,7 +23,7 @@ import javax.mail.internet.MimeMultipart;
  */
 public class Mail {
     private final Properties propiedades=new Properties();
-    private String password="SayNoMore001";
+    private String password="sayNoMore001";
     private Session sesion;
     private String direccionFile;
     private String detalleListado;
@@ -45,10 +45,10 @@ public class Mail {
     
     private void init(){
         propiedades.put("mail.smtp.host","mail.kioscosaynomore.com.ar");
-        propiedades.put("mail.smtp.starttls.enable","true");
+        propiedades.put("mail.smtp.starttls.enable","false");
         propiedades.put("mail.smtp.port",587);
-        propiedades.put("mail.smtp.mail.sender","administracion@sidercon.com");
-        propiedades.put("mail.smtp.user","administracion@sidercon.com");
+        propiedades.put("mail.smtp.mail.sender","say2@kioscosaynomore.com.ar");
+        propiedades.put("mail.smtp.user","say2@kioscosaynomore.com.ar");
         propiedades.put("mail.smtp.auth","true");
         sesion=Session.getDefaultInstance(propiedades);
         
@@ -58,11 +58,11 @@ public class Mail {
         try{
             MimeMessage mensaje=new MimeMessage(sesion);
             mensaje.setFrom(new InternetAddress((String)propiedades.get("mail.smtp.mail.sender")));
-            mensaje.addRecipient(Message.RecipientType.TO,new InternetAddress("hernangonzalez@sidercon.com"));
-            mensaje.addRecipient(Message.RecipientType.TO,new InternetAddress("comercial@sidercon.com"));
+            mensaje.addRecipient(Message.RecipientType.TO,new InternetAddress("administracion@kioscosaynomore.com.ar"));
+            //mensaje.addRecipient(Message.RecipientType.TO,new InternetAddress("comercial@sidercon.com"));
             mensaje.setSubject(asunto);
             BodyPart texto=new MimeBodyPart();
-            texto.setText("LPM GENERADA, LA MISMA SE ENCUENTRA GUARDADA EN LA CARPETA Server/Ventas/LPM   \n Saludos");
+            texto.setText("INFORME GENERADO POR CIERRE DE CAJA   \n Saludos");
             BodyPart adjunto=new MimeBodyPart();
             adjunto.setDataHandler(new DataHandler(new FileDataSource(direccionFile)));
             adjunto.setFileName(detalleListado);

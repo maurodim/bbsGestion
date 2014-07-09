@@ -15,8 +15,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.MessagingException;
+import javax.swing.JOptionPane;
 import objetos.ConeccionLocal;
 import objetos.Conecciones;
+import objetos.Mail;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -62,7 +65,7 @@ public class InformeDiarioStock {
         fuente.setFontName(fuente.FONT_ARIAL);
         fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         String form=null;
-        String sql="select nombre,id,(select sum(movimientosarticulos.cantidad) from movimientosarticulos where movimientosarticulos.idarticulo=articulos.id and movimientosarticulos.numerodeposito="+Inicio.deposito.getNumero()+")as stock from articulos";
+        String sql="select nombre,id,(select sum(movimientosarticulos.cantidad) from movimientosarticulos where movimientosarticulos.idarticulo=articulos.id and movimientosarticulos.numerodeposito="+Inicio.deposito.getNumero()+")as stock,(select sum(movimientosarticulos.cantidad) from movimientosarticulos where movimientosarticulos.numerousuario="+Inicio.usuario.getNumeroId()+")as cantidadVendida from articulos";
        
         System.out.println(sql);
         Transaccionable tra=new ConeccionLocal();
@@ -107,6 +110,9 @@ public class InformeDiarioStock {
             fila=hoja.createRow(a);
             celda=fila.createCell(0);
             ttx=ttx;
+            Double anterior=0.00;
+            Double actual=0.00;
+            Double vendido=0.00;
             celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
             celda.setCellValue(rs.getInt("id"));
             celda1=fila.createCell(1);
@@ -114,22 +120,41 @@ public class InformeDiarioStock {
             celda1.setCellType(HSSFCell.CELL_TYPE_STRING);
             celda1.setCellValue(rs.getString("nombre"));
             celda2=fila.createCell(2);
+            actual=rs.getDouble("stock");
             celda2.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-            celda2.setCellValue(rs.getDouble("stock"));
+            celda2.setCellValue(actual);
+            celda3=fila.createCell(3);
+            vendido=rs.getDouble("cantidadVendida");
+            celda3.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            celda3.setCellValue(vendido);
+            celda4=fila.createCell(4);
+            anterior=actual + vendido;
+            celda4.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            celda4.setCellValue(anterior);
+            
 
         }
             rs.close();
         //texto+="\r\n";
-        String ruta="C://Informes//"+Inicio.fechaDia+" - informeDeStock.xls";
+        String ruta="C://Informes//"+Inicio.fechaDia+"_"+Inicio.usuario.getNombre()+" - informeDeStock.xls";
+        String nombree=Inicio.fechaDia+"_"+Inicio.usuario.getNombre()+" - informeDeStock.xls";
         try {
             FileOutputStream elFichero=new FileOutputStream(ruta);
             try {
                 libro.write(elFichero);
                 elFichero.close();
                 Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+ruta);
+                Mail mail=new Mail();
+                mail.setDetalleListado(nombree);
+                mail.setDireccionFile(ruta);
+                mail.setAsunto("Informe de cierre de caja "+Inicio.fechaDia);
+                mail.enviarMailRepartoCargaCompleta();
             } catch (IOException ex) {
                 Logger.getLogger(InformeMensual.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } catch (MessagingException ex) {
+              Logger.getLogger(InformeDiarioStock.class.getName()).log(Level.SEVERE, null, ex);
+              JOptionPane.showMessageDialog(null,"NO SE HA PODIDO ENVIAR EL MENSAJE MOTIVO :"+ex);
+          }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(InformeMensual.class.getName()).log(Level.SEVERE, null, ex);
         }

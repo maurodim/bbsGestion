@@ -12,7 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import objetos.Conecciones;
+import objetos.Mail;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -499,9 +501,11 @@ public class InformeMensual {
                 libro.write(elFichero);
                 elFichero.close();
                 Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+ruta);
+                
             } catch (IOException ex) {
                 Logger.getLogger(InformeMensual.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
+           }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(InformeMensual.class.getName()).log(Level.SEVERE, null, ex);
         }

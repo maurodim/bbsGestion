@@ -5,9 +5,13 @@
 package interfaceGraficas;
 
 import Conversores.Numeros;
+import Excel.InformeDiarioStock;
 import Sucursales.Cajas;
 import interfacesPrograma.Cajeables;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -412,9 +416,19 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         cajas.setCambioEnCaja(quedaEnCaja);
         
         //cajas.setTotalVentas(totalB);
-        caj.CerrarCaja(cajas);
-        this.dispose();
-        System.exit(1);
+        
+        
+        //caj.CerrarCaja(cajas);
+        //this.dispose();
+        //ACA DEBE EMITIR EL INFORME DE STOCK PARA CONTROL Y MANDAR EL MAIL CON EL MISMO INFORME
+        InformeDiarioStock info=new InformeDiarioStock();
+        try {
+            info.GenerrarInformeStock();
+        } catch (SQLException ex) {
+            Logger.getLogger(ArqueoDeCaja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //System.exit(1);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed

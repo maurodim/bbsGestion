@@ -199,7 +199,7 @@ public class ConeccionLocal implements Transaccionable{
                      PreparedStatement pstm13=dbConnection.prepareStatement(sql);
                      pstm13.execute();
                      pstm13.close();
-                     sql="CREATE TABLE APP.movimientosarticulos (tipoMovimiento INTEGER not null,idArticulo INTEGER not null,cantidad double not null,numeroDeposito INTEGER not null,tipoComprobante INTEGER not null,numeroComprobante INTEGER not null,numeroCliente INTEGER NOT NULL,fechaComprobante varchar(30) not null,numeroUsuario INTEGER NOT NULL,precioDeCosto double not null,precioDeVenta double not null,precioServicio double NOT NULL,estado INTEGER)";
+                     sql="CREATE TABLE APP.movimientosarticulos (tipoMovimiento INTEGER not null,idArticulo INTEGER not null,cantidad double not null,numeroDeposito INTEGER not null,tipoComprobante INTEGER not null,numeroComprobante INTEGER not null,numeroCliente INTEGER NOT NULL,fechaComprobante varchar(30) not null,numeroUsuario INTEGER NOT NULL,precioDeCosto double not null,precioDeVenta double not null,precioServicio double NOT NULL,estado INTEGER,fecha date default current_date,idcaja integer)";
                      PreparedStatement pstm14=dbConnection.prepareStatement(sql);
                      pstm14.execute();
                      pstm14.close();

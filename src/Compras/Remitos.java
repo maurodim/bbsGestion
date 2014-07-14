@@ -135,7 +135,7 @@ public class Remitos implements Comprobable{
             while(listA.hasNext()){
                 Articulos art=(Articulos)listA.next();
                 Double cantidad=art.getCantidad();
-                sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numerousuario,precioDeCosto) values (5,"+art.getNumeroId()+","+cantidad+","+rem.getNumeroDeposito()+",3,'"+rem.getNumeroRemito()+"',"+rem.getIdProveedor()+",'"+rem.getFechaRecepcion()+"',"+rem.getIdUsuario()+","+art.getPrecioDeCosto()+")";
+                sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numerousuario,precioDeCosto,idcaja) values (5,"+art.getNumeroId()+","+cantidad+","+rem.getNumeroDeposito()+",3,'"+rem.getNumeroRemito()+"',"+rem.getIdProveedor()+",'"+rem.getFechaRecepcion()+"',"+rem.getIdUsuario()+","+art.getPrecioDeCosto()+","+Inicio.caja.getNumero()+")";
                 if(tra.guardarRegistro(sql))//System.out.println(sql);
                 if(rem.getGuardaPrecioDeVenta()){
                 sql1="update articulos set COSTO="+art.getPrecioDeCosto()+",PRECIO="+art.getPrecioUnitario()+" where id="+art.getNumeroId();

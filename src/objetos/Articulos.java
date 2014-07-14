@@ -646,7 +646,7 @@ public class Articulos implements Facturar,Editables{
     public Boolean MovimientoDeAjusteDeCantidades(Object objeto, Double cantidadMovimiento, String observaciones) {
         Articulos articulo=(Articulos)objeto;
         Boolean verif=false;
-        String sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numerousuario,precioDeCosto,precioDeVenta,precioServicio,observaciones) values (14,"+articulo.getNumeroId()+","+cantidadMovimiento+","+Inicio.deposito.getNumero()+",18,(select tipocomprobantes.numeroActivo + 1 from tipocomprobantes where tipocomprobantes.numero=18),1,'"+Inicio.fechaDia+"',"+Inicio.usuario.getNumeroId()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getPrecioServicio()+",'"+observaciones+"')";
+        String sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numerousuario,precioDeCosto,precioDeVenta,precioServicio,observaciones,idcaja) values (14,"+articulo.getNumeroId()+","+cantidadMovimiento+","+Inicio.deposito.getNumero()+",18,(select tipocomprobantes.numeroActivo + 1 from tipocomprobantes where tipocomprobantes.numero=18),1,'"+Inicio.fechaDia+"',"+Inicio.usuario.getNumeroId()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getPrecioServicio()+",'"+observaciones+"',"+Inicio.caja.getNumero()+")";
         Transaccionable tra=new Conecciones();
         verif=tra.guardarRegistro(sql);
         sql="update tipocomprobantes set numeroActivo=numeroActivo + 1 where numero=18";

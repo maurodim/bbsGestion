@@ -415,11 +415,11 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         
         cajas.setCambioEnCaja(quedaEnCaja);
         
-        //cajas.setTotalVentas(totalB);
+        cajas.setTotalVentas(totalB);
         
         
-        //caj.CerrarCaja(cajas);
-        //this.dispose();
+        caj.CerrarCaja(cajas);
+        this.dispose();
         //ACA DEBE EMITIR EL INFORME DE STOCK PARA CONTROL Y MANDAR EL MAIL CON EL MISMO INFORME
         InformeDiarioStock info=new InformeDiarioStock();
         try {
@@ -428,7 +428,7 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
             Logger.getLogger(ArqueoDeCaja.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        //System.exit(1);
+        System.exit(1);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed

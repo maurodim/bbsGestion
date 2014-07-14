@@ -12,10 +12,16 @@ import Sucursales.Sucursales;
 import Sucursales.Usuarios;
 import facturacion.clientes.ClientesTango;
 import interfaceGraficas.Inicio;
+import interfaces.Transaccionable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Timer;
 import objetos.Articulos;
+import objetos.Conecciones;
 
 /**
  *
@@ -24,7 +30,7 @@ import objetos.Articulos;
 public class Actualiza1 extends Thread{
      @Override
     public void run(){
-        Timer timer=new Timer(2000000,new ActionListener(){ 
+        Timer timer=new Timer(200000,new ActionListener(){ 
             @Override
     public void actionPerformed(ActionEvent e) 
     { 
@@ -38,11 +44,12 @@ public class Actualiza1 extends Thread{
         
             //carga la lista remota
             //Proveedores.cargarListadoProv1();
-        
+       
         if(Inicio.actualizable==1){
             Articulos.RecargarMap();
         
         Articulos.BackapearMap();
+        Inicio.actualizable=0;
         }
         /*
          * Usuarios

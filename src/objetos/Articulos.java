@@ -415,8 +415,8 @@ public class Articulos implements Facturar,Editables{
                 //resultado.add(articulo);
             }
             rr.close();
-            sql="update actualizaciones set estado=1 where iddeposito="+Inicio.deposito.getNumero()+" and idobjeto=1";
-            tra.guardarRegistro(sql);
+//            sql="update actualizaciones set estado=1 where iddeposito="+Inicio.deposito.getNumero()+" and idobjeto=1";
+//            tra.guardarRegistro(sql);
             
         } catch (SQLException ex) {
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
@@ -441,8 +441,8 @@ public class Articulos implements Facturar,Editables{
             if(articulo.getModificaPrecio())mod=1;
             if(articulo.getModificaServicio())serv=1;
             if(articulo.getDescripcionArticulo().equals(""))articulo.setDescripcionArticulo("--");
-            //sql="update articulos (nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro,servicio1) values ('"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0,"+articulo.getPrecioServicio1()+")";
-            sql="update articulos set nombre='"+articulo.getDescripcionArticulo()+"',barras='"+articulo.getCodigoDeBarra()+"',servicio="+articulo.getPrecioServicio()+",costo="+articulo.getPrecioDeCosto()+",precio="+articulo.getPrecioUnitarioNeto()+",minimo="+articulo.getStockMinimo()+",stock="+articulo.getStockActual()+",equivalencia="+articulo.getEquivalencia()+",modificaprecio="+mod+",modificaservicio="+serv+",recargo="+articulo.getRecargo()+",inhabilitado=0,idrubro=0,servicio1="+articulo.getPrecioServicio1()+" where id="+articulo.getNumeroId();
+            sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro,servicio1) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0,"+articulo.getPrecioServicio1()+")";
+            //sql="update articulos set nombre='"+articulo.getDescripcionArticulo()+"',barras='"+articulo.getCodigoDeBarra()+"',servicio="+articulo.getPrecioServicio()+",costo="+articulo.getPrecioDeCosto()+",precio="+articulo.getPrecioUnitarioNeto()+",minimo="+articulo.getStockMinimo()+",stock="+articulo.getStockActual()+",equivalencia="+articulo.getEquivalencia()+",modificaprecio="+mod+",modificaservicio="+serv+",recargo="+articulo.getRecargo()+",inhabilitado=0,idrubro=0,servicio1="+articulo.getPrecioServicio1()+" where id="+articulo.getNumeroId();
             System.out.println("hash "+sql);
             tt.guardarRegistro(sql);
             

@@ -424,6 +424,7 @@ public class Cajas extends Sucursales implements Cajeables{
     public static void BackapearCajas(){
         numeroDeComprobanteBk++;
         if(numeroDeComprobanteBk==1){
+            // HAY QUE ANULAR EL LISTAR CAJAS CUANDO SE CORTA EL SERVIDOR
         ListarCajas1();
         if(listadoGeneralDeCajas.size() > 0){
         Iterator itL=listadoGeneralDeCajas.listIterator();
@@ -799,6 +800,7 @@ public class Cajas extends Sucursales implements Cajeables{
        //     sql="insert into fallas (st,estado) values ('"+sql+"',0)";
         //}
         tra.guardarRegistro(sql);
+        //sql="update comprobantes "
         
         return caj;
     }

@@ -649,7 +649,7 @@ public class Inicio extends javax.swing.JFrame {
         ListasDePrecios.BackapearListasDePrecios();
         Cajas.BackapearCajas();
         Cajas.LeerCajaAdministradora();
-        Articulos.BackapearMap();
+        Articulos.BackapearMap1();
         Depositos.BackapearDepositos();
         
         

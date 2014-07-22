@@ -386,6 +386,7 @@ public class Articulos implements Facturar,Editables{
         String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0 and actualizacion=0 order by NOMBRE";
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         try {
+            listadoNom1.clear();
             while(rr.next()){
                 articulo=new Articulos();
                 articulo.setCodigoAsignado(rr.getString("ID"));
@@ -427,8 +428,35 @@ public class Articulos implements Facturar,Editables{
         Transaccionable tt=new ConeccionLocal();
         System.out.println(" CANTIDAD MAP back "+listadoBarr1.size());
         String sql="";
-//String sql="delete from articulos";
-        //tt.guardarRegistro(sql);
+    //String sql="delete from articulos";
+      //  tt.guardarRegistro(sql);
+        String criterio="";
+        Articulos articulo=null;
+        criterio=criterio.toUpperCase();
+        Enumeration<Articulos> elementos=listadoNom1.elements();
+        while(elementos.hasMoreElements()){
+            articulo=(Articulos)elementos.nextElement();
+            int pos=articulo.getDescripcionArticulo().indexOf(criterio);
+            int mod=0;
+            int serv=0;
+            if(articulo.getModificaPrecio())mod=1;
+            if(articulo.getModificaServicio())serv=1;
+            if(articulo.getDescripcionArticulo().equals(""))articulo.setDescripcionArticulo("--");
+            sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro,servicio1) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0,"+articulo.getPrecioServicio1()+")";
+            //sql="update articulos set nombre='"+articulo.getDescripcionArticulo()+"',barras='"+articulo.getCodigoDeBarra()+"',servicio="+articulo.getPrecioServicio()+",costo="+articulo.getPrecioDeCosto()+",precio="+articulo.getPrecioUnitarioNeto()+",minimo="+articulo.getStockMinimo()+",stock="+articulo.getStockActual()+",equivalencia="+articulo.getEquivalencia()+",modificaprecio="+mod+",modificaservicio="+serv+",recargo="+articulo.getRecargo()+",inhabilitado=0,idrubro=0,servicio1="+articulo.getPrecioServicio1()+" where id="+articulo.getNumeroId();
+            System.out.println("hash "+sql);
+            tt.guardarRegistro(sql);
+            
+            
+        }
+        //CargarMap();
+    }
+    public static synchronized void BackapearMap1(){
+        Transaccionable tt=new ConeccionLocal();
+        System.out.println(" CANTIDAD MAP back "+listadoNom1.size());
+        //String sql="";
+    String sql="truncate table articulos";
+        tt.guardarRegistro(sql);
         String criterio="";
         Articulos articulo=null;
         criterio=criterio.toUpperCase();

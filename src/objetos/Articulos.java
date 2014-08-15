@@ -51,6 +51,26 @@ public class Articulos implements Facturar,Editables{
     private static ConcurrentHashMap listadoBarr1=new ConcurrentHashMap();
     private static ConcurrentHashMap listadoNom1=new ConcurrentHashMap();
     private static ConcurrentHashMap listadoCodigo1=new ConcurrentHashMap();
+    private ArrayList combo;
+    private Integer idCombo;
+
+    public Integer getIdCombo() {
+        return idCombo;
+    }
+
+    public void setIdCombo(Integer idCombo) {
+        this.idCombo = idCombo;
+    }
+
+    
+    public ArrayList getCombo() {
+        return combo;
+    }
+
+    public void setCombo(ArrayList combo) {
+        this.combo = combo;
+    }
+    
 
     public Double getPrecioServicio1() {
         return precioServicio1;
@@ -383,6 +403,9 @@ public class Articulos implements Facturar,Editables{
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
         */
+        Transaccionable tta=new Conecciones();
+        String sql1="";
+        ArrayList comboD;
         String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0 and actualizacion=0 order by NOMBRE";
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -411,6 +434,21 @@ public class Articulos implements Facturar,Editables{
                 }
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
+                articulo.setIdCombo(rr.getInt("idcombo"));
+                if(articulo.getIdCombo() > 0){
+                   sql1="select * from combo where articuloPadre ="+articulo.getNumeroId();
+                   comboD=new ArrayList();
+                   Articulos arti;
+                   ResultSet rs=tta.leerConjuntoDeRegistros(sql1);
+                   while(rs.next()){
+                       arti=new Articulos();
+                       arti.setCantidad(rs.getDouble("cantidad"));
+                       arti.setNumeroId(rs.getInt("idarticulo"));
+                       comboD.add(arti);
+                   }
+                   rs.close();
+                   articulo.setCombo(comboD);
+                }
                 String nom=rr.getString("NOMBRE");
                 listadoNom1.putIfAbsent(nom,articulo);
                 //resultado.add(articulo);
@@ -457,6 +495,8 @@ public class Articulos implements Facturar,Editables{
         //String sql="";
     String sql="truncate table articulos";
         tt.guardarRegistro(sql);
+        sql="truncate table combo";
+        tt.guardarRegistro(sql);
         String criterio="";
         Articulos articulo=null;
         criterio=criterio.toUpperCase();
@@ -469,16 +509,43 @@ public class Articulos implements Facturar,Editables{
             if(articulo.getModificaPrecio())mod=1;
             if(articulo.getModificaServicio())serv=1;
             if(articulo.getDescripcionArticulo().equals(""))articulo.setDescripcionArticulo("--");
-            sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro,servicio1) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0,"+articulo.getPrecioServicio1()+")";
+            
+            sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro,servicio1,idcombo) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0,"+articulo.getPrecioServicio1()+","+articulo.getIdCombo()+")";
             //sql="update articulos set nombre='"+articulo.getDescripcionArticulo()+"',barras='"+articulo.getCodigoDeBarra()+"',servicio="+articulo.getPrecioServicio()+",costo="+articulo.getPrecioDeCosto()+",precio="+articulo.getPrecioUnitarioNeto()+",minimo="+articulo.getStockMinimo()+",stock="+articulo.getStockActual()+",equivalencia="+articulo.getEquivalencia()+",modificaprecio="+mod+",modificaservicio="+serv+",recargo="+articulo.getRecargo()+",inhabilitado=0,idrubro=0,servicio1="+articulo.getPrecioServicio1()+" where id="+articulo.getNumeroId();
             System.out.println("hash "+sql);
             tt.guardarRegistro(sql);
-            
+            if(articulo.getIdCombo() > 0){
+                Articulos art=new Articulos();
+                Iterator ic=articulo.getCombo().listIterator();
+                while(ic.hasNext()){
+                    art=(Articulos)ic.next();
+                    sql="insert into combo (idarticulo,cantidad,articuloPadre) values ("+art.getNumeroId()+","+art.getCantidad()+","+articulo.getNumeroId()+")";
+                    tt.guardarRegistro(sql);
+                }
+            }
             
         }
         //CargarMap();
     }
-    
+    private ArrayList CargarCombo(Integer id){
+        Transaccionable tt=new ConeccionLocal();
+        String sql="select * from combo where articuloPadre="+id;
+        ArrayList listadoA=new ArrayList();
+        ResultSet rr=tt.leerConjuntoDeRegistros(sql);
+        Articulos artic;
+        try {
+            while(rr.next()){
+                artic=new Articulos();
+                artic.setNumeroId(rr.getInt("idarticulo"));
+                artic.setCantidad(rr.getDouble("cantidad"));
+                listadoA.add(artic);
+            }
+            rr.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listadoA;
+    }
     @Override
     public Boolean guardar(Object oob) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -543,6 +610,8 @@ public class Articulos implements Facturar,Editables{
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
                 String nom=rr.getString("NOMBRE");
+                articulo.setIdCombo(rr.getInt("idcombo"));
+                if(articulo.getIdCombo() > 0)articulo.setCombo(CargarCombo(articulo.getNumeroId()));
                 resultado.add(articulo);
             }
             rr.close();
@@ -622,6 +691,8 @@ public class Articulos implements Facturar,Editables{
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
                 String nom=rr.getString("NOMBRE");
+                articulo.setIdCombo(rr.getInt("idcombo"));
+                if(articulo.getIdCombo() > 0)articulo.setCombo(CargarCombo(articulo.getNumeroId()));
             }
             rr.close();
         } catch (SQLException ex) {
@@ -636,11 +707,32 @@ public class Articulos implements Facturar,Editables{
         Articulos articulo=(Articulos)objeto;
         Boolean ch=false;
         //String sql="insert into articulos (NOMBRE='"+articulo.getDescripcionArticulo()+"',SERVICIO="+articulo.getPrecioServicio()+",COSTO="+articulo.getPrecioDeCosto()+",PRECIO="+articulo.getPrecioUnitarioNeto()+",MINIMO="+articulo.getStockMinimo()+",BARRAS ='"+articulo.getCodigoDeBarra()+"',modificaPrecio="+articulo.getModificaPrecio()+" where ID="+articulo.getNumeroId();
-        String sql="insert into articulos (NOMBRE,SERVICIO,COSTO,PRECIO,MINIMO,BARRAS,modificaPrecio,modificaServicio,SERVICIO1) values ('"+articulo.getDescripcionArticulo()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+",'"+articulo.getCodigoDeBarra()+"',"+articulo.getModificaPrecio()+","+articulo.getModificaServicio()+","+articulo.getPrecioServicio1()+")";
+        String sql="insert into articulos (NOMBRE,SERVICIO,COSTO,PRECIO,MINIMO,BARRAS,modificaPrecio,modificaServicio,SERVICIO1,idcombo) values ('"+articulo.getDescripcionArticulo()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+",'"+articulo.getCodigoDeBarra()+"',"+articulo.getModificaPrecio()+","+articulo.getModificaServicio()+","+articulo.getPrecioServicio1()+","+articulo.getIdCombo()+")";
         Transaccionable tra=new Conecciones();
         ch=tra.guardarRegistro(sql);
+        sql="last_insert_id()";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        Integer ultimoArt=0;
+        try {
+            while(rs.next()){
+                ultimoArt=rs.getInt(1);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
          sql="insert into actualizaciones (iddeposito,idobjeto) values (1,1),(2,1),(3,1),(4,1)";
         tra.guardarRegistro(sql);
+        if(articulo.getIdCombo() > 0){
+            Articulos art=new Articulos();
+            Iterator ic=articulo.getCombo().listIterator();
+            while(ic.hasNext()){
+                art=(Articulos)ic.next();
+                sql="insert into combo (idarticulo,cantidad,articuloPadre) values ("+art.getNumeroId()+","+art.getCantidad()+","+ultimoArt+")";
+                tra.guardarRegistro(sql);
+            }
+        }
+        
         return ch;
     }
 

@@ -46,9 +46,9 @@ public class Actualiza1 extends Thread{
             //Proveedores.cargarListadoProv1();
        
         if(Inicio.actualizable==1){
-            Articulos.RecargarMap();
+          //  Articulos.RecargarMap();
         
-        Articulos.BackapearMap();
+        //Articulos.BackapearMap();
         Inicio.actualizable=0;
         }
         /*

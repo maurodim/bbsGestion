@@ -19,7 +19,7 @@ import objetos.Articulos;
  * @author mauro di
  */
 public class Combos extends javax.swing.JDialog {
-    private ArrayList listadoCombo;
+    public ArrayList listadoCombo;
     private DefaultListModel modelo1;
     private Articulos articulo;
     /**
@@ -33,6 +33,7 @@ public class Combos extends javax.swing.JDialog {
         initComponents();
         modelo1=new DefaultListModel();
         articulo=new Articulos();
+        listadoCombo=new ArrayList();
     }
 
     /**
@@ -64,6 +65,11 @@ public class Combos extends javax.swing.JDialog {
         jScrollPane1.setViewportView(jList1);
 
         jButton1.setText("Guardar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -188,9 +194,21 @@ public class Combos extends javax.swing.JDialog {
             System.out.println("CAPTO EL ENTER");
             Double cant=Numeros.ConvertirStringADouble(this.jTextField2.getText());
             articulo.setCantidad(cant);
-            modelo1.addElement(articulo.getCantidad()+" // "+articulo.getDescripcionArticulo());
+            String cargado=articulo.getCantidad()+" // "+articulo.getDescripcionArticulo();
+            modelo1.addElement(cargado);
+            this.jList1.setModel(modelo1);
+            listadoCombo.add(articulo);
+            System.out.println("CANTIDAD COMBO "+listadoCombo.size());
+            articulo=new Articulos();
+            this.jTextField1.setText("");
+            this.jTextField1.requestFocus();
         }
     }//GEN-LAST:event_jTextField2KeyPressed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        ArticulosMod.combo=listadoCombo;
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 private void cargarLista(ArrayList lista){
     DefaultListModel modelo=new DefaultListModel();
     Iterator il=lista.listIterator();
@@ -209,6 +227,7 @@ private void cargarLista(ArrayList lista){
     //System.out.println(" codigo elegido "+articulo.getCodigoAsignado());
         
     this.jTextField1.setText(articulo.getCodigoDeBarra());
+    this.jTextField2.selectAll();
     this.jTextField2.requestFocus();
     //modelo1.addElement(articulo.getDescripcionArticulo());
         

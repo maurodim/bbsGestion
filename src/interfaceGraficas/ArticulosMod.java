@@ -7,6 +7,7 @@ package interfaceGraficas;
 import Conversores.Numeros;
 import interfaces.Editables;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import javax.swing.JTextField;
 import objetos.Articulos;
 
@@ -18,10 +19,12 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
     private Articulos arti=new Articulos();
     private Integer accion=0;
     private Double ajuste=0.00;
+    public static ArrayList combo;
 
     public ArticulosMod(Articulos art) {
         arti=art;
         initComponents();
+        combo=new ArrayList();
         this.jTextField1.setText(arti.getDescripcionArticulo());
         this.jTextField2.setText(String.valueOf(arti.getStockActual()));
         this.jTextField3.setText(String.valueOf(arti.getStockMinimo()));
@@ -44,6 +47,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
      */
     public ArticulosMod() {
         initComponents();
+        combo=new ArrayList();
         this.setTitle("CARGA DE NUEVO ARTICULO");
         this.jPanel2.setVisible(false);
         this.jTextField7.requestFocus();
@@ -350,6 +354,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         arti.setPrecioServicio1(cant);
         arti.setModificaPrecio(this.jCheckBox1.isSelected());
         arti.setModificaServicio(this.jCheckBox2.isSelected());
+        if(arti.getIdCombo() > 0)arti.setCombo(combo);
         Editables edit=new Articulos();
         if(accion==2){
             edit.ModificaionObjeto(arti);
@@ -409,6 +414,9 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
             System.out.println("entrooooooo");
             Combos combo=new Combos();
             combo.setVisible(true);
+            arti.setIdCombo(1);
+            
+            
         }
         
     }//GEN-LAST:event_jCheckBox3MouseClicked

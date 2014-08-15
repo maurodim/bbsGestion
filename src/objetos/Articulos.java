@@ -53,6 +53,7 @@ public class Articulos implements Facturar,Editables{
     private static ConcurrentHashMap listadoCodigo1=new ConcurrentHashMap();
     private ArrayList combo;
     private Integer idCombo;
+    private static ArrayList listCombo;
 
     public Integer getIdCombo() {
         return idCombo;
@@ -405,11 +406,17 @@ public class Articulos implements Facturar,Editables{
         */
         Transaccionable tta=new Conecciones();
         String sql1="";
+        Boolean completo=false;
+        String sql="";
+        listadoNom1.clear();
+        int contador=0;
         ArrayList comboD;
-        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0 and actualizacion=0 order by NOMBRE";
-        ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+        ResultSet rr;
+        
+        sql="select * from articulosActualizacion";
+        rr=tra.leerConjuntoDeRegistros(sql);
         try {
-            listadoNom1.clear();
+            
             while(rr.next()){
                 articulo=new Articulos();
                 articulo.setCodigoAsignado(rr.getString("ID"));
@@ -435,6 +442,7 @@ public class Articulos implements Facturar,Editables{
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
                 articulo.setIdCombo(rr.getInt("idcombo"));
+                /*
                 if(articulo.getIdCombo() > 0){
                    sql1="select * from combo where articuloPadre ="+articulo.getNumeroId();
                    comboD=new ArrayList();
@@ -449,17 +457,35 @@ public class Articulos implements Facturar,Editables{
                    rs.close();
                    articulo.setCombo(comboD);
                 }
+                */
                 String nom=rr.getString("NOMBRE");
                 listadoNom1.putIfAbsent(nom,articulo);
                 //resultado.add(articulo);
             }
-            rr.close();
+            
+            contador=contador + 100;
+            System.out.println(sql);
+            String sent="";
+            sql="select * from combo";
+            rr=tra.leerConjuntoDeRegistros(sql);
+            listCombo=new ArrayList();
+            while(rr.next()){
+                sent="insert into combo (idarticulo,cantidad,articulopadre) values ("+rr.getInt("idarticulo")+","+rr.getDouble("cantidad")+","+rr.getInt("articuloPadre")+")";
+                listCombo.add(sent);
+            }
 //            sql="update actualizaciones set estado=1 where iddeposito="+Inicio.deposito.getNumero()+" and idobjeto=1";
 //            tra.guardarRegistro(sql);
             
         } catch (SQLException ex) {
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+            completo=true;
         }
+            try {
+                rr.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
 
     }
     public static synchronized void BackapearMap(){
@@ -514,17 +540,18 @@ public class Articulos implements Facturar,Editables{
             //sql="update articulos set nombre='"+articulo.getDescripcionArticulo()+"',barras='"+articulo.getCodigoDeBarra()+"',servicio="+articulo.getPrecioServicio()+",costo="+articulo.getPrecioDeCosto()+",precio="+articulo.getPrecioUnitarioNeto()+",minimo="+articulo.getStockMinimo()+",stock="+articulo.getStockActual()+",equivalencia="+articulo.getEquivalencia()+",modificaprecio="+mod+",modificaservicio="+serv+",recargo="+articulo.getRecargo()+",inhabilitado=0,idrubro=0,servicio1="+articulo.getPrecioServicio1()+" where id="+articulo.getNumeroId();
             System.out.println("hash "+sql);
             tt.guardarRegistro(sql);
-            if(articulo.getIdCombo() > 0){
-                Articulos art=new Articulos();
-                Iterator ic=articulo.getCombo().listIterator();
+            
+            
+        }
+        if(listCombo.size() > 0){
+                String art="";
+                Iterator ic=listCombo.listIterator();
                 while(ic.hasNext()){
-                    art=(Articulos)ic.next();
-                    sql="insert into combo (idarticulo,cantidad,articuloPadre) values ("+art.getNumeroId()+","+art.getCantidad()+","+articulo.getNumeroId()+")";
+                    art=(String)ic.next();
+                    sql=art;
                     tt.guardarRegistro(sql);
                 }
             }
-            
-        }
         //CargarMap();
     }
     private ArrayList CargarCombo(Integer id){
@@ -668,7 +695,7 @@ public class Articulos implements Facturar,Editables{
         //Articulos articulo;
         //articulo=(Articulos)listadoBarr.get(codigoDeBarra);
         
-        String sql="select id,nombre,barras,precio,equivalencia,costo,minimo,stock,servicio,servicio1,modificaprecio,modificaservicio,stock,recargo from articulos where BARRAS like '"+codigoDeBarra+"' and INHABILITADO=0";
+        String sql="select id,nombre,barras,precio,equivalencia,costo,minimo,stock,servicio,servicio1,modificaprecio,modificaservicio,stock,recargo,idcombo from articulos where BARRAS like '"+codigoDeBarra+"' and INHABILITADO=0";
         Transaccionable tra=new ConeccionLocal();
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         Articulos articulo=new Articulos();
@@ -710,7 +737,7 @@ public class Articulos implements Facturar,Editables{
         String sql="insert into articulos (NOMBRE,SERVICIO,COSTO,PRECIO,MINIMO,BARRAS,modificaPrecio,modificaServicio,SERVICIO1,idcombo) values ('"+articulo.getDescripcionArticulo()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+",'"+articulo.getCodigoDeBarra()+"',"+articulo.getModificaPrecio()+","+articulo.getModificaServicio()+","+articulo.getPrecioServicio1()+","+articulo.getIdCombo()+")";
         Transaccionable tra=new Conecciones();
         ch=tra.guardarRegistro(sql);
-        sql="last_insert_id()";
+        sql="select last_insert_id()";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         Integer ultimoArt=0;
         try {

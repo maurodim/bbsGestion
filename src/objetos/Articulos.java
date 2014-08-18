@@ -687,7 +687,40 @@ public class Articulos implements Facturar,Editables{
 
     @Override
     public ArrayList listarClientes(String nombre) {
-        throw new UnsupportedOperationException("Not supported yet.");
+         ArrayList listado=new ArrayList();
+        String sql="select id,nombre,barras,precio,equivalencia,costo,minimo,stock,servicio,servicio1,modificaprecio,modificaservicio,stock,recargo,idcombo from articulos where BARRAS like '"+nombre+"' and INHABILITADO=0";
+        Transaccionable tra=new ConeccionLocal();
+        ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+        Articulos articulo=new Articulos();
+        
+        try {
+            while(rr.next()){
+                articulo.setCodigoAsignado(rr.getString("ID"));
+                articulo.setDescripcionArticulo(rr.getString("NOMBRE"));
+                articulo.setNumeroId(rr.getInt("ID"));
+                articulo.setCodigoDeBarra(rr.getString("BARRAS"));
+                articulo.setRecargo(rr.getDouble("recargo"));
+                articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
+                articulo.setEquivalencia(rr.getDouble("equivalencia"));
+                articulo.setPrecioDeCosto(rr.getDouble("COSTO"));
+                articulo.setStockMinimo(rr.getDouble("MINIMO"));
+                articulo.setStockActual(rr.getDouble("stock"));
+                
+                        articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
+                
+                articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
+                articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
+                String nom=rr.getString("NOMBRE");
+                articulo.setIdCombo(rr.getInt("idcombo"));
+                if(articulo.getIdCombo() > 0)articulo.setCombo(CargarCombo(articulo.getNumeroId()));
+                listado.add(articulo);
+            }
+            rr.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return listado;
     }
 
     @Override

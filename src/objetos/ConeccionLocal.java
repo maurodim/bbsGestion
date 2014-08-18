@@ -236,7 +236,7 @@ public class ConeccionLocal implements Transaccionable{
                     ClientesTango.cargarMap();
                     ListasDePrecios.cargarMap();
                     */ 
-                    Articulos.BackapearMap();
+                    Articulos.BackapearMap(1);
                     Proveedores.BackapearProveedores();
                     ClientesTango.BackapearClientes();
                     ListasDePrecios.BackapearListasDePrecios();
@@ -246,7 +246,7 @@ public class ConeccionLocal implements Transaccionable{
                     Sucursales.BackapearSucursales();
                     Depositos.BackapearDepositos();
                     
-                    Articulos.RecargarMap();
+                    Articulos.RecargarMap(1);
                     Proveedores.cargarListadoProv();
                     ClientesTango.cargarMap();
                     ListasDePrecios.cargarMap();

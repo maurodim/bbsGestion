@@ -642,7 +642,7 @@ public class Inicio extends javax.swing.JFrame {
         Inicio.actualizable=1;
         Usuarios.BackapearUsuarios();
         Sucursales.BackapearSucursales();
-            Articulos.RecargarMap();
+            Articulos.RecargarMap(1);
         
         Proveedores.BackapearProveedores();
         ClientesTango.BackapearClientes();

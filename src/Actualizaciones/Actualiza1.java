@@ -44,12 +44,28 @@ public class Actualiza1 extends Thread{
         
             //carga la lista remota
             //Proveedores.cargarListadoProv1();
-       
-        if(Inicio.actualizable==1){
-          //  Articulos.RecargarMap();
         
-        //Articulos.BackapearMap();
+        String sql="select * from actualizaciones where iddeposito="+Inicio.deposito.getNumero()+" and estado < 4 and idobjeto=1";
+        Transaccionable tra=new Conecciones();
+        Integer estado=0;
+        ResultSet rx=tra.leerConjuntoDeRegistros(sql);
+                try {
+                    while(rx.next()){
+                        Inicio.actualizable=1;
+                        estado=rx.getInt("estado");
+                    }
+                    rx.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Actualiza1.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        if(Inicio.actualizable==1){
+            Articulos.RecargarMap(estado);
+        
+        Articulos.BackapearMap(estado);
         Inicio.actualizable=0;
+        sql="update actualizaciones set estado=4 where iddeposito="+Inicio.deposito.getNumero()+" and idobjeto=1 and estado="+estado;
+        tra.guardarRegistro(sql);
+        estado=0;
         }
         /*
          * Usuarios

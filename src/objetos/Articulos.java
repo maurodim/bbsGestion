@@ -355,7 +355,7 @@ public class Articulos implements Facturar,Editables{
         }
         //if(Inicio.coneccionRemota)BackapearMap();
     }
-    public static synchronized void RecargarMap(){
+    public static synchronized void RecargarMap(Integer funcion){
         
 
         //System.out.println(" CANTIDAD MAP 1 - "+listadoBarr1.size());
@@ -412,8 +412,24 @@ public class Articulos implements Facturar,Editables{
         int contador=0;
         ArrayList comboD;
         ResultSet rr;
+        switch (funcion){
+            case 1:
+                sql="select * from articulosActualizacion";
+                break;
+            case 2:
+                sql="select * from articulosmodificacion";
+                break;
+            case 3:
+                sql="select * from articulosnuevos";
+                break;
+            case 4:
+                sql="select * from articuloseliminados";
+                break;
+            default:
+                System.out.println("OJO QUE NO ENTRO EN NINGUNA OPCION");
+                break;
+        }
         
-        sql="select * from articulosActualizacion";
         rr=tra.leerConjuntoDeRegistros(sql);
         try {
             
@@ -488,7 +504,7 @@ public class Articulos implements Facturar,Editables{
         
 
     }
-    public static synchronized void BackapearMap(){
+    public static synchronized void BackapearMap(Integer funcion){
         Transaccionable tt=new ConeccionLocal();
         System.out.println(" CANTIDAD MAP back "+listadoBarr1.size());
         String sql="";
@@ -506,7 +522,25 @@ public class Articulos implements Facturar,Editables{
             if(articulo.getModificaPrecio())mod=1;
             if(articulo.getModificaServicio())serv=1;
             if(articulo.getDescripcionArticulo().equals(""))articulo.setDescripcionArticulo("--");
-            sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro,servicio1) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0,"+articulo.getPrecioServicio1()+")";
+            
+            switch (funcion){
+            case 1:
+                sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro,servicio1) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0,"+articulo.getPrecioServicio1()+")";
+                break;
+            case 2:
+                sql="update articulos set nombre='"+articulo.getDescripcionArticulo()+"',barras='"+articulo.getCodigoDeBarra()+"',servicio="+articulo.getPrecioServicio()+",costo="+articulo.getPrecioDeCosto()+",precio="+articulo.getPrecioUnitarioNeto()+",minimo="+articulo.getStockMinimo()+",stock="+articulo.getStockActual()+",equivalencia="+articulo.getEquivalencia()+",modificaprecio="+mod+",modificaservicio="+serv+",recargo="+articulo.getRecargo()+",servicio1="+articulo.getPrecioServicio1()+" where id="+articulo.getNumeroId();
+                break;
+            case 3:
+                sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro,servicio1) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0,"+articulo.getPrecioServicio1()+")";
+                break;
+            case 4:
+                sql="delete from articulos wher id="+articulo.getNumeroId();
+                break;
+            default:
+                System.out.println("OJO QUE NO ENTRO EN NINGUNA OPCION");
+                break;
+        }
+            //sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro,servicio1) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0,"+articulo.getPrecioServicio1()+")";
             //sql="update articulos set nombre='"+articulo.getDescripcionArticulo()+"',barras='"+articulo.getCodigoDeBarra()+"',servicio="+articulo.getPrecioServicio()+",costo="+articulo.getPrecioDeCosto()+",precio="+articulo.getPrecioUnitarioNeto()+",minimo="+articulo.getStockMinimo()+",stock="+articulo.getStockActual()+",equivalencia="+articulo.getEquivalencia()+",modificaprecio="+mod+",modificaservicio="+serv+",recargo="+articulo.getRecargo()+",inhabilitado=0,idrubro=0,servicio1="+articulo.getPrecioServicio1()+" where id="+articulo.getNumeroId();
             System.out.println("hash "+sql);
             tt.guardarRegistro(sql);
@@ -781,7 +815,7 @@ public class Articulos implements Facturar,Editables{
         } catch (SQLException ex) {
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
-         sql="insert into actualizaciones (iddeposito,idobjeto) values (1,1),(2,1),(3,1),(4,1)";
+         sql="insert into actualizaciones (iddeposito,idobjeto,estado) values (1,1,0),(2,1,0),(3,1,0),(4,1,0)";
         tra.guardarRegistro(sql);
         if(articulo.getIdCombo() > 0){
             Articulos art=new Articulos();
@@ -800,10 +834,10 @@ public class Articulos implements Facturar,Editables{
     public Boolean ModificaionObjeto(Object objeto) {
         Articulos articulo=(Articulos)objeto;
         Boolean ch=false;
-        String sql="update articulos set NOMBRE='"+articulo.getDescripcionArticulo()+"',SERVICIO="+articulo.getPrecioServicio()+",SERVICIO1="+articulo.getPrecioServicio1()+",COSTO="+articulo.getPrecioDeCosto()+",PRECIO="+articulo.getPrecioUnitarioNeto()+",MINIMO="+articulo.getStockMinimo()+",BARRAS ='"+articulo.getCodigoDeBarra()+"',modificaPrecio="+articulo.getModificaPrecio()+",modificaServicio="+articulo.getModificaServicio()+",actualizacion=0 where ID="+articulo.getNumeroId();
+        String sql="update articulos set NOMBRE='"+articulo.getDescripcionArticulo()+"',SERVICIO="+articulo.getPrecioServicio()+",SERVICIO1="+articulo.getPrecioServicio1()+",COSTO="+articulo.getPrecioDeCosto()+",PRECIO="+articulo.getPrecioUnitarioNeto()+",MINIMO="+articulo.getStockMinimo()+",BARRAS ='"+articulo.getCodigoDeBarra()+"',modificaPrecio="+articulo.getModificaPrecio()+",modificaServicio="+articulo.getModificaServicio()+",actualizacion=1 where ID="+articulo.getNumeroId();
         Transaccionable tra=new Conecciones();
         ch=tra.guardarRegistro(sql);
-        sql="insert into actualizaciones (iddeposito,idobjeto) values (1,1),(2,1),(3,1),(4,1)";
+        sql="insert into actualizaciones (iddeposito,idobjeto,estado) values (1,1,1),(2,1,1),(3,1,1),(4,1,1)";
         tra.guardarRegistro(sql);
         return ch;
     }
@@ -812,9 +846,11 @@ public class Articulos implements Facturar,Editables{
     public Boolean EliminacionDeObjeto(Object objeto) {
         Articulos articulo=(Articulos)objeto;
         Boolean verif=false;
-        String sql="update articulos set INHABILITADO=1 where ID="+articulo.getNumeroId();
+        String sql="update articulos set INHABILITADO=1, actualizacion=2 where ID="+articulo.getNumeroId();
         Transaccionable tra=new Conecciones();
         verif=tra.guardarRegistro(sql);
+        sql="insert into actualizaciones (iddeposito,idobjeto,estado) values (1,1,2),(2,1,2),(3,1,2),(4,1,2)";
+        tra.guardarRegistro(sql);
         
         return verif;
     }

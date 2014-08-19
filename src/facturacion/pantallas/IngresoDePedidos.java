@@ -573,6 +573,8 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                     articul.setPrecioDeCosto(arti.getPrecioDeCosto());
                     articul.setPrecioUnitario(arti.getPrecioUnitarioNeto());
                     articul.setPrecioUnitarioNeto(arti.getPrecioUnitarioNeto());
+                    articul.setIdCombo(arti.getIdCombo());
+                    articul.setCombo(arti.getCombo());
             detalleDelPedido.add(articul);
             agregarRenglonTabla();
 //                Double montoTotalX=(arti.getPrecioUnitario() * arti.getCantidad());
@@ -757,6 +759,8 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                     articul.setPrecioUnitario(arti.getPrecioUnitarioNeto());
                     articul.setPrecioUnitarioNeto(tota);
                     articul.setModificaPrecio(arti.getModificaPrecio());
+                    articul.setIdCombo(arti.getIdCombo());
+                    articul.setCombo(arti.getCombo());
                         detalleDelPedido.add(articul);
             agregarRenglonTabla();
 //                Double montoTotalX=(arti.getPrecioUnitario() * arti.getCantidad());

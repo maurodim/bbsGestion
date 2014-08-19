@@ -35,6 +35,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         this.jTextField9.setText(String.valueOf(arti.getPrecioServicio1()));
         this.jCheckBox1.setSelected(arti.getModificaPrecio());
         this.jCheckBox2.setSelected(arti.getModificaServicio());
+        if(arti.getIdCombo() > 0 )this.jCheckBox3.setSelected(true);
         this.jPanel2.setVisible(false);
         this.jTextField7.selectAll();
         this.jTextField7.requestFocus();
@@ -354,6 +355,11 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         arti.setPrecioServicio1(cant);
         arti.setModificaPrecio(this.jCheckBox1.isSelected());
         arti.setModificaServicio(this.jCheckBox2.isSelected());
+        if(this.jCheckBox3.isSelected()){
+            arti.setIdCombo(1);
+        }else{
+            arti.setIdCombo(0);
+        }
         if(arti.getIdCombo() > 0)arti.setCombo(combo);
         Editables edit=new Articulos();
         if(accion==2){

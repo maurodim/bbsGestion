@@ -45,7 +45,7 @@ public class Actualiza1 extends Thread{
             //carga la lista remota
             //Proveedores.cargarListadoProv1();
         
-        String sql="select * from actualizaciones where iddeposito="+Inicio.deposito.getNumero()+" and estado < 4 and idobjeto=1";
+        String sql="select * from actualizaciones where iddeposito="+Inicio.deposito.getNumero()+" and estado < 4 and idobjeto=1 order by estado";
         Transaccionable tra=new Conecciones();
         Integer estado=0;
         ResultSet rx=tra.leerConjuntoDeRegistros(sql);
@@ -54,19 +54,42 @@ public class Actualiza1 extends Thread{
                         Inicio.actualizable=1;
                         estado=rx.getInt("estado");
                     }
+                    //if(estado > 0)estado++;
                     rx.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(Actualiza1.class.getName()).log(Level.SEVERE, null, ex);
                 }
+        
         if(Inicio.actualizable==1){
             Articulos.RecargarMap(estado);
         
         Articulos.BackapearMap(estado);
         Inicio.actualizable=0;
+        tra=new Conecciones();
         sql="update actualizaciones set estado=4 where iddeposito="+Inicio.deposito.getNumero()+" and idobjeto=1 and estado="+estado;
         tra.guardarRegistro(sql);
+        
         estado=0;
         }
+        sql="select * from actualizaciones where estado < 4 and idobjeto=1 order by estado";
+        Transaccionable tat=new Conecciones();
+        int ver=0;
+        rx=tat.leerConjuntoDeRegistros(sql);
+                try {
+                    while(rx.next()){
+                        //Inicio.actualizable=1;
+                        ver=1;
+                    }
+                    //if(estado > 0)estado++;
+                    rx.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Actualiza1.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if(ver==0){
+                    sql="update articulos set actualizacion=1 where actualizacion=0";
+                    tat.guardarRegistro(sql);
+                }
+        
         /*
          * Usuarios
          * Sucursales

@@ -415,7 +415,7 @@ public class Articulos implements Facturar,Editables{
         ResultSet rr;
         switch (funcion){
             case 1:
-                sql="select *,(select sum(cantidad) from movimientosarticulos where movimientosarticulos.numerodeposito="+Inicio.deposito.getNumero()+" and movimientosarticulos.idArticulo=articulosActualizacion.ID)as stock from articulosActualizacion";
+                sql="select *,(select sum(cantidad) from movimientosarticulos where movimientosarticulos.numerodeposito="+Inicio.deposito.getNumero()+" and movimientosarticulos.idArticulo=articulos.ID)as stock from articulos where INHABILITADO=0 order by ID";
                 break;
             case 2:
                 sql="select *,(select sum(cantidad) from movimientosarticulos where movimientosarticulos.numerodeposito="+Inicio.deposito.getNumero()+" and movimientosarticulos.idArticulo=articulosmodificacion.ID)as stock from articulosmodificacion";
@@ -512,9 +512,18 @@ public class Articulos implements Facturar,Editables{
     //String sql="delete from articulos";
       //  tt.guardarRegistro(sql);
         String criterio="";
+        Integer canttt=listadoNom1.size();
+        Integer contador=0;
         Articulos articulo=null;
         criterio=criterio.toUpperCase();
         Enumeration<Articulos> elementos=listadoNom1.elements();
+        sql="truncate table combo";
+                tt.guardarRegistro(sql);
+        if(funcion==1){
+            sql="truncate table articulos";
+                tt.guardarRegistro(sql);
+                
+        }
         while(elementos.hasMoreElements()){
             articulo=(Articulos)elementos.nextElement();
             int pos=articulo.getDescripcionArticulo().indexOf(criterio);
@@ -526,20 +535,15 @@ public class Articulos implements Facturar,Editables{
             
             switch (funcion){
             case 1:
-                sql="truncate table articulos";
-                tt.guardarRegistro(sql);
-                sql="truncate table combo";
-                tt.guardarRegistro(sql);
+                
                 sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro,servicio1,idcombo) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0,"+articulo.getPrecioServicio1()+","+articulo.getIdCombo()+")";
                 break;
             case 2:
-                sql="truncate table combo";
-                tt.guardarRegistro(sql);
+                
                 sql="update articulos set nombre='"+articulo.getDescripcionArticulo()+"',barras='"+articulo.getCodigoDeBarra()+"',servicio="+articulo.getPrecioServicio()+",costo="+articulo.getPrecioDeCosto()+",precio="+articulo.getPrecioUnitarioNeto()+",minimo="+articulo.getStockMinimo()+",stock="+articulo.getStockActual()+",equivalencia="+articulo.getEquivalencia()+",modificaprecio="+mod+",modificaservicio="+serv+",recargo="+articulo.getRecargo()+",servicio1="+articulo.getPrecioServicio1()+",idcombo="+articulo.getIdCombo()+" where id="+articulo.getNumeroId();
                 break;
             case 3:
-                sql="truncate table combo";
-                tt.guardarRegistro(sql);
+               
                 sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro,servicio1,idcombo) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0,"+articulo.getPrecioServicio1()+","+articulo.getIdCombo()+")";
                 break;
             case 4:
@@ -551,9 +555,14 @@ public class Articulos implements Facturar,Editables{
         }
             //sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro,servicio1) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0,"+articulo.getPrecioServicio1()+")";
             //sql="update articulos set nombre='"+articulo.getDescripcionArticulo()+"',barras='"+articulo.getCodigoDeBarra()+"',servicio="+articulo.getPrecioServicio()+",costo="+articulo.getPrecioDeCosto()+",precio="+articulo.getPrecioUnitarioNeto()+",minimo="+articulo.getStockMinimo()+",stock="+articulo.getStockActual()+",equivalencia="+articulo.getEquivalencia()+",modificaprecio="+mod+",modificaservicio="+serv+",recargo="+articulo.getRecargo()+",inhabilitado=0,idrubro=0,servicio1="+articulo.getPrecioServicio1()+" where id="+articulo.getNumeroId();
+            contador++;
+            System.out.println("van "+contador+" de "+canttt);
             System.out.println("hash "+sql);
             tt.guardarRegistro(sql);
-            if(listCombo.size() > 0){
+           
+            
+        }
+         if(listCombo.size() > 0){
                 String art="";
                 Iterator ic=listCombo.listIterator();
                 while(ic.hasNext()){
@@ -562,8 +571,6 @@ public class Articulos implements Facturar,Editables{
                     tt.guardarRegistro(sql);
                 }
             }
-            
-        }
         //CargarMap();
     }
     public static synchronized void BackapearMap1(){

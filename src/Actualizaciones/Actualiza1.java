@@ -30,11 +30,11 @@ import objetos.Conecciones;
 public class Actualiza1 extends Thread{
      @Override
     public void run(){
-        Timer timer=new Timer(200000,new ActionListener(){ 
+        Timer timer=new Timer(300000,new ActionListener(){ 
             @Override
     public void actionPerformed(ActionEvent e) 
     { 
-        
+        Inicio.actualizable=0;
         System.err.println("COMIENZO DEL CICLO DE RELOJ *******************************");
         //ActOt at=new ActOt();
         //at.start();

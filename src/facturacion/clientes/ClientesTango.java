@@ -101,7 +101,8 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
                 tra=new Conecciones();
                 sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo from listcli";    
                 //System.err.println("LEER CLIENTES - "+sql);
-                signal=0;
+                //signal=0;
+                Inicio.coneccionRemota=true;
             }else{
              
                 tra=new ConeccionLocal();
@@ -149,7 +150,9 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
             Logger.getLogger(ClientesTango.class.getName()).log(Level.SEVERE, null, ex);
         }
             if(signal==1){
-            if(Inicio.coneccionRemota)BackapearClientes();    
+            //if(Inicio.coneccionRemota)BackapearClientes();
+            signal=0;
+            Inicio.coneccionRemota=false;
             }else{
             
             }
@@ -405,8 +408,11 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
     }
     public static void BackapearClientes(){
         //if(listadoPorNom.size()==0){
+        if(signal==0){
             signal=1;
             cargarMap();
+            //signal=0;
+        }
         //}
         ArrayList listado=new ArrayList();
         Busquedas bus=new ClientesTango();

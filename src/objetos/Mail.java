@@ -59,7 +59,7 @@ public class Mail {
             MimeMessage mensaje=new MimeMessage(sesion);
             mensaje.setFrom(new InternetAddress((String)propiedades.get("mail.smtp.mail.sender")));
             mensaje.addRecipient(Message.RecipientType.TO,new InternetAddress("administracion@kioscosaynomore.com.ar"));
-            //mensaje.addRecipient(Message.RecipientType.TO,new InternetAddress("comercial@sidercon.com"));
+            mensaje.addRecipient(Message.RecipientType.TO,new InternetAddress("damian.simon@kioscosaynomore.com.ar"));
             mensaje.setSubject(asunto);
             BodyPart texto=new MimeBodyPart();
             texto.setText("INFORME GENERADO POR CIERRE DE CAJA   \n Saludos");

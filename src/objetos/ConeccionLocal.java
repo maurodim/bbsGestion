@@ -45,7 +45,7 @@ public class ConeccionLocal implements Transaccionable{
     public ConeccionLocal() {
               Connection dbConnection = null;
  //String strUrl = "jdbc:derby://localhost:1527/respaldo;create=true";
-               String strUrl = "jdbc:derby:C:\\Gestion\\DB\\respaldo.db";
+               String strUrl = "jdbc:derby:\\Gestion\\DB\\respaldo.db";
             try {
                 Class.forName(driver1).newInstance();
                 dbConnection = DriverManager.getConnection (strUrl);

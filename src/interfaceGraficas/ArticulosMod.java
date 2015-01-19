@@ -28,7 +28,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         arti=art;
         Editables edi=new Articulos();
         Articulos arr=new Articulos();
-        lstPorSuc=edi.ListarPorSucursal(arti);
+        //lstPorSuc=edi.ListarPorSucursal(arti);
         Double totalActual=0.00;
         Iterator itL=lstPorSuc.listIterator();
         while(itL.hasNext()){

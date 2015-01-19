@@ -151,13 +151,54 @@ public class Impresora {
         pagina.drawString("DETALLE", 20, 50);
         pagina.setFont(fuente10);
         int renglon=50;
+        Double totalVentas=0.00;
+        Double totalGtos=0.00;
+        Double saldoInicial=0.00;
+        Double totalRetiros=0.00;
+        Double saldoCaja=0.00;
+        Double pagoProveedores=0.00;
         Iterator it=listado.listIterator();
         while(it.hasNext()){
             Cajas caja=(Cajas)it.next();
+            switch (caja.getTipoMovimiento()){
+                case 1:
+                    totalVentas=totalVentas + caja.getMontoMovimiento();
+                    break;
+                case 4:
+                    totalRetiros=totalRetiros + caja.getMontoMovimiento();
+                    break;
+                case 11:
+                    pagoProveedores=pagoProveedores + caja.getMontoMovimiento();
+                    break;
+                case 12:
+                    totalGtos=totalGtos + caja.getMontoMovimiento();
+                    break;
+                case 10:
+                    saldoCaja=saldoCaja + caja.getMontoMovimiento();
+                    break;
+                case 9:
+                    saldoInicial=saldoInicial + caja.getMontoMovimiento();
+                    break;
+                default:
+                    break;
+            }
+            if(caja.getTipoMovimiento()==1){
+                
+            }else{
             renglon=renglon + 10;
             pagina.drawString(caja.getNumeroDeComprobante()+" - "+caja.getDescripcionMovimiento()+" $"+caja.getMontoMovimiento(),20,renglon);
+            }
         }
-        
+        pagina.setFont(fuente);
+        pagina.drawString("SALDO INICIAL : $"+saldoInicial,320,50);
+        pagina.drawString("TOTAL VENTAS : $"+totalVentas,320,60);
+        pagina.drawString("TOTAL GASTOS : $"+totalGtos,320,70);
+        pagina.drawString("TOTAL RETIROS EFECTIVO : $"+totalRetiros, 320, 80);
+        pagina.drawString("TOTAL PAGO A PROVEEDORES : $"+pagoProveedores,320,90);
+        pagina.drawString("SALDO DE CAJA : $"+saldoCaja,320,100);
+        Double saldo=saldoInicial +totalVentas +totalGtos +pagoProveedores + saldoCaja;
+        pagina.setFont(fuente6);
+        pagina.drawString("QUEDA EN CAJA : $"+saldo, 320,120);
         
         
         

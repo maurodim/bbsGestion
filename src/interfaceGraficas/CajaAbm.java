@@ -7,6 +7,7 @@ package interfaceGraficas;
 import Compras.FacturaProveedor;
 import Compras.Proveedores;
 import Conversores.Numeros;
+import Impresiones.Impresora;
 import Sucursales.Cajas;
 import facturacion.clientes.ClientesTango;
 import interfaces.Adeudable;
@@ -14,9 +15,12 @@ import interfaces.Personalizable;
 import interfacesPrograma.Busquedas;
 import interfacesPrograma.Cajeables;
 import interfacesPrograma.Facturar;
+import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import objetos.Articulos;
 import objetos.Comprobantes;
@@ -42,7 +46,7 @@ public class CajaAbm extends javax.swing.JInternalFrame {
         
         initComponents();
         this.jLabel5.setText("Saldo Inicial de Caja:"+Inicio.caja.getSaldoInicial());
-        //this.jLabel8.setText("Total Efect en Caja :"+Inicio.caja.getSaldoFinal());
+        
     }
     private void AgregarRenglonTabla(){
         this.jTable1.removeAll();
@@ -456,6 +460,13 @@ public class CajaAbm extends javax.swing.JInternalFrame {
                Inicio.caja.setMontoMovimiento(monto);
                
                caj.NuevoGasto(Inicio.caja);
+               Impresora impresora=new Impresora();
+                try {
+                    impresora.ImprimirRetiroDeEfectivo(Inicio.caja);
+                    //this.jLabel8.setText("Total Efect en Caja :"+Inicio.caja.getSaldoFinal());
+                } catch (IOException ex) {
+                    Logger.getLogger(CajaAbm.class.getName()).log(Level.SEVERE, null, ex);
+                }
                break;
            case 7:
                monto=Numeros.ConvertirStringADouble(String.valueOf(this.jTextField1.getText()));

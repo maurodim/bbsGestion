@@ -154,6 +154,11 @@ public class ListasDePrecios implements Editables{
     public Boolean MovimientoDeAjusteDeCantidades(Object objeto, Double cantidadMovimiento, String observaciones) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public ArrayList ListarPorSucursal(Object objeto) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     }
     
 

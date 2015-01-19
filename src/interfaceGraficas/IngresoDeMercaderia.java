@@ -215,6 +215,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
 
         jLabel9.setText("equiv");
 
+        jTextField7.setEditable(false);
         jTextField7.setText("1.00");
         jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -230,6 +231,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         });
 
         jCheckBox3.setText("Guardar Precio de Venta ?");
+        jCheckBox3.setEnabled(false);
 
         jCheckBox4.setText("Paga?");
 

@@ -6,7 +6,7 @@ package facturacion.pantallas;
 
 import Conversores.Numeros;
 import facturacion.clientes.ClientesTango;
-import impresoras.Impresora;
+
 import interfaceGraficas.Inicio;
 import interfacesPrograma.Facturar;
 import java.awt.event.KeyEvent;

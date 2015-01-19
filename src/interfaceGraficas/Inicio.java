@@ -19,6 +19,7 @@ import facturacion.pantallas.IngresoDePedidos;
 import interfacesPrograma.Cajeables;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -112,7 +113,8 @@ public class Inicio extends javax.swing.JFrame {
         actu1.start();
         //}
         initComponents();
-        
+        Image icon=new ImageIcon(getClass().getResource("/imagen/icono.png")).getImage();
+        this.setIconImage(icon);
         
  
         //permisos(nivel);

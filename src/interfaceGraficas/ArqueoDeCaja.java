@@ -6,6 +6,7 @@ package interfaceGraficas;
 
 import Conversores.Numeros;
 import Excel.InformeDiarioStock;
+import Impresiones.Impresora;
 import Sucursales.Cajas;
 import interfacesPrograma.Cajeables;
 import java.awt.event.KeyEvent;
@@ -419,6 +420,9 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         
         
         caj.CerrarCaja(cajas);
+        caj.ArquearCaja(Inicio.caja);
+        Impresora impresion=new Impresora();
+        impresion.ImprimirCierreDeCaja(Cajas.getListadoCajas());
         this.dispose();
         //ACA DEBE EMITIR EL INFORME DE STOCK PARA CONTROL Y MANDAR EL MAIL CON EL MISMO INFORME
         InformeDiarioStock info=new InformeDiarioStock();
@@ -558,8 +562,11 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         this.jLabel12.setVisible(false);
         this.jLabel14.setVisible(false);
         this.jLabel13.setVisible(false);
-        this.jFormattedTextField1.selectAll();
-        this.jFormattedTextField1.requestFocus();
+        Double ent=0.00;
+        Double saldoEnCaja=totalB - ent;
+        this.jLabel13.setVisible(true);
+        this.jLabel13.setText("Deja en Caja :"+saldoEnCaja);
+        this.jButton1.requestFocus();
         //this.jLabel12.setText("SALDO INICIAL :"+saldoInicial);
         //this.jLabel14.setText("VENTA TOTAL :"+totalMovimientos);
         //this.jLabel13.setText("SALDO CAJA :"+diferencia);

@@ -54,6 +54,16 @@ public class Articulos implements Facturar,Editables{
     private ArrayList combo;
     private Integer idCombo;
     private static ArrayList listCombo;
+    private Integer idDeposito;
+
+    public Integer getIdDeposito() {
+        return idDeposito;
+    }
+
+    public void setIdDeposito(Integer idDeposito) {
+        this.idDeposito = idDeposito;
+    }
+    
 
     public Integer getIdCombo() {
         return idCombo;
@@ -905,12 +915,39 @@ public class Articulos implements Facturar,Editables{
     public Boolean MovimientoDeAjusteDeCantidades(Object objeto, Double cantidadMovimiento, String observaciones) {
         Articulos articulo=(Articulos)objeto;
         Boolean verif=false;
-        String sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numerousuario,precioDeCosto,precioDeVenta,precioServicio,observaciones,idcaja) values (14,"+articulo.getNumeroId()+","+cantidadMovimiento+","+Inicio.deposito.getNumero()+",18,(select tipocomprobantes.numeroActivo + 1 from tipocomprobantes where tipocomprobantes.numero=18),1,'"+Inicio.fechaDia+"',"+Inicio.usuario.getNumeroId()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getPrecioServicio()+",'"+observaciones+"',"+Inicio.caja.getNumero()+")";
+        
+        String sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numerousuario,precioDeCosto,precioDeVenta,precioServicio,observaciones,idcaja) values (14,"+articulo.getNumeroId()+","+cantidadMovimiento+","+articulo.getIdDeposito()+",18,(select tipocomprobantes.numeroActivo + 1 from tipocomprobantes where tipocomprobantes.numero=18),1,'"+Inicio.fechaDia+"',"+Inicio.usuario.getNumeroId()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getPrecioServicio()+",'"+observaciones+"',"+Inicio.caja.getNumero()+")";
         Transaccionable tra=new Conecciones();
         verif=tra.guardarRegistro(sql);
         sql="update tipocomprobantes set numeroActivo=numeroActivo + 1 where numero=18";
         tra.guardarRegistro(sql);
         return verif;
+    }
+
+    @Override
+    public ArrayList ListarPorSucursal(Object objeto) {
+        Articulos articulo=(Articulos)objeto;
+        Articulos articuloI;
+        ArrayList listado=new ArrayList();
+        String sql="select * from articulosPorSucursal where idArticulo="+String.valueOf(articulo.getCodigoAsignado());
+        
+        Transaccionable tra=new Conecciones();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                articuloI=new Articulos();
+                articuloI.setCantidad(rs.getDouble("sum(cantidad)"));
+                articuloI.setNumeroId(rs.getInt("idArticulo"));
+                articuloI.setIdDeposito(rs.getInt("numeroDeposito"));
+                System.out.println(sql);
+                listado.add(articuloI);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return listado;
     }
     
     

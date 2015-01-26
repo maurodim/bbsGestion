@@ -196,7 +196,7 @@ public class Impresora {
         pagina.drawString("TOTAL RETIROS EFECTIVO : $"+totalRetiros, 320, 80);
         pagina.drawString("TOTAL PAGO A PROVEEDORES : $"+pagoProveedores,320,90);
         pagina.drawString("SALDO DE CAJA : $"+saldoCaja,320,100);
-        Double saldo=saldoInicial +totalVentas +totalGtos +pagoProveedores + saldoCaja;
+        Double saldo=saldoInicial +totalVentas +totalGtos +pagoProveedores + saldoCaja+totalRetiros;
         pagina.setFont(fuente6);
         pagina.drawString("QUEDA EN CAJA : $"+saldo, 320,120);
         

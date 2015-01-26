@@ -10,6 +10,9 @@ import facturacion.clientes.ClientesTango;
 import interfaceGraficas.Inicio;
 import interfacesPrograma.Facturar;
 import java.awt.event.KeyEvent;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -23,6 +26,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import objetos.Articulos;
 import objetos.Comprobantes;
+import objetos.Conecciones;
 import tablas.MiModeloTablaBuscarCliente;
 import tablas.MiModeloTablaFacturacion;
 
@@ -496,6 +500,28 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         comprobante.setIdSucursal(Inicio.sucursal.getNumero());
         comprobante.setIdDeposito(Inicio.deposito.getNumero());
         comprobante.setIdCaja(Inicio.caja.getNumero());
+        if(montoTotal == 0.00){
+            String sqM="usuario :"+Inicio.usuario.getNombre()+" sucursal "+Inicio.sucursal.getNumero()+" idcaja "+Inicio.caja.getNumero();
+            JOptionPane.showMessageDialog(this,"OJO EL MONTO DE ESTE COMPROBANTE ES $ 0, AVISE PARA DETECTAR EL ERROR");
+            FileWriter fichero=null;
+            PrintWriter pw=null;
+            try {
+                fichero = new FileWriter("C:\\Gestion\\"+Inicio.fechaDia+" - errores en comprobantes.txt",true);
+                pw=new PrintWriter(fichero);
+                pw.println(sqM);
+            } catch (IOException ex1) {
+                Logger.getLogger(IngresoDePedidos.class.getName()).log(Level.SEVERE, null, ex1);
+            }finally{
+                         try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero)
+              fichero.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+            }
+        }
         comprobante.setMontoTotal(montoTotal);
         int noFacturar=0;
         if(this.jCheckBox2.isSelected()){
@@ -533,6 +559,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         this.jTextField2.setText("");
         jTextField1.setText("");
         jTextField1.requestFocus();
+        
         }else{
             JOptionPane.showMessageDialog(this,"El cliente supera el límite de crédito, debe abonar la venta");
             noFacturar=0;
@@ -651,6 +678,28 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         Integer numeroCaja=Inicio.caja.getNumero();
         //System.out.println("EL NUMERO DE CAJA ESSSSSSSS "+numeroCaja);
         comprobante.setIdCaja(numeroCaja);
+        if(montoTotal == 0.00){
+            String sqM="usuario :"+Inicio.usuario.getNombre()+" sucursal "+Inicio.sucursal.getNumero()+" idcaja "+Inicio.caja.getNumero();
+            JOptionPane.showMessageDialog(this,"OJO EL MONTO DE ESTE COMPROBANTE ES $ 0, AVISE PARA DETECTAR EL ERROR");
+            FileWriter fichero=null;
+            PrintWriter pw=null;
+            try {
+                fichero = new FileWriter("C:\\Gestion\\"+Inicio.fechaDia+" - errores en comprobantes.txt",true);
+                pw=new PrintWriter(fichero);
+                pw.println(sqM);
+            } catch (IOException ex1) {
+                Logger.getLogger(IngresoDePedidos.class.getName()).log(Level.SEVERE, null, ex1);
+            }finally{
+                         try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero)
+              fichero.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+            }
+        }
         comprobante.setMontoTotal(montoTotal);
         int noFacturar=0;
         if(this.jCheckBox2.isSelected()){
@@ -850,6 +899,11 @@ private void agregarRenglonTabla(){
         cargarLista(listadoDeBusqueda);
         this.jCheckBox1.setSelected(true);
         this.jCheckBox1.setVisible(false);
+        if(detalleDelPedido.size()==0){
+            this.jButton1.setEnabled(false);
+        }else{
+            this.jButton1.setEnabled(true);
+        }
 }
 private void montrarMonto(){
     //System.err.println("DESCUENTO :"+cliT.getDescuento());

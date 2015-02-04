@@ -929,7 +929,7 @@ public class Articulos implements Facturar,Editables{
         Articulos articulo=(Articulos)objeto;
         Articulos articuloI;
         ArrayList listado=new ArrayList();
-        String sql="select * from articulosPorSucursal where idArticulo="+String.valueOf(articulo.getCodigoAsignado());
+        String sql="select sum(cantidad),idArticulo,numeroDeposito FROM movimientosarticulos where idArticulo="+String.valueOf(articulo.getCodigoAsignado())+" group by idArticulo,numeroDeposito";
         
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);

@@ -40,7 +40,7 @@ public class Conecciones implements Transaccionable{
                 MysqlDataSource dataSource=new MysqlDataSource();
 		try{
 			//Class.forName(driver1).newInstance();
-                    dataSource.setUser("maurodim_seriea");//maurodim
+                    dataSource.setUser("maurodim");//maurodim
                     dataSource.setDatabaseName("maurodim_lseriea");//maurodim_lseriea
                     dataSource.setPassword("mau*2012");//mau*2012
                     dataSource.setServerName("201.235.253.65");//201.235.253.65

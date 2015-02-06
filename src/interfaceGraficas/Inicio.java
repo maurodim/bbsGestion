@@ -79,7 +79,7 @@ public class Inicio extends javax.swing.JFrame {
         }
         ClientesTango.cargarMap();
         ListasDePrecios.cargarMap();
-        Cajas.BackapearCajas();
+        //Cajas.BackapearCajas();
         Cajas.LeerCajaAdministradora();
         DecimalFormat fr=new DecimalFormat("00");
         Calendar c1=Calendar.getInstance();

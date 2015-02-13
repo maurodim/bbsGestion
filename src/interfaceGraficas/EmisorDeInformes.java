@@ -7,6 +7,7 @@ package interfaceGraficas;
 import Excel.InformeMensual;
 import Excel.InformeProveedores;
 import Excel.InformesCajas;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -251,6 +252,8 @@ public class EmisorDeInformes extends javax.swing.JInternalFrame {
             
             informes.GenerarInformeMensual(fecha1,fecha2);
         } catch (SQLException ex) {
+            Logger.getLogger(EmisorDeInformes.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
             Logger.getLogger(EmisorDeInformes.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();

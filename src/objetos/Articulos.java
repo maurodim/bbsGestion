@@ -4,6 +4,7 @@
  */
 package objetos;
 
+import com.mysql.jdbc.CommunicationsException;
 import interfaceGraficas.Inicio;
 import interfaces.Editables;
 import interfaces.Transaccionable;
@@ -18,6 +19,7 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -440,15 +442,19 @@ public class Articulos implements Facturar,Editables{
                 System.out.println("OJO QUE NO ENTRO EN NINGUNA OPCION");
                 break;
         }
-        
+        System.out.println(sql);
         rr=tra.leerConjuntoDeRegistros(sql);
         try {
             
             while(rr.next()){
                 articulo=new Articulos();
                 articulo.setCodigoAsignado(rr.getString("ID"));
+                
                 articulo.setDescripcionArticulo(rr.getString("NOMBRE"));
                 articulo.setNumeroId(rr.getInt("ID"));
+                if(articulo.getNumeroId()==321){
+                  //  JOptionPane.showMessageDialog(null,"coca");
+                }
                 articulo.setCodigoDeBarra(rr.getString("BARRAS"));
                 articulo.setRecargo(rr.getDouble("recargo"));
                 articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
@@ -460,11 +466,12 @@ public class Articulos implements Facturar,Editables{
                 if(Inicio.sucursal.getDireccion().equals("1")){
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 }else{
-                    articulo.setPrecioServicio(rr.getDouble("SERVICIO1"));
+                    articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
+                    articulo.setPrecioServicio1(rr.getDouble("SERVICIO"));
                 }
                 }catch(NullPointerException nEx){
                     articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
-                    articulo.setPrecioServicio1(rr.getDouble("SERVICIO1"));
+                    articulo.setPrecioServicio1(rr.getDouble("SERVICIO"));
                 }
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
@@ -492,7 +499,19 @@ public class Articulos implements Facturar,Editables{
             
             contador=contador + 100;
             System.out.println(sql);
-            String sent="";
+            
+//            sql="update actualizaciones set estado=1 where iddeposito="+Inicio.deposito.getNumero()+" and idobjeto=1";
+//            tra.guardarRegistro(sql);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+            
+            completo=true;
+        } catch(NullPointerException ey){
+            System.err.println(" error de punto nulo en tabla combo :"+ey);
+        }
+            try {
+                String sent="";
             sql="select * from combo";
             rr=tra.leerConjuntoDeRegistros(sql);
             listCombo=new ArrayList();
@@ -500,18 +519,13 @@ public class Articulos implements Facturar,Editables{
                 sent="insert into combo (idarticulo,cantidad,articulopadre) values ("+rr.getInt("idarticulo")+","+rr.getDouble("cantidad")+","+rr.getInt("articuloPadre")+")";
                 listCombo.add(sent);
             }
-//            sql="update actualizaciones set estado=1 where iddeposito="+Inicio.deposito.getNumero()+" and idobjeto=1";
-//            tra.guardarRegistro(sql);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
-            completo=true;
-        }
-            try {
                 rr.close();
             } catch (SQLException ex) {
                 Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                System.out.println("Comunicacion interrumpida por superar el maximo de tiempo ");
+            } catch(NullPointerException ey){
+            System.err.println(" error de punto nulo en tabla combo :"+ey);
+        }
         
 
     }
@@ -526,9 +540,13 @@ public class Articulos implements Facturar,Editables{
         Integer contador=0;
         Articulos articulo=null;
         criterio=criterio.toUpperCase();
+        int comboOk=0;
         Enumeration<Articulos> elementos=listadoNom1.elements();
+        if(listCombo.size() > 0){
         sql="truncate table combo";
                 tt.guardarRegistro(sql);
+                comboOk=1;
+        }
         if(funcion==1){
             sql="truncate table articulos";
                 tt.guardarRegistro(sql);

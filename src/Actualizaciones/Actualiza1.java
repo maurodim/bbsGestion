@@ -68,7 +68,7 @@ public class Actualiza1 extends Thread{
         tra=new Conecciones();
         sql="update actualizaciones set estado=4 where iddeposito="+Inicio.deposito.getNumero()+" and idobjeto=1 and estado="+estado;
         tra.guardarRegistro(sql);
-        
+        System.out.println(sql);
         estado=0;
         }
         sql="select * from actualizaciones where estado < 4 and idobjeto=1 order by estado";

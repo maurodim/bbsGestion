@@ -5,6 +5,7 @@ package Impresiones;
  * and open the template in the editor.
  */
 
+import Depositos.RemitosInternos;
 import Sucursales.Cajas;
 import interfaceGraficas.Inicio;
 import java.awt.Color;
@@ -21,6 +22,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import javax.imageio.ImageIO;
+import objetos.Articulos;
 
 
 
@@ -41,6 +43,7 @@ public class Impresora {
     Font fuente8=new Font("Arial",Font.PLAIN,8);
     Font fuente9 = new Font("Arial", Font.BOLD, 5);
     Font fuente10 = new Font("Arial", Font.PLAIN, 6);
+    Font fuente11=new Font("Arial",Font.BOLD,11);
 	PrintJob pj;	
 	Graphics pagina;
 	
@@ -212,7 +215,71 @@ public class Impresora {
 		System.out.println("LA IMPRESION HA SIDO CANCELADA..."+e);
 	}
     }
-    
+    public void ImprimirRemitoInterno(Object factura) throws IOException{
+        RemitosInternos caja=(RemitosInternos) factura;
+        Calendar fecha=new GregorianCalendar();
+        int dia=fecha.get(Calendar.DAY_OF_MONTH);
+        int mes=fecha.get(Calendar.MONTH);
+        mes++;
+        int ano=fecha.get(Calendar.YEAR);
+        int hora=fecha.get(Calendar.HOUR_OF_DAY);
+        int minuto=fecha.get(Calendar.MINUTE);
+        int segundo=fecha.get(Calendar.SECOND);
+        String fec=dia+"/"+mes+"/"+ano;
+        String hrs=hora+","+minuto+":"+segundo;
+        // formulario izquierdo
+        
+        pagina = pj.getGraphics();
+        try{
+        BufferedImage imagen= ImageIO.read(new File("C://Gestion//imagen//logo.png"));
+        pagina.drawImage(imagen,123,20,174,93,null);
+        pagina.setFont(fuente6);
+        pagina.setColor(Color.black);
+        pagina.drawString("COMPROBANTE N° 00"+Inicio.deposito.getNumero()+"-000"+caja.getNumero(),20,130);
+        pagina.setFont(fuente11);
+        pagina.drawString("REMITO INTERNO", 320,130);
+        pagina.setFont(fuente);
+        pagina.drawString("FECHA :"+fec, 20,140);
+        pagina.setFont(fuente6);
+        pagina.drawString("Deposito Destino :"+caja.getDepositoDestino(),20,150);
+        pagina.drawString("Deposito Origen :"+caja.getDepositoOrigen(),20,160);
+        pagina.setFont(fuente);
+        pagina.drawString("HORA :"+hrs,320,140);
+        pagina.drawString("Usuario :"+Inicio.usuario.getNombre(),320,150);
+        pagina.setFont(fuente6);
+        //Double monto=caja.getMontoMovimiento();
+        //pagina.drawString(" : $ "+monto,20,190);
+        //pagina.setFont(fuente1);
+        //pagina.drawString("RETIRO DE EFECTIVO ", 50,280);
+        //formulario derecho
+        pagina.setFont(fuente6);
+        pagina.drawString("ARTICULO", 20,190);
+        pagina.drawString("CANTIDAD", 300,190);
+        int columna=200;
+        String cann="";
+        Iterator itRem=caja.getArticulos().listIterator();
+        pagina.setFont(fuente);
+        while(itRem.hasNext()){
+            Articulos articulo=(Articulos)itRem.next();
+            pagina.drawString(articulo.getDescripcionArticulo(), 20,columna);
+            cann=String.valueOf(articulo.getCantidad());
+            pagina.drawString(cann, 300,columna);
+            columna=columna + 10;
+        }
+        columna=columna + 20;
+        pagina.setFont(fuente6);
+        pagina.drawString("FIRMA RECEPCION:___________________________________", 20,columna);
+        
+        
+        
+        pagina.dispose();
+        pj.end();
+        }catch(Exception e)
+	{
+		System.out.println("LA IMPRESION HA SIDO CANCELADA..."+e);
+	}
+
+    }
 					
 }//FIN DE LA CLASE Impresora
 

@@ -7,12 +7,16 @@ package interfaceGraficas;
 import Conversores.Numeros;
 import Depositos.Depositos;
 import Depositos.RemitosInternos;
+import Impresiones.Impresora;
 import interfaces.Comprobable;
 import interfaces.Personalizable;
 import interfacesPrograma.Facturar;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import objetos.Articulos;
 import tablas.MiModeloTablaArticulos;
@@ -297,8 +301,16 @@ public class NuevoRemitoInterno extends javax.swing.JInternalFrame {
         remitoInterno.setArticulos(listadoArt);
         Comprobable comp=new RemitosInternos();
         //System.out.println(" REMITO GENERADO "+comp.nuevoComprobante(remitoInterno));
+        comp.nuevoComprobante(remitoInterno);
+        Impresora imprimir=new Impresora();
+        try {
+            imprimir.ImprimirRemitoInterno(remitoInterno);
+        } catch (IOException ex) {
+            Logger.getLogger(NuevoRemitoInterno.class.getName()).log(Level.SEVERE, null, ex);
+        }
         listadoArt.clear();
         agregarRenglonEnTabla();
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
     private void agregarRenglonEnTabla(){
         MiModeloTablaFacturacion busC=new MiModeloTablaFacturacion();

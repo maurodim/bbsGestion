@@ -228,7 +228,7 @@ public class Impresora {
         String fec=dia+"/"+mes+"/"+ano;
         String hrs=hora+","+minuto+":"+segundo;
         // formulario izquierdo
-        
+        ArrayList articList=new ArrayList();
         pagina = pj.getGraphics();
         try{
         BufferedImage imagen= ImageIO.read(new File("C://Gestion//imagen//logo.png"));
@@ -261,6 +261,7 @@ public class Impresora {
         pagina.setFont(fuente);
         while(itRem.hasNext()){
             Articulos articulo=(Articulos)itRem.next();
+            articList.add(articulo);
             pagina.drawString(articulo.getDescripcionArticulo(), 20,columna);
             cann=String.valueOf(articulo.getCantidad());
             pagina.drawString(cann, 300,columna);
@@ -269,6 +270,62 @@ public class Impresora {
         columna=columna + 20;
         pagina.setFont(fuente6);
         pagina.drawString("FIRMA RECEPCION:___________________________________", 20,columna);
+        
+        //SALTO DE PAGINA
+        pagina.dispose();
+        pagina = pj.getGraphics();
+        // aqui comienza el control interno
+        //BufferedImage imagen= ImageIO.read(new File("C://Gestion//imagen//logo.png"));
+        pagina.drawImage(imagen,123,20,174,93,null);
+        pagina.setFont(fuente6);
+        pagina.setColor(Color.black);
+        pagina.drawString("COMPROBANTE N° 00"+Inicio.deposito.getNumero()+"-000"+caja.getNumero(),20,130);
+        pagina.setFont(fuente11);
+        pagina.drawString("CONTROL INTERNO", 320,130);
+        pagina.setFont(fuente);
+        pagina.drawString("FECHA :"+fec, 20,140);
+        pagina.setFont(fuente6);
+        pagina.drawString("Deposito Destino :"+caja.getDepositoDestino(),20,150);
+        pagina.drawString("Deposito Origen :"+caja.getDepositoOrigen(),20,160);
+        pagina.setFont(fuente);
+        pagina.drawString("HORA :"+hrs,320,140);
+        pagina.drawString("Usuario :"+Inicio.usuario.getNombre(),320,150);
+        pagina.setFont(fuente6);
+        //Double monto=caja.getMontoMovimiento();
+        //pagina.drawString(" : $ "+monto,20,190);
+        //pagina.setFont(fuente1);
+        //pagina.drawString("RETIRO DE EFECTIVO ", 50,280);
+        //formulario derecho
+        pagina.setFont(fuente6);
+        pagina.drawString("ARTICULO", 20,190);
+        pagina.drawString("CANTIDAD", 250,190);
+        pagina.drawString("COSTO", 330,190);
+        pagina.drawString("VENTA",410,190);
+        columna=200;
+        cann="";
+        String costo="";
+        String venta="";
+        
+        //articList=caja.getArticulos();
+        int tamano=caja.getArticulos().size();
+        System.out.println("CANTIDAD DE ARTICULOS :"+caja.getArticulos().size());
+        
+        //itRem.remove();
+
+        Iterator itRem1=articList.listIterator();
+        pagina.setFont(fuente);
+        while(itRem1.hasNext()){
+            Articulos articulo=(Articulos)itRem1.next();
+            pagina.drawString(articulo.getDescripcionArticulo(), 20,columna);
+            cann=String.valueOf(articulo.getCantidad());
+            costo=String.valueOf(articulo.getPrecioDeCosto());
+            venta=String.valueOf(articulo.getPrecioUnitarioNeto());
+            pagina.drawString(cann, 250,columna);
+            pagina.drawString(costo,330,columna);
+            pagina.drawString(venta,410,columna);
+            columna=columna + 10;
+        }
+        columna=columna + 20;
         
         
         

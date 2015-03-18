@@ -301,7 +301,7 @@ public class NuevoRemitoInterno extends javax.swing.JInternalFrame {
         remitoInterno.setArticulos(listadoArt);
         Comprobable comp=new RemitosInternos();
         //System.out.println(" REMITO GENERADO "+comp.nuevoComprobante(remitoInterno));
-        comp.nuevoComprobante(remitoInterno);
+        remitoInterno.setNumero(comp.nuevoComprobante(remitoInterno));
         Impresora imprimir=new Impresora();
         try {
             imprimir.ImprimirRemitoInterno(remitoInterno);

@@ -134,6 +134,7 @@ public class RemitosInternos implements Comprobable{
     }
     @Override
     public Integer nuevoComprobante(Object objeto){
+        numeroActual();
         RemitosInternos remInterno=(RemitosInternos)objeto;
         numeroComprobante++;
         Transaccionable tra=new Conecciones();

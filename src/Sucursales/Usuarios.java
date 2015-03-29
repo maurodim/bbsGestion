@@ -8,6 +8,11 @@ import Administracion.TipoAcceso;
 import interfaceGraficas.Inicio;
 import interfaces.Personalizable;
 import interfaces.Transaccionable;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -35,6 +40,16 @@ public class Usuarios extends TipoAcceso implements Personalizable{
     private Sucursales sucursal;
     private Menus menu;
     private static ArrayList lista=new ArrayList();
+    private Integer equipo;
+
+    public Integer getEquipo() {
+        return equipo;
+    }
+
+    public void setEquipo(Integer equipo) {
+        this.equipo = equipo;
+    }
+    
 
     public Integer getNivelDeAutorizacion() {
         return nivelDeAutorizacion;
@@ -271,7 +286,26 @@ public class Usuarios extends TipoAcceso implements Personalizable{
     public Object validarClave(String usuario, String clave) {
         Transaccionable tra=new Conecciones();
         Usuarios usu=null;
+        Integer numeroEquipo=0;
         try{
+            File archivo=null;
+        FileReader fr=null;
+        BufferedReader br=null;
+         archivo = new File ("C:\\Gestion\\idEquipo.txt");
+         if(archivo.exists()){
+         fr = new FileReader (archivo);
+         br = new BufferedReader(fr);
+ 
+         // Lectura del fichero
+         String linea;
+          //Transaccionable tra=new Conecciones();
+         while((linea=br.readLine())!=null){
+             
+            System.out.println("Equipo Numero :"+linea);
+           numeroEquipo=Integer.parseInt(linea);
+           // if(tra.guardarRegistro(linea));
+      }
+         }
         String sql="select *,(select tipoacceso.menu1 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu1,(select tipoacceso.menu2 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu2,(select tipoacceso.menu3 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu3,(select tipoacceso.menu4 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu4,(select tipoacceso.menu5 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu5,(select tipoacceso.menu6 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu6,(select tipoacceso.menu7 from tipoacceso where tipoacceso.numero=usuarios.autorizacion)as menu7 from usuarios where nombreUsuario like '"+usuario+"' and clave like '"+clave+"'";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
        
@@ -284,7 +318,7 @@ public class Usuarios extends TipoAcceso implements Personalizable{
             usu.setNumero(rs.getInt("numero"));
             usu.setNumeroId(rs.getInt("numero"));
             usu.setSucursal(new Sucursales(rs.getInt("sucursal")));
-            
+            usu.setEquipo(numeroEquipo);
                     usu.setMenu(new Menus(rs.getBoolean("menu1"),rs.getBoolean("menu2"),rs.getBoolean("menu3"),rs.getBoolean("menu4"),rs.getBoolean("menu5"),rs.getBoolean("menu6"),rs.getBoolean("menu7")));                    
                
             }
@@ -307,7 +341,7 @@ public class Usuarios extends TipoAcceso implements Personalizable{
                  usu.setNumero(rs.getInt("numero"));
                  usu.setNumeroId(rs.getInt("numero"));
                  usu.setSucursal(new Sucursales(rs.getInt("sucursal")));
-                 
+                 usu.setEquipo(numeroEquipo);
                          usu.setMenu(new Menus(rs.getBoolean("menu1"),rs.getBoolean("menu2"),rs.getBoolean("menu3"),rs.getBoolean("menu4"),rs.getBoolean("menu5"),rs.getBoolean("menu6"),rs.getBoolean("menu7")));                    
                     
                  }
@@ -318,6 +352,14 @@ public class Usuarios extends TipoAcceso implements Personalizable{
                 Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex1);
             }
             
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex);
+            numeroEquipo=0;
+        } catch (IOException ex) {
+            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex);
+            numeroEquipo=0;
         }
         return usu;
     }

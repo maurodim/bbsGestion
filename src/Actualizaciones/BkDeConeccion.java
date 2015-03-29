@@ -244,7 +244,27 @@ public class BkDeConeccion implements Backpeable{
     @Override
     public Object leerUsuarios(String nombre, String clave) {
          Usuarios usu=new Usuarios();
+         Integer numeroEquipo=0;
         try {
+            File archivo=null;
+        FileReader fr=null;
+        BufferedReader br=null;
+         archivo = new File ("C:\\Gestion\\idEquipo.txt");
+         if(archivo.exists()){
+         fr = new FileReader (archivo);
+         br = new BufferedReader(fr);
+ 
+         // Lectura del fichero
+         String linea;
+          //Transaccionable tra=new Conecciones();
+         while((linea=br.readLine())!=null){
+             
+            System.out.println("Equipo Numero :"+linea);
+           numeroEquipo=Integer.parseInt(linea);
+           // if(tra.guardarRegistro(linea));
+      }
+         }
+
            //Inicio.coneccionRemota=ProbarConeccion();
        Transaccionable tras=new ConeccionLocal();
                        String sql="select * from usuarios where nombreUsuario like '"+nombre+"' and clave like '"+clave+"'";
@@ -260,7 +280,7 @@ public class BkDeConeccion implements Backpeable{
                         usu.setNumero(rs.getInt("numero"));
                         usu.setNumeroId(rs.getInt("numero"));
                         usu.setSucursal(new Sucursales(rs.getInt("sucursal")));
-                        
+                        usu.setEquipo(numeroEquipo);
                              
                         }
                         sql="select * from tipoacceso where numero="+usu.getNivelDeAutorizacion();
@@ -274,6 +294,14 @@ public class BkDeConeccion implements Backpeable{
                         
         } catch (SQLException ex) {
             Logger.getLogger(BkDeConeccion.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(BkDeConeccion.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex);
+            numeroEquipo=0;
+        } catch (IOException ex) {
+            Logger.getLogger(BkDeConeccion.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex);
+            numeroEquipo=0;
         }
          return usu;
     }

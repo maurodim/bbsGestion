@@ -476,6 +476,7 @@ public class Cajas extends Sucursales implements Cajeables{
             }
             rs.close();
             cajaNumeroAct++;
+            cajaNumeroAct=Inicio.usuario.getEquipo() + cajaNumeroAct;
             Double saldoI=cajaNueva.getSaldoInicial();
             String sql="insert into caja (numero,numeroSucursal,numeroUsuario,tipoMovimiento,saldoInicial,tipo,estado) values ("+cajaNumeroAct+","+Inicio.sucursal.getNumero()+","+Inicio.usuario.getNumero()+",9,"+cajaNueva.saldoInicial+","+tipo+",0)";
             tra.guardarRegistro(sql);
@@ -574,6 +575,13 @@ public class Cajas extends Sucursales implements Cajeables{
             Logger.getLogger(Cajas.class.getName()).log(Level.SEVERE, null, ex);
         }
         //String sql="insert into"cajj.getSaldoFinal()
+        /*
+        ACA TENGO QUE VER SI INDIVIDUALIZO EL EQUIPO, PUEDO PONER NUMEROEQUIPO * 1000000 Y ESE
+        RESULTADO + EL IDCAJA - DE ESTA FORMA GENERO UN NUMERO UNICO DE CAJA PARA CADA EQUIPO Y SE REPLICA EN TODO EL 
+        SISTEMA REMOTO - LOCALMENTE LO DEJO ASI PERO QUE SE BACKAPEE SOLAMENTE EL NUMERO DE CAJA ADMINISTRADORA
+        
+        */
+        
         sql="update caja set diferencia="+dif2+",saldoFinal="+cajj.getCambioEnCaja()+",estado=1,fechaCierre='"+Inicio.fechaDia+"' where numero="+cajj.getNumero();
         
         verif=tra.guardarRegistro(sql);

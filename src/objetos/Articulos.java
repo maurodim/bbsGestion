@@ -867,7 +867,7 @@ public class Articulos implements Facturar,Editables{
         } catch (SQLException ex) {
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
-         sql="insert into actualizaciones (iddeposito,idobjeto,estado) values (1,1,3),(2,1,3),(3,1,3),(4,1,3)";
+         sql="insert into actualizaciones (iddeposito,idobjeto,estado) values (1,1,3),(2,1,3),(3,1,3),(4,1,3),(5,1,3),(6,1,3),(7,1,3)";
         tra.guardarRegistro(sql);
         if(articulo.getIdCombo() > 0){
             Articulos art=new Articulos();
@@ -889,7 +889,7 @@ public class Articulos implements Facturar,Editables{
         String sql="update articulos set NOMBRE='"+articulo.getDescripcionArticulo()+"',SERVICIO="+articulo.getPrecioServicio()+",SERVICIO1="+articulo.getPrecioServicio1()+",COSTO="+articulo.getPrecioDeCosto()+",PRECIO="+articulo.getPrecioUnitarioNeto()+",MINIMO="+articulo.getStockMinimo()+",BARRAS ='"+articulo.getCodigoDeBarra()+"',modificaPrecio="+articulo.getModificaPrecio()+",modificaServicio="+articulo.getModificaServicio()+",actualizacion=2,idcombo="+articulo.getIdCombo()+" where ID="+articulo.getNumeroId();
         Transaccionable tra=new Conecciones();
         ch=tra.guardarRegistro(sql);
-        sql="insert into actualizaciones (iddeposito,idobjeto,estado) values (1,1,2),(2,1,2),(3,1,2),(4,1,2)";
+        sql="insert into actualizaciones (iddeposito,idobjeto,estado) values (1,1,2),(2,1,2),(3,1,2),(4,1,2),(5,1,2),(6,1,2),(7,1,2)";
         tra.guardarRegistro(sql);
          if(articulo.getIdCombo() > 0){
             Articulos art=new Articulos();
@@ -910,7 +910,7 @@ public class Articulos implements Facturar,Editables{
         String sql="update articulos set INHABILITADO=1, actualizacion=4 where ID="+articulo.getNumeroId();
         Transaccionable tra=new Conecciones();
         verif=tra.guardarRegistro(sql);
-        sql="insert into actualizaciones (iddeposito,idobjeto,estado) values (1,1,4),(2,1,4),(3,1,4),(4,1,4)";
+        sql="insert into actualizaciones (iddeposito,idobjeto,estado) values (1,1,4),(2,1,4),(3,1,4),(4,1,4),(5,1,4),(6,1,4),(7,1,4)";
         tra.guardarRegistro(sql);
         
         return verif;

@@ -44,8 +44,8 @@ public class Actualiza1 extends Thread{
         
             //carga la lista remota
             //Proveedores.cargarListadoProv1();
-        
-        String sql="select * from actualizaciones where iddeposito="+Inicio.deposito.getNumero()+" and estado < 4 and idobjeto=1 order by estado";
+        Integer idDep=Inicio.usuario.getEquipo() / 1000000;
+        String sql="select * from actualizaciones where iddeposito="+idDep+" and estado < 4 and idobjeto=1 order by estado";
         Transaccionable tra=new Conecciones();
         Integer estado=0;
         ResultSet rx=tra.leerConjuntoDeRegistros(sql);
@@ -66,7 +66,7 @@ public class Actualiza1 extends Thread{
         Articulos.BackapearMap(estado);
         Inicio.actualizable=0;
         tra=new Conecciones();
-        sql="update actualizaciones set estado=4 where iddeposito="+Inicio.deposito.getNumero()+" and idobjeto=1 and estado="+estado;
+        sql="update actualizaciones set estado=4 where iddeposito="+idDep+" and idobjeto=1 and estado="+estado;
         tra.guardarRegistro(sql);
         System.out.println(sql);
         estado=0;

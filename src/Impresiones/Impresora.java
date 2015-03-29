@@ -314,6 +314,7 @@ public class Impresora {
 
         Iterator itRem1=articList.listIterator();
         pagina.setFont(fuente);
+        Double costoTotal=0.00;
         while(itRem1.hasNext()){
             Articulos articulo=(Articulos)itRem1.next();
             pagina.drawString(articulo.getDescripcionArticulo(), 20,columna);
@@ -323,10 +324,12 @@ public class Impresora {
             pagina.drawString(cann, 250,columna);
             pagina.drawString(costo,330,columna);
             pagina.drawString(venta,410,columna);
+            costoTotal=costoTotal + (articulo.getPrecioDeCosto() * articulo.getCantidad());
             columna=columna + 10;
         }
         columna=columna + 20;
-        
+        pagina.setFont(fuente6);
+        pagina.drawString("COSTO TOTAL :"+String.valueOf(costoTotal),250,columna);
         
         
         pagina.dispose();

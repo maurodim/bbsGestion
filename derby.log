@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Sun Mar 29 19:28:48 GMT-03:00 2015:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-014c-67a6-d30f-000002dcc8f0 
-on database directory C:\Gestion\DB\respaldo.db  with class loader sun.misc.Launcher$AppClassLoader@7c9ed5d6 
+Thu Apr 02 20:23:00 GMT-03:00 2015:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-014c-7c71-e263-000002d2f6b8 
+on database directory C:\Gestion\DB\respaldo.db  with class loader sun.misc.Launcher$AppClassLoader@79a422d9 
 Loaded from file:/C:/Users/mauro%20di/Google%20Drive/NetBeansProjects/bbsGestion/dist/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.7.0_65-b19

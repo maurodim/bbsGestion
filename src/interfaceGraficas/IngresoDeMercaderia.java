@@ -577,12 +577,20 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        //System.out.println("Entro");
+        if(this.jComboBox1.getSelectedIndex() > -1){
+        Proveedores prov=(Proveedores)listaProv.get(this.jComboBox1.getSelectedIndex());
+        facturaProveedor.setNumeroProveedor(prov.getNumero());
+        //Personalizable per=new Proveedores();
+        //proveedor=(Proveedores) per.buscarPorNumero(facturaProveedor.getNumeroProveedor());
+        proveedor=prov;
         /*
         Proveedores prov=(Proveedores)listaProv.get(this.jComboBox1.getSelectedIndex());
         facturaProveedor.setNumeroProveedor(prov.getNumero());
         Personalizable per=new Proveedores();
         proveedor=(Proveedores) per.buscarPorNumero(facturaProveedor.getNumeroProveedor());
         */ 
+        }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jTextField6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyPressed
@@ -649,12 +657,15 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTable1FocusLost
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        /*
         if(this.jComboBox1.getSelectedIndex() > -1){
         Proveedores prov=(Proveedores)listaProv.get(this.jComboBox1.getSelectedIndex());
         facturaProveedor.setNumeroProveedor(prov.getNumero());
-        Personalizable per=new Proveedores();
-        proveedor=(Proveedores) per.buscarPorNumero(facturaProveedor.getNumeroProveedor());
+        //Personalizable per=new Proveedores();
+        //proveedor=(Proveedores) per.buscarPorNumero(facturaProveedor.getNumeroProveedor());
+        proveedor=prov;
         }
+                */
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 private void agregarRenglonTabla(){
         MiModeloTablaFacturacion busC=new MiModeloTablaFacturacion();

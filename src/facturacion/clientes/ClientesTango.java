@@ -118,7 +118,9 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
                 String codigo="";
                 String nombre="";
                 String sql1="";
+                
                 Transaccionable rat=new Conecciones();
+                
                 ResultSet rr=null;
             while(rs.next()){               
                 ClientesTango cli=new ClientesTango();
@@ -139,6 +141,9 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
                 cli.setCoeficienteListaDeprecios(rs.getDouble("coeficiente"));
                 cli.setCupoDeCredito(rs.getDouble("CUPO_CREDI"));
                // if(Inicio.usuario.getNivelDeAutorizacion()==1){
+                System.out.println("ACTUALIZACION :"+Inicio.actualizacionesClientes);
+                try{
+                if(Inicio.usuario.getNivelDeAutorizacion()==1){
                 sql1="select sum(monto) as saldoActual from movimientosclientes where numeroProveedor="+cli.getCodigoId();
                 System.out.println(sql1);
                 try{
@@ -152,6 +157,15 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
                     cli.setSaldo(rs.getDouble("saldo"));
                     cli.setSaldoActual(rs.getDouble("saldo")); 
                 }
+                }else{
+                    cli.setSaldo(0.00);
+                    cli.setSaldoActual(0.00);
+                }
+                }catch(java.lang.NullPointerException eef){
+                    cli.setSaldo(0.00);
+                    cli.setSaldoActual(0.00);
+                }
+                
             /*    
             }else{
                 cli.setSaldo(rs.getDouble("saldo"));

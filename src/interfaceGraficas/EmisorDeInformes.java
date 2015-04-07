@@ -61,6 +61,7 @@ public class EmisorDeInformes extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setTitle("Emision de Informes");
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/excel_icone.png"))); // NOI18N
         jButton1.setText("Emitir Informe Diario");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,6 +112,7 @@ public class EmisorDeInformes extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Hasta :");
 
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/excel_icone.png"))); // NOI18N
         jButton2.setText("Emitir Informe Por Proveedor");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -156,6 +158,7 @@ public class EmisorDeInformes extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Hasta :");
 
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/excel_icone.png"))); // NOI18N
         jButton3.setText("Emitir Informe de Ranking de Articulos");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -219,7 +222,7 @@ public class EmisorDeInformes extends javax.swing.JInternalFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(146, Short.MAX_VALUE))
+                .addContainerGap(130, Short.MAX_VALUE))
         );
 
         pack();

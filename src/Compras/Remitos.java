@@ -117,7 +117,7 @@ public class Remitos implements Comprobable{
         //String sql="CREATE TABLE IF NOT EXISTS `movimientos25` (`numero` int(11) NOT NULL AUTO_INCREMENT,`numeroArticulo` int(11) NOT NULL,`cantidad` int(11) NOT NULL,`condicion` int(11) NOT NULL DEFAULT '0',`numeroUsuario` int(11) NOT NULL,`fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,PRIMARY KEY (`numero`)) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5";
         //String sql="insert into clientes (nombre, direccion, localidad, telefono, mail, condIva, numeroCuit) VALUES (mauro, piedras 6738, santa fe, 155451500, contacto@maurodi.com.ar, 1, 0000000000)";
         Remitos rem=(Remitos)objeto;
-        String sql="select * from tipocomprobantes where numero=3 and numeroSucursal="+Inicio.sucursal.getNumero();
+        String sql="select * from tipocomprobantes where numero=3 and numeroSucursal=1";
         Integer veri=0;
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
@@ -130,6 +130,8 @@ public class Remitos implements Comprobable{
             }
             rs.close();
             veri=numero;
+            
+            rem.setNumeroRemito(String.valueOf(numero));
             Iterator listA=rem.getArticulos().listIterator();
             String sql1="";
             while(listA.hasNext()){
@@ -137,11 +139,15 @@ public class Remitos implements Comprobable{
                 Double cantidad=art.getCantidad();
                 sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numerousuario,precioDeCosto,idcaja) values (5,"+art.getNumeroId()+","+cantidad+","+rem.getNumeroDeposito()+",3,'"+rem.getNumeroRemito()+"',"+rem.getIdProveedor()+",'"+rem.getFechaRecepcion()+"',"+rem.getIdUsuario()+","+art.getPrecioDeCosto()+","+Inicio.caja.getNumero()+")";
                 if(tra.guardarRegistro(sql))//System.out.println(sql);
-                if(rem.getGuardaPrecioDeVenta()){
-                sql1="update articulos set COSTO="+art.getPrecioDeCosto()+",PRECIO="+art.getPrecioUnitario()+" where id="+art.getNumeroId();
+                
+                sql1="update articulos set COSTO="+art.getPrecioDeCosto()+" where id="+art.getNumeroId();
                 if(tra.guardarRegistro(sql1));//System.out.println(sql1);
-                }
+                
+                
+                
             }
+            sql="update tipocomprobantes set numeroActivo="+numero+" where numero=3 and numeroSucursal=1";
+             tra.guardarRegistro(sql);
         } catch (SQLException ex) {
             Logger.getLogger(Remitos.class.getName()).log(Level.SEVERE, null, ex);
         }

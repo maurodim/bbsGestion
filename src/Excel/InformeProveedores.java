@@ -30,6 +30,8 @@ public class InformeProveedores {
               HSSFWorkbook libro=new HSSFWorkbook();
         HSSFSheet hoja=libro.createSheet("Resumen");
         HSSFSheet hoja1=libro.createSheet("Articulos");
+        HSSFSheet hoja2=libro.createSheet("Saldos Proveedores");
+        HSSFSheet hoja3=libro.createSheet("Detalle Saldo Proveedores");
         /*
          * GENERAR LAS SIGUIENTES HOJAS
          * 1- DETALLE DE MOVIMIENTOS DE CAJA - LEE EN MOVIMIENTOS CAJA INDENTIFICANDO EL TIPO DE MOVIMIENTO, USUARIOS Y 
@@ -56,7 +58,7 @@ public class InformeProveedores {
         fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         String form=null;
         String sql="SELECT *,(select proveedores.nombre from proveedores where proveedores.numero=movimientosproveedores.numeroProveedor)as nombreP,if(pagado=0,'pendiente','pagado')as estado FROM movimientosproveedores where fecha between '"+desde+"' and '"+hasta+"'";
-        //System.out.println(sql);
+        System.out.println(sql);
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         HSSFCellStyle titulo=libro.createCellStyle();
@@ -136,7 +138,7 @@ public class InformeProveedores {
            */  
            
             sql="SELECT *,(select articulos.NOMBRE from articulos where articulos.ID=movimientosarticulos.idArticulo)as descripcionArt,(select proveedores.nombre from proveedores where proveedores.numero=numeroCliente)as nombreP,sum(cantidad) as sumaCantidad,sum(precioDeCosto)as costo FROM `movimientosarticulos` where tipoMovimiento=5 and fecha between '"+desde+"' and '"+hasta+"' group by numeroCliente,idArticulo";
-            
+            System.out.println(sql);
         //fuente.setFontHeight((short)21);
         fuente.setFontName(fuente.FONT_ARIAL);
         fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
@@ -201,7 +203,127 @@ public class InformeProveedores {
             celda4.setCellValue(rs.getDouble("sumaCantidad"));
             
         } 
+         /*
+           * tercera hoja
+           */  
+           
+            sql="select sum(monto)as saldoP,(select proveedores.nombre from proveedores where proveedores.numero=numeroProveedor)as nombreP from movimientosproveedores group by numeroProveedor";
+            System.out.println(sql);
+        //fuente.setFontHeight((short)21);
+        fuente.setFontName(fuente.FONT_ARIAL);
+        fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        form=null;
+        //String sql="SELECT *,(select proveedores.nombre from proveedores where proveedores.numero=movimientosproveedores.numeroProveedor)as nombreP,if(pagado=0,'pendiente','pagado')as estado FROM movimientosproveedores where fecha between '"+desde+"' and '"+hasta+"'";
+        //System.out.println(sql);
+        //tra=new Conecciones();
+        rs=tra.leerConjuntoDeRegistros(sql);
+        titulo.setFont(fuente);
+        //titulo.setFillBackgroundColor((short)22);
+        titulo.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
+        titulo.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        //for(int a=0;a < 100;a++){
+        col=0;
+        a=0;
+            if(a==0){
+                fila=hoja2.createRow(a);
+            celda=fila.createCell(0);
+            celda.setCellStyle(titulo);
+            celda.setCellValue("Proveedor");
+            celda1=fila.createCell(1);
+            celda1.setCellStyle(titulo);
+            celda1.setCellValue("Saldo");
             
+            }
+            while(rs.next()){
+            a++;
+            //col=rs.getInt("tipoMovimiento");
+            switch(col){
+                case 1:
+                    
+                    break;
+                default:
+                    
+                    break;
+            }
+            fila=hoja2.createRow(a);
+            celda=fila.createCell(0);
+            ttx=ttx;
+            celda.setCellType(HSSFCell.CELL_TYPE_STRING);
+            celda.setCellValue(rs.getString("nombreP"));
+            celda1=fila.createCell(1);
+            ttx=ttx;
+            celda1.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            celda1.setCellValue(rs.getDouble("saldoP"));
+            }
+            /*
+           * cuarta hoja
+           */  
+           
+            sql="select numeroProveedor,fecha,monto,numeroComprobante,idRemito,tipoComprobante,(select proveedores.nombre from proveedores where proveedores.numero=movimientosproveedores.numeroProveedor)as nombreP,(select tipocomprobantes.descripcion from tipocomprobantes where tipocomprobantes.numero=movimientosproveedores.tipoComprobante)as comprobante from movimientosproveedores where fecha between '"+desde+"' and '"+hasta+"' order by numeroProveedor";
+            System.out.println(sql);
+        //fuente.setFontHeight((short)21);
+        fuente.setFontName(fuente.FONT_ARIAL);
+        fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        form=null;
+        //String sql="SELECT *,(select proveedores.nombre from proveedores where proveedores.numero=movimientosproveedores.numeroProveedor)as nombreP,if(pagado=0,'pendiente','pagado')as estado FROM movimientosproveedores where fecha between '"+desde+"' and '"+hasta+"'";
+        //System.out.println(sql);
+        //tra=new Conecciones();
+        rs=tra.leerConjuntoDeRegistros(sql);
+        titulo.setFont(fuente);
+        //titulo.setFillBackgroundColor((short)22);
+        titulo.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
+        titulo.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        //for(int a=0;a < 100;a++){
+        col=0;
+        a=0;
+            if(a==0){
+                fila=hoja3.createRow(a);
+            celda=fila.createCell(0);
+            celda.setCellStyle(titulo);
+            celda.setCellValue("Proveedor");
+            celda1=fila.createCell(1);
+            celda1.setCellStyle(titulo);
+            celda1.setCellValue("Fecha");
+            celda2=fila.createCell(2);
+            celda2.setCellStyle(titulo);
+            celda2.setCellValue("Comprobante");
+            celda3=fila.createCell(3);
+            celda3.setCellStyle(titulo);
+            celda3.setCellValue("Monto");
+            celda4=fila.createCell(4);
+            celda4.setCellStyle(titulo);
+            celda4.setCellValue("Comprobante Relacionado");
+            }
+            while(rs.next()){
+            a++;
+            //col=rs.getInt("tipoMovimiento");
+            switch(col){
+                case 1:
+                    
+                    break;
+                default:
+                    
+                    break;
+            }
+            fila=hoja3.createRow(a);
+            celda=fila.createCell(0);
+            ttx=ttx;
+            celda.setCellType(HSSFCell.CELL_TYPE_STRING);
+            celda.setCellValue(rs.getString("nombreP"));
+            celda1=fila.createCell(1);
+            ttx=ttx;
+            celda1.setCellType(HSSFCell.CELL_TYPE_STRING);
+            celda1.setCellValue(" "+rs.getDate("fecha"));
+            celda2=fila.createCell(2);
+            celda2.setCellType(HSSFCell.CELL_TYPE_STRING);
+            celda2.setCellValue(rs.getString("comprobante"));
+            celda3=fila.createCell(3);
+            celda3.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            celda3.setCellValue(rs.getDouble("monto"));
+            celda4=fila.createCell(4);
+            celda4.setCellType(HSSFCell.CELL_TYPE_STRING);
+            celda4.setCellValue(rs.getString("numeroComprobante"));
+            }
             
         rs.close();
         //texto+="\r\n";

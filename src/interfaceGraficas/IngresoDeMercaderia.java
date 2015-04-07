@@ -9,6 +9,7 @@ import Compras.Proveedores;
 import Compras.Remitos;
 import Conversores.Numeros;
 import Depositos.RemitosInternos;
+import interfaces.Adeudable;
 import interfaces.Comprobable;
 import interfaces.Personalizable;
 import interfacesPrograma.Facturar;
@@ -553,6 +554,10 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
                 facturaProveedor.setFecha(Date.valueOf(fecha2));
                 facturaProveedor.setIdCaja(Inicio.numeroCajaAdministradora);
                 fact.guardar(facturaProveedor);
+                monto=monto * (-1);
+                facturaProveedor.setMontoFinal(monto);
+                Adeudable ade=new FacturaProveedor();
+                ade.PagarComprobante(facturaProveedor);
             }else{
                 facturaProveedor.setPagada(0);
                 facturaProveedor.setFecha(Date.valueOf(fecha2));

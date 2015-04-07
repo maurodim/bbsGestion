@@ -46,7 +46,7 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="146" max="32767" attributes="0"/>
+              <EmptySpace pref="130" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -103,6 +103,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/imagen/excel_icone.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Emitir Informe Diario"/>
           </Properties>
           <Events>
@@ -185,6 +188,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton2">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/imagen/excel_icone.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Emitir Informe Por Proveedor"/>
           </Properties>
           <Events>
@@ -255,6 +261,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton3">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/imagen/excel_icone.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Emitir Informe de Ranking de Articulos"/>
           </Properties>
           <Events>

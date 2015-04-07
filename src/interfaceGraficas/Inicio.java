@@ -57,6 +57,7 @@ public class Inicio extends javax.swing.JFrame {
     private BufferedImage img;
     public static Boolean coneccionRemota=true;
     public static Integer actualizable=0;
+    public static int actualizacionesClientes=0;
 
     public void setNiv(Integer nive) {
         niv = nive;
@@ -78,6 +79,7 @@ public class Inicio extends javax.swing.JFrame {
             Proveedores.cargarListadoProv();
         }
         ClientesTango.cargarMap();
+        actualizacionesClientes=2;
         ListasDePrecios.cargarMap();
         //Cajas.BackapearCajas();
         Cajas.LeerCajaAdministradora();

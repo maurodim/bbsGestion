@@ -249,7 +249,7 @@ public class FacturaProveedor implements Comprobable,Facturar,Adeudable{
         String sql="insert into movimientoscaja(numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,pagado,tipoCliente,idCliente) values ("+fact.getIdUsuario()+","+fact.getIdSucursal()+",(select tipocomprobantes.numeroActivo + 1 from tipocomprobantes where numero=11),6,"+monto+",2,"+fact.getIdCaja()+","+fact.getPagada()+",2,"+fact.getNumeroProveedor()+")";
         Transaccionable tra=new Conecciones();
         if(tra.guardarRegistro(sql))//System.out.println(sql);
-        sql="update movimientosproveedores set pagado="+fact.getPagada()+",fechaPago ='"+fact.getFecha()+"' where id="+fact.getId();
+        sql="update movimientosproveedores set pagado="+fact.getPagada()+",fechaPago ='"+fact.getFecha()+"',idCaja="+fact.getIdCaja()+" where id="+fact.getId();
         if(tra.guardarRegistro(sql));//System.out.println(sql);       
         
         return verif;

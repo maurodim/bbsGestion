@@ -222,6 +222,9 @@ public class ConeccionLocal implements Transaccionable{
                     sql="CREATE TABLE APP.movimientosdesucursales (depOrigen INTEGER,depDestino INTEGER,idArticulo INTEGER not null,cantidad double not null,confirmado INTEGER,numeroRemito INTEGER,idUsuario INTEGER,diferencia double,idUsuarioRecep INTEGER not null)";
                     PreparedStatement pstm19=dbConnection.prepareStatement(sql);
                     pstm19.execute();
+                    sql="create table app.combo (id integer not null primary key,fecha date,idarticulo integer not null,cantidad double,articulopadre integer not null)";
+                    pstm19=dbConnection.prepareStatement(sql);
+                    pstm19.execute();
                     pstm19.close();
                     /*
                     sql="insert into APP.usuarios (numero,nombre,direccion,telefono,mail,nombreusuario,clave,autorizacion,numerotipoacceso,localidad,sucursal) values (1,'administrador','piedras 6738','155451500','contacto@maurodi.com.ar','MM','mm',1,1,'santa fe',1)";
@@ -236,13 +239,19 @@ public class ConeccionLocal implements Transaccionable{
                     ClientesTango.cargarMap();
                     ListasDePrecios.cargarMap();
                     */ 
+                    Depositos deposito=new Depositos();
+                    deposito.setNumero(1);
+                    Inicio.deposito=deposito;
+                    
                     Articulos.BackapearMap(1);
                     Proveedores.BackapearProveedores();
                     ClientesTango.BackapearClientes();
                     ListasDePrecios.BackapearListasDePrecios();
                     Cajas.BackapearCajas();
                     Cajas.LeerCajaAdministradora();
+                    Inicio.coneccionRemota=true;
                     Usuarios.BackapearUsuarios();
+                    Inicio.coneccionRemota=false;
                     Sucursales.BackapearSucursales();
                     Depositos.BackapearDepositos();
                     

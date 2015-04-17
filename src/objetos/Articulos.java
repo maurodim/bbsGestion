@@ -55,7 +55,7 @@ public class Articulos implements Facturar,Editables{
     private static ConcurrentHashMap listadoCodigo1=new ConcurrentHashMap();
     private ArrayList combo;
     private Integer idCombo;
-    private static ArrayList listCombo;
+    private static ArrayList listCombo=new ArrayList();
     private Integer idDeposito;
 
     public Integer getIdDeposito() {

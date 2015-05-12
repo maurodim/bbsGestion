@@ -199,7 +199,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
 
         jLabel11.setText("Deposito");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Casa Central", "Gral Paz", "Say 2" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Gral Paz", "Say 2" }));
         jComboBox1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jComboBox1FocusLost(evt);
@@ -278,8 +278,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         System.out.println("cantidad "+lstPorSuc.size());
         Iterator it=lstPorSuc.listIterator();
         articuloSucursal.addColumn("CODIGO");
-        articuloSucursal.addColumn("CANTIDAD");
         articuloSucursal.addColumn("DEPOSITO");
+        articuloSucursal.addColumn("CANTIDAD");
         Object[] fila=new Object[3];
 
         while(it.hasNext()){
@@ -482,15 +482,13 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
             case 1:
                 deposito=2;
                 break;
-            case 2:
-                deposito=4;
-                break;
+            
             default:
                 deposito=1;
                 break;
         }
         arti.setIdDeposito(deposito);
-        if(editable.MovimientoDeAjusteDeCantidades(arti, ajuste,this.jTextArea1.getText()))this.dispose();
+        if(editable.MovimientoDeAjusteDeCantidades(arti, ajuste,this.jTextArea1.getText()));
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -530,7 +528,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
                 deposito=2;
                 break;
             case 2:
-                deposito=4;
+                deposito=2;
                 break;
             default:
                 deposito=1;

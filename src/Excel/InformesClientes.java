@@ -139,7 +139,7 @@ public class InformesClientes {
            * segunda hoja
            */  
            Busquedas bus=new ClientesTango();
-            sql="select numeroProveedor,fecha,monto,numeroComprobante,idUsuario,idCaja,tipoComprobante,idSucursal,(select listcli.razon_soci from listcli where listcli.codmmd=numeroProveedor)as nombreP from movimientosclientes where numeroProveedor > 1 and fecha between '"+desde+"' and '"+hasta+"' order by numeroProveedor";
+            sql="select numeroProveedor,fecha,monto,numeroComprobante,idUsuario,idCaja,tipoComprobante,idSucursal,(select listcli.razon_soci from listcli where listcli.id=numeroProveedor)as nombreP from movimientosclientes where numeroProveedor > 1 and fecha between '"+desde+"' and '"+hasta+"' order by numeroProveedor";
             System.out.println(sql);
         //fuente.setFontHeight((short)21);
         fuente.setFontName(fuente.FONT_ARIAL);

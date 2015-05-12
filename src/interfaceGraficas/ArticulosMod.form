@@ -372,10 +372,9 @@
             <Component class="javax.swing.JComboBox" name="jComboBox1">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="3">
-                    <StringItem index="0" value="Casa Central"/>
-                    <StringItem index="1" value="Gral Paz"/>
-                    <StringItem index="2" value="Say 2"/>
+                  <StringArray count="2">
+                    <StringItem index="0" value="Gral Paz"/>
+                    <StringItem index="1" value="Say 2"/>
                   </StringArray>
                 </Property>
               </Properties>
@@ -433,7 +432,7 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="System.out.println(&quot;cantidad &quot;+lstPorSuc.size());&#xa;Iterator it=lstPorSuc.listIterator();&#xa;articuloSucursal.addColumn(&quot;CODIGO&quot;);&#xa;articuloSucursal.addColumn(&quot;CANTIDAD&quot;);&#xa;articuloSucursal.addColumn(&quot;DEPOSITO&quot;);&#xa;Object[] fila=new Object[3];&#xa;&#xa;while(it.hasNext()){&#xa;    Articulos articuloI=(Articulos)it.next();&#xa;    fila[0]=articuloI.getNumeroId();&#xa;fila[1]=articuloI.getIdDeposito();&#xa;fila[2]=articuloI.getCantidad();&#xa;articuloSucursal.addRow(fila);&#xa;}"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="System.out.println(&quot;cantidad &quot;+lstPorSuc.size());&#xa;Iterator it=lstPorSuc.listIterator();&#xa;articuloSucursal.addColumn(&quot;CODIGO&quot;);&#xa;articuloSucursal.addColumn(&quot;DEPOSITO&quot;);&#xa;articuloSucursal.addColumn(&quot;CANTIDAD&quot;);&#xa;Object[] fila=new Object[3];&#xa;&#xa;while(it.hasNext()){&#xa;    Articulos articuloI=(Articulos)it.next();&#xa;    fila[0]=articuloI.getNumeroId();&#xa;fila[1]=articuloI.getIdDeposito();&#xa;fila[2]=articuloI.getCantidad();&#xa;articuloSucursal.addRow(fila);&#xa;}"/>
                 <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="MiModeloTablaArticulos articuloSucursal=new MiModeloTablaArticulos();"/>
               </AuxValues>
             </Component>

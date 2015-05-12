@@ -6,6 +6,7 @@
 package Excel;
 
 import facturacion.clientes.ClientesTango;
+import interfaces.Editables;
 import interfaces.Transaccionable;
 import interfacesPrograma.Busquedas;
 import java.io.FileNotFoundException;
@@ -35,7 +36,8 @@ public class InformeArticulos {
   public void GenerarInforme(ArrayList listadoClientes) throws SQLException{
               HSSFWorkbook libro=new HSSFWorkbook();
         HSSFSheet hoja=libro.createSheet("Listado de Articulos");
-        
+        ArrayList listadoPorSucursal=new ArrayList();
+        Editables edi=new Articulos();
         
         /*
          * GENERAR LAS SIGUIENTES HOJAS
@@ -57,6 +59,9 @@ public class InformeArticulos {
         HSSFCell celda6;
         HSSFCell celda7;
         HSSFCell celda8;
+        HSSFCell celda9;
+        HSSFCell celda10;
+        HSSFCell celda11;
         HSSFFont fuente=libro.createFont();
         //fuente.setFontHeight((short)21);
         fuente.setFontName(fuente.FONT_ARIAL);
@@ -112,6 +117,7 @@ public class InformeArticulos {
             fila=hoja.createRow(a);
             celda=fila.createCell(0);
             ttx=ttx;
+            
             celda.setCellType(HSSFCell.CELL_TYPE_STRING);
             celda.setCellValue(cliente.getCodigoAsignado());
             celda1=fila.createCell(1);
@@ -138,7 +144,38 @@ public class InformeArticulos {
             //celda5.setCellFormula(rs.getString("observaciones"));
             celda6.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
             celda6.setCellValue(cliente.getPrecioServicio());
-            
+            listadoPorSucursal=edi.ListarPorSucursal(cliente);
+            Iterator il=listadoPorSucursal.listIterator();
+            Articulos arr=new Articulos();
+            int cont=0;
+            while(il.hasNext()){
+                arr=(Articulos)il.next();
+                cont++;
+                switch (cont){
+                
+                    case 1:
+                        celda7=fila.createCell(7);
+                celda7.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+                celda7.setCellValue(arr.getCantidad());
+                        break;
+                    case 2:
+                        celda8=fila.createCell(8);
+                celda8.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+                celda8.setCellValue(arr.getCantidad());
+                        break;
+                    case 3:
+                        celda9=fila.createCell(9);
+                celda9.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+                celda9.setCellValue(arr.getCantidad());
+                        break;
+                    case 4:
+                        celda10=fila.createCell(10);
+                celda10.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+                celda10.setCellValue(arr.getCantidad());
+                        break;
+                }
+                
+            }
         }
           
             

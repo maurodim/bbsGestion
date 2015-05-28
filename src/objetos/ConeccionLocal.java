@@ -43,21 +43,16 @@ public class ConeccionLocal implements Transaccionable{
     private String driver1="org.apache.derby.jdbc.EmbeddedDriver";
 
     public ConeccionLocal() {
-              Connection dbConnection = null;
- //String strUrl = "jdbc:derby://localhost:1527/respaldo;create=true";
-               String strUrl = "jdbc:derby:\\Gestion\\DB\\respaldo.db";
-            try {
-                Class.forName(driver1).newInstance();
-                dbConnection = DriverManager.getConnection (strUrl);
-                con=dbConnection;
+              MysqlDataSource dataSource=new MysqlDataSource();
+		try{
+			//Class.forName(driver1).newInstance();
+                    dataSource.setUser("say3");//maurodim
+                    dataSource.setDatabaseName("say");//maurodim_lseriea
+                    dataSource.setPassword("");//mau*2012
+                    dataSource.setServerName("localhost");//201.235.253.65
+                    con=dataSource.getConnection();
                 //st=dbConnection.createStatement();
-            } catch (InstantiationException ex) {
-            Logger.getLogger(ConeccionLocal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(ConeccionLocal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ConeccionLocal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+            } catch (SQLException ex) {
                 Logger.getLogger(ConeccionLocal.class.getName()).log(Level.SEVERE, null, ex);
             }
 

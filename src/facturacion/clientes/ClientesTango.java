@@ -119,7 +119,7 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
                 String nombre="";
                 String sql1="";
                 
-                Transaccionable rat=new Conecciones();
+                //Transaccionable rat=new Conecciones();
                 
                 ResultSet rr=null;
             while(rs.next()){               
@@ -144,6 +144,7 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
                 System.out.println("ACTUALIZACION :"+Inicio.actualizacionesClientes);
                 try{
                 if(Inicio.usuario.getNivelDeAutorizacion()==1){
+                 /*   
                 sql1="select sum(monto) as saldoActual from movimientosclientes where numeroProveedor="+cli.getCodigoId();
                 System.out.println(sql1);
                 try{
@@ -157,6 +158,7 @@ public class ClientesTango implements Busquedas,Facturar,Adeudable{
                     cli.setSaldo(rs.getDouble("saldo"));
                     cli.setSaldoActual(rs.getDouble("saldo")); 
                 }
+                */
                 }else{
                     cli.setSaldo(0.00);
                     cli.setSaldoActual(0.00);

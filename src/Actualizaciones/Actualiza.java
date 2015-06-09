@@ -49,13 +49,13 @@ public class Actualiza extends Thread{
             //Proveedores.cargarListadoProv1();
         Inicio.actualizable=1;
         if(Inicio.actualizable==1){
-        Usuarios.BackapearUsuarios();
+        //Usuarios.BackapearUsuarios();
         Sucursales.BackapearSucursales();
             //Articulos.RecargarMap();
         
         Proveedores.BackapearProveedores();
-        ClientesTango.BackapearClientes();
-        ListasDePrecios.BackapearListasDePrecios();
+        //ClientesTango.BackapearClientes();
+        //ListasDePrecios.BackapearListasDePrecios();
         //Cajas.BackapearCajas();
         //Cajas.LeerCajaAdministradora();
         //Articulos.BackapearMap();

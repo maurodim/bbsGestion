@@ -427,7 +427,7 @@ public class Articulos implements Facturar,Editables{
         ResultSet rr;
         switch (funcion){
             case 1:
-                sql="select *,(select sum(cantidad) from movimientosarticulos where movimientosarticulos.numerodeposito="+Inicio.deposito.getNumero()+" and movimientosarticulos.idArticulo=articulos.ID)as stock from articulos where INHABILITADO=0 order by ID";
+                sql="select *,(0.00)as stock from articulos where INHABILITADO=0 order by ID";
                 break;
             case 2:
                 sql="select *,(select sum(cantidad) from movimientosarticulos where movimientosarticulos.numerodeposito="+Inicio.deposito.getNumero()+" and movimientosarticulos.idArticulo=articulosmodificacion.ID)as stock from articulosmodificacion";
@@ -596,6 +596,7 @@ public class Articulos implements Facturar,Editables{
                 while(ic.hasNext()){
                     art=(String)ic.next();
                     sql=art;
+                    System.out.println("combo: "+sql);
                     tt.guardarRegistro(sql);
                 }
             }

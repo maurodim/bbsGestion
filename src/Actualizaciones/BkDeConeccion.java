@@ -6,6 +6,7 @@ package Actualizaciones;
 
 import Sucursales.Sucursales;
 import Sucursales.Usuarios;
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import interfaceGraficas.Inicio;
 import interfaces.Backpeable;
 import interfaces.Transaccionable;
@@ -51,8 +52,11 @@ public class BkDeConeccion implements Backpeable{
     private ArrayList listadoSentenciasClientes=new ArrayList();
     private ArrayList listadoSentenciasProveedores=new ArrayList();
     private ArrayList listadoSentenciasComprobantes=new ArrayList();
+    private static Transaccionable tra=new Conecciones();
+    private static Transaccionable tt=new ConeccionLocal();
     
     
+        Boolean verif=false;
     public static Boolean guardarSentencias(String sql){
         Boolean verif=false;
         Transaccionable tra=new Conecciones();
@@ -68,8 +72,7 @@ public class BkDeConeccion implements Backpeable{
         Boolean ver3=false;
         Boolean ver4=false;
         Boolean ver5=false;
-        Transaccionable tra=new Conecciones();
-        Transaccionable tt=new ConeccionLocal();
+        
         String sql="select * from movimientosarticulos where estado is null";
         String sentencia="";
         ResultSet rs=tt.leerConjuntoDeRegistros(sql);
@@ -85,6 +88,7 @@ public class BkDeConeccion implements Backpeable{
             rs=tt.leerConjuntoDeRegistros(sql);
             while(rs.next()){
                 sentencia="insert into movimientoscaja (numeroUsuario,idCliente,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,cantidad,pagado,observaciones,tipoCliente) values ("+rs.getInt("numerousuario")+","+rs.getInt("idcliente")+","+rs.getInt("numerosucursal")+","+rs.getInt("numerocomprobante")+","+rs.getInt("tipocomprobante")+","+rs.getDouble("monto")+","+rs.getInt("tipomovimiento")+","+rs.getInt("idcaja")+","+rs.getDouble("cantidad")+","+rs.getInt("pagado")+",'"+rs.getString("observaciones")+"',"+rs.getInt("tipocliente")+")";
+                System.out.println(sentencia);
                 listadoSentenciasCaja.add(sentencia);
             }
             rs.close();
@@ -122,8 +126,10 @@ public class BkDeConeccion implements Backpeable{
             
             
            
-            String st=null;
+            String st="";
             Iterator itA=listadoSentenciasArt.listIterator();
+            if(ProbarConeccion()){
+                System.out.println("entro en ver 1");
             while(itA.hasNext()){
                 st=(String)itA.next();
                 ver1=tra.guardarRegistro(st);
@@ -132,7 +138,11 @@ public class BkDeConeccion implements Backpeable{
              sql="update movimientosarticulos set estado=1 where estado is null";
             tt.guardarRegistro(sql);  
             }
+            }
             Iterator itCa=listadoSentenciasCaja.listIterator();
+            st="";
+            if(ProbarConeccion()){
+                System.out.println("entro en ver 2");
             while(itCa.hasNext()){
                 st=(String)itCa.next();
                 ver2=tra.guardarRegistro(st);
@@ -142,7 +152,11 @@ public class BkDeConeccion implements Backpeable{
             tt.guardarRegistro(sql);
   
             }
+            }
             Iterator itCl=listadoSentenciasClientes.listIterator();
+            st="";
+            if(ProbarConeccion()){
+                System.out.println("entro en ver 3");
             while(itCl.hasNext()){
                 st=(String)itCl.next();
                 ver3=tra.guardarRegistro(st);
@@ -152,7 +166,11 @@ public class BkDeConeccion implements Backpeable{
             sql="update movimientosclientes set estado =1 where estado is null";
             tt.guardarRegistro(sql);    
             }
+            }
             Iterator itP=listadoSentenciasProveedores.listIterator();
+            st="";
+            if(ProbarConeccion()){
+                System.out.println("entro en ver 4");
             while(itP.hasNext()){
                 st=(String)itP.next();
                 ver4=tra.guardarRegistro(st);
@@ -161,22 +179,28 @@ public class BkDeConeccion implements Backpeable{
                sql="update movimientosproveedores set estado=1 where estado is null";
             tt.guardarRegistro(sql);  
             }
+            }
             Iterator itCo=listadoSentenciasComprobantes.listIterator();
+            st="";
+            if(ProbarConeccion()){
+                System.out.println("entro en ver 5");
             while(itCo.hasNext()){
                 st=(String)itCo.next();
                 tra.guardarRegistro(st);
             }
-            
+            }
             listadoSentenciasArt.clear();
             listadoSentenciasCaja.clear();
             listadoSentenciasClientes.clear();
             listadoSentenciasProveedores.clear();
             listadoSentenciasComprobantes.clear();
             ver=true;
-            
+        } catch (MySQLSyntaxErrorException ee){
+            Logger.getLogger(BkDeConeccion.class.getName()).log(Level.SEVERE, null, ee);    
             
         } catch (SQLException ex) {
             Logger.getLogger(BkDeConeccion.class.getName()).log(Level.SEVERE, null, ex);
+        
         }
         
         
@@ -185,7 +209,7 @@ public class BkDeConeccion implements Backpeable{
     private Boolean ProbarConeccion(){
         Boolean verif=false;
         String sql="select * from articulos limit 0,1";
-        Transaccionable tra=new Conecciones();
+        
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){

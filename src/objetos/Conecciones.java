@@ -4,6 +4,8 @@
  */
 package objetos;
 
+import Actualizaciones.ErroresConeccionRemota;
+import com.mysql.jdbc.exceptions.MySQLNonTransientConnectionException;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import interfaceGraficas.Inicio;
 import interfaces.Transaccionable;
@@ -35,6 +37,8 @@ import java.util.logging.Logger;
 public class Conecciones implements Transaccionable{
     private Connection con;
     private PreparedStatement st;
+    private static Transaccionable tt=new ConeccionLocal();
+    private static ErroresConeccionRemota error;
 
     public Conecciones() {
                 MysqlDataSource dataSource=new MysqlDataSource();
@@ -50,7 +54,7 @@ public class Conecciones implements Transaccionable{
                     
                 String cod1=String.valueOf(ex);
                         
-			System.out.println("NO SE PUDO CONECTAR A LA BASE "+ex);
+			System.out.println("NO SE PUDO CONECTAR A LA BASE ---CONECCIONES---"+ex);
 		FileWriter fichero=null;
             PrintWriter pw=null;
             String fechaDia;
@@ -94,7 +98,7 @@ public class Conecciones implements Transaccionable{
         try {
             //System.out.println("SENTENCIA "+sql);
             if(con==null){
-                Transaccionable tt=new ConeccionLocal();
+                
             String ss="insert into fallas (st,estado) values ('"+sql+"',0)";
             tt.guardarRegistro(ss);
             Inicio.coneccionRemota=false;
@@ -104,34 +108,25 @@ public class Conecciones implements Transaccionable{
             Inicio.coneccionRemota=true;
             }
             //this.st.executeQuery(sql);
+        } catch(MySQLNonTransientConnectionException emy){
+            System.out.println("error de coneccion "+emy);
+            coneccion=false;
             
+            Inicio.coneccionRemota=false;
+            //ACA DEBERIA GENERAR UN HILO PARA GUARDAR LOS ERRORES
+            error=new ErroresConeccionRemota();
+            error.setSql(sql);
+            error.execute();
         } catch (SQLException ex) {
             Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println(ex);
             coneccion=false;
-            FileWriter fichero=null;
-            PrintWriter pw=null;
+            
             Inicio.coneccionRemota=false;
-            Transaccionable tt=new ConeccionLocal();
-            String ss="insert into fallas (st) values ('"+sql+"')";
-            tt.guardarRegistro(sql);
-            try {
-                fichero = new FileWriter("C:\\Gestion\\"+Inicio.fechaDia+" - erroresDeConeccion.txt",true);
-                pw=new PrintWriter(fichero);
-                pw.println(sql);
-                
-            } catch (IOException ex1) {
-                Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex1);
-            }finally{
-                         try {
-           // Nuevamente aprovechamos el finally para 
-           // asegurarnos que se cierra el fichero.
-           if (null != fichero)
-              fichero.close();
-           } catch (Exception e2) {
-              e2.printStackTrace();
-           }
-            }
+            error=new ErroresConeccionRemota();
+            error.setSql(sql);
+            error.execute();
+            
             
         }
         return coneccion;
@@ -150,7 +145,9 @@ public class Conecciones implements Transaccionable{
             } catch (SQLException ex) {
                 Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex);
                 coneccionCorrecta=false;
+                
                 Inicio.coneccionRemota=false;
+                break;
             }
         }
         

@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import javax.swing.Timer;
@@ -50,6 +51,7 @@ public class Actualiza1 extends SwingWorker{
                     aplicacion.exec("java -jar C:/Gestor/Actualizador.jar");
                 } catch (IOException ex) {
                     Logger.getLogger(Actualiza1.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null,"error al ejecutar actualizacion "+ex);
                 }
                 
             }

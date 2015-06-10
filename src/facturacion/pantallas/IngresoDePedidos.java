@@ -744,9 +744,13 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       try{
         int posicion=this.jTable1.getSelectedRow();
         detalleDelPedido.remove(posicion);
         //detalleDelPedido.clear();
+        }catch(java.lang.ArrayIndexOutOfBoundsException ee){
+            System.err.println("error de indice "+ee);
+        }
         agregarRenglonTabla();
         jTextField1.setText("");
         jTextField1.requestFocus();

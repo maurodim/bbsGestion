@@ -57,6 +57,8 @@ public class Articulos implements Facturar,Editables{
     private Integer idCombo;
     private static ArrayList listCombo=new ArrayList();
     private Integer idDeposito;
+    private static Transaccionable tra=new ConeccionLocal();
+    private static ResultSet rr;
 
     public Integer getIdDeposito() {
         return idDeposito;
@@ -696,8 +698,8 @@ public class Articulos implements Facturar,Editables{
         Articulos articulo=null;
         criterio=criterio.toUpperCase();
         String sql="select * from articulos where nombre like '%"+criterio+"%'";
-        Transaccionable tra=new ConeccionLocal();
-        ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+        //Transaccionable tra=new ConeccionLocal();
+        rr=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rr.next()){
                 articulo=new Articulos();
@@ -816,8 +818,7 @@ public class Articulos implements Facturar,Editables{
         //articulo=(Articulos)listadoBarr.get(codigoDeBarra);
         
         String sql="select id,nombre,barras,precio,equivalencia,costo,minimo,stock,servicio,servicio1,modificaprecio,modificaservicio,stock,recargo,idcombo from articulos where BARRAS like '"+codigoDeBarra+"' and INHABILITADO=0";
-        Transaccionable tra=new ConeccionLocal();
-        ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+        rr=tra.leerConjuntoDeRegistros(sql);
         Articulos articulo=new Articulos();
         
         try {

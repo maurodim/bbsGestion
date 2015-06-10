@@ -109,10 +109,13 @@ public class Inicio extends javax.swing.JFrame {
         
         //}else{
         
-        Actualiza actu=new Actualiza();
-        actu.start();
+        
+        //Actualiza actu=new Actualiza();
+        //actu.start();
+        new Thread(new Actualiza()).start();
         Actualiza1 actu1=new Actualiza1();
-        actu1.start();
+        actu1.execute();
+        
         //}
         initComponents();
         Image icon=new ImageIcon(getClass().getResource("/imagen/icono.png")).getImage();

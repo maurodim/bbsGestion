@@ -30,7 +30,9 @@ import objetos.Conecciones;
  *
  * @author mauro
  */
-public class Actualiza extends Thread{
+public class Actualiza implements Runnable{
+    Thread hilo;
+    
     @Override
     public void run(){
         Timer timer=new Timer(850000,new ActionListener(){ 
@@ -50,7 +52,8 @@ public class Actualiza extends Thread{
         Inicio.actualizable=1;
         if(Inicio.actualizable==1){
         //Usuarios.BackapearUsuarios();
-        Sucursales.BackapearSucursales();
+        /*
+            Sucursales.BackapearSucursales();
             //Articulos.RecargarMap();
         
         Proveedores.BackapearProveedores();
@@ -67,6 +70,7 @@ public class Actualiza extends Thread{
         ClientesTango.cargarMap();
         ListasDePrecios.cargarMap();
         Inicio.actualizable=0;
+            */
         }
         BkDeConeccion bk=new BkDeConeccion();
         bk.procesosDeCierre();

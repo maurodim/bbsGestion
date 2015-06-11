@@ -208,13 +208,17 @@ public class BkDeConeccion implements Backpeable{
     }
     private Boolean ProbarConeccion(){
         Boolean verif=false;
-        String sql="select * from articulos limit 0,1";
+        
+        String sql="select id from articulos limit 0,1";
         
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
                 verif=true;
                 
+            }
+            if(rs!=null){
+                tra=new Conecciones();
             }
             rs.close();
         } catch (SQLException ex) {

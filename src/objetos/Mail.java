@@ -23,7 +23,7 @@ import javax.mail.internet.MimeMultipart;
  */
 public class Mail {
     private final Properties propiedades=new Properties();
-    private String password="sayNoMore001";
+    private String password="chaco001";
     private Session sesion;
     private String direccionFile;
     private String detalleListado;
@@ -44,11 +44,11 @@ public class Mail {
     }
     
     private void init(){
-        propiedades.put("mail.smtp.host","mail.kioscosaynomore.com.ar");
+        propiedades.put("mail.smtp.host","mail.bambusoft.com.ar");
         propiedades.put("mail.smtp.starttls.enable","false");
         propiedades.put("mail.smtp.port",587);
-        propiedades.put("mail.smtp.mail.sender","say2@kioscosaynomore.com.ar");
-        propiedades.put("mail.smtp.user","say2@kioscosaynomore.com.ar");
+        propiedades.put("mail.smtp.mail.sender","snm@bambusoft.com.ar");
+        propiedades.put("mail.smtp.user","snm@bambusoft.com.ar");
         propiedades.put("mail.smtp.auth","true");
         sesion=Session.getDefaultInstance(propiedades);
         
@@ -58,8 +58,8 @@ public class Mail {
         try{
             MimeMessage mensaje=new MimeMessage(sesion);
             mensaje.setFrom(new InternetAddress((String)propiedades.get("mail.smtp.mail.sender")));
-            mensaje.addRecipient(Message.RecipientType.TO,new InternetAddress("administracion@kioscosaynomore.com.ar"));
-            mensaje.addRecipient(Message.RecipientType.TO,new InternetAddress("damian.simon@kioscosaynomore.com.ar"));
+            mensaje.addRecipient(Message.RecipientType.TO,new InternetAddress("snm@bambusoft.com.ar"));
+            
             mensaje.setSubject(asunto);
             BodyPart texto=new MimeBodyPart();
             texto.setText("INFORME GENERADO POR CIERRE DE CAJA   \n Saludos");

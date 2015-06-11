@@ -170,11 +170,41 @@ public class Conecciones implements Transaccionable{
             st.execute();
             rs=st.getResultSet();
             //}
+        }catch (MySQLNonTransientConnectionException emy){
+            if(reabrirConeccion()){
+                try {
+                    st=con.prepareStatement(sql);
+                    st.execute();
+                    rs=st.getResultSet();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex);
+                    rs=null;
+                }
+            }
+            
         } catch (SQLException ex) {
-            Inicio.coneccionRemota=false;
+            if(reabrirConeccion()){
+                
+                try {
+                    st=con.prepareStatement(sql);
+                    st.execute();
+                    rs=st.getResultSet();
+                } catch (SQLException ex1) {
+                    Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex1);
+                Inicio.coneccionRemota=false;
             System.out.println("NO SE CONECTA, ACA CARGA LOS OBJETOS");
             Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("NO ENTRO LA CONECCION");
+                }
+                    
+                
+            }else{
+                Inicio.coneccionRemota=false;
+            System.out.println("NO SE CONECTA, ACA CARGA LOS OBJETOS");
+            Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("NO ENTRO LA CONECCION");
+            }
+            
         }
         catch (NullPointerException ee){
             
@@ -190,7 +220,23 @@ public class Conecciones implements Transaccionable{
         if(con==null)verificar=false;
         return verificar;
     }
-   
+    private Boolean reabrirConeccion(){
+        Boolean verif=true;
+        MysqlDataSource dataSource=new MysqlDataSource();
+		try{
+			//Class.forName(driver1).newInstance();
+                    dataSource.setUser("maurodim");//maurodim
+                    dataSource.setDatabaseName("maurodim_lseriea");//maurodim_lseriea
+                    dataSource.setPassword("mau*2012");//mau*2012
+                    dataSource.setServerName("201.235.253.65");//201.235.253.65
+                    con=dataSource.getConnection();
+                    verif=true;
+                    //st=con.createStatement();
+                 }catch(Exception ex){
+                 verif=false;
+                 }
+        return verif;
+    }
 
     }
     

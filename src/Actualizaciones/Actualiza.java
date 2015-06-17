@@ -72,8 +72,8 @@ public class Actualiza implements Runnable{
         Inicio.actualizable=0;
             */
         }
-        BkDeConeccion bk=new BkDeConeccion();
-        bk.procesosDeCierre();
+        //BkDeConeccion bk=new BkDeConeccion();
+        //bk.procesosDeCierre();
         
         /*
          * Usuarios

@@ -30,7 +30,7 @@ public class Actualiza1 extends SwingWorker{
 
         @Override
     protected Object doInBackground() throws Exception {
-        this.timer = new Timer(400000,new ActionListener(){ 
+        this.timer = new Timer(600000,new ActionListener(){ 
             @Override
             public void actionPerformed(ActionEvent e)
             {

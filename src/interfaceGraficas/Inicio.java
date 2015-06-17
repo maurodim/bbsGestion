@@ -664,8 +664,8 @@ public class Inicio extends javax.swing.JFrame {
         Proveedores.cargarListadoProv();
         ClientesTango.cargarMap();
         ListasDePrecios.cargarMap();
-        BkDeConeccion bk=new BkDeConeccion();
-        bk.procesosDeCierre();
+        //BkDeConeccion bk=new BkDeConeccion();
+        //bk.procesosDeCierre();
         Inicio.actualizable=0;
     }//GEN-LAST:event_jMenuItem23ActionPerformed
 

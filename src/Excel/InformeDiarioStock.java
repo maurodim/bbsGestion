@@ -242,7 +242,7 @@ public class InformeDiarioStock {
             celda9=fila.createCell(9);
             celda9.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
             Double tto=0.00;
-            tto=rs.getDouble("precioServicio")+ rs.getDouble("precioVenta");
+            tto=rs.getDouble("precioServicio")+ rs.getDouble("precioDeVenta");
             celda9.setCellValue(tto);
             
         }

@@ -128,9 +128,11 @@ public class LoguinBbsGestion extends javax.swing.JFrame {
         if(usuarios.getNumero()> 0){
         Inicio in=new Inicio(2);
         Inicio.niv=usuarios.getNivelDeAutorizacion();
+        
         Inicio.usuario=usuarios;
         Inicio.sucursal=usuarios.getSucursal();
         Inicio.deposito=Inicio.sucursal.getDepositos();
+        in.setNiv(usuarios.getNivelDeAutorizacion());
         in.setTitle(" SISTEMA DE GESTION SAY NO MORE //   USUARIO : "+Inicio.usuario.getNombre()+" SUCURSAL :"+Inicio.sucursal.getNumero()+" - "+Inicio.sucursal.getDescripcion());
         in.setExtendedState(JFrame.MAXIMIZED_BOTH);
         in.setVisible(true);

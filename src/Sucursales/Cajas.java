@@ -470,13 +470,13 @@ public class Cajas extends Sucursales implements Cajeables{
        try {
             Transaccionable tra=new ConeccionLocal();
             int cajaNumeroAct=0;
-            ResultSet rs=tra.leerConjuntoDeRegistros("select numero from caja");
+            ResultSet rs=tra.leerConjuntoDeRegistros("select numero from caja where numeroSucursal="+Inicio.sucursal.getNumero());
             while(rs.next()){
                     cajaNumeroAct=rs.getInt("numero");
             }
             rs.close();
             cajaNumeroAct++;
-            cajaNumeroAct=Inicio.usuario.getEquipo() + cajaNumeroAct;
+            //cajaNumeroAct=Inicio.usuario.getEquipo() + cajaNumeroAct;
             Double saldoI=cajaNueva.getSaldoInicial();
             String sql="insert into caja (numero,numeroSucursal,numeroUsuario,tipoMovimiento,saldoInicial,tipo,estado) values ("+cajaNumeroAct+","+Inicio.sucursal.getNumero()+","+Inicio.usuario.getNumero()+",9,"+cajaNueva.saldoInicial+","+tipo+",0)";
             tra.guardarRegistro(sql);
@@ -731,6 +731,7 @@ public class Cajas extends Sucursales implements Cajeables{
         Boolean verifi=false;
         String sql="select * from caja where numeroUsuario ="+numeroDeUsuario+" and numeroSucursal="+numeroDeSucursal+" and estado=0";
         Transaccionable tra;
+        System.out.println(sql);
         /*
         if(Inicio.coneccionRemota){
             tra=new Conecciones();
@@ -751,7 +752,6 @@ public class Cajas extends Sucursales implements Cajeables{
         //if(Inicio.coneccionRemota)BackapearCajas();
         return verifi;
     }
-
     @Override
     public Object CargarCaja(int numeroDeUsuario, int numeroDeSucursal, String fecha) {
         Cajas cajas=new Cajas();

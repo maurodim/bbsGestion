@@ -106,12 +106,13 @@ public class Inicio extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        //permisos(niv);
         //}else{
         
         
         //Actualiza actu=new Actualiza();
         //actu.start();
+        
         new Thread(new Actualiza()).start();
         Actualiza1 actu1=new Actualiza1();
         actu1.execute();

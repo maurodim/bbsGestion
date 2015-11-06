@@ -423,8 +423,10 @@ public class Inicio extends javax.swing.JFrame {
         jMenuBar1.add(jMenu7);
 
         jMenu8.setText("Bases de Datos");
+        jMenu8.setEnabled(false);
 
         jMenuItem23.setText("Ejecutar sincronizacion");
+        jMenuItem23.setEnabled(false);
         jMenuItem23.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem23ActionPerformed(evt);

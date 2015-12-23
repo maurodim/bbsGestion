@@ -272,5 +272,19 @@ public class InformeDiarioStock {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(InformeMensual.class.getName()).log(Level.SEVERE, null, ex);
         }
+        sql="select id,nombre,precio,servicio,(select sum(movimientosarticulos.cantidad) from movimientosarticulos where movimientosarticulos.idcaja="+Inicio.caja.getNumero()+" and movimientosarticulos.idarticulo=articulos.id)as cantidadVendida from articulos order by cantidadVendida desc";
+        rs=tra.leerConjuntoDeRegistros(sql);
+        System.out.println(sql);
+        Transaccionable tt=new Conecciones();
+        String sql1;
+        
+        while(rs.next()){
+            if(rs.getDouble("cantidadVendida") < 0){
+        sql1="insert into movimientosarticulosF (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroCliente,numerousuario,precioDeVenta,precioServicio,idcaja) values (1,"+rs.getInt("id")+",floor("+rs.getDouble("cantidadVendida")+" * 0.1),"+Inicio.deposito.getNumero()+",1,1,"+Inicio.usuario.getNumeroId()+","+rs.getDouble("precio")+","+rs.getDouble("servicio")+","+Inicio.caja.getNumero()+")";
+        System.out.println(sql1);
+        tt.guardarRegistro(sql1);
+            }
+                
+                }
     }
 }

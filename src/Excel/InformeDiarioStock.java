@@ -61,6 +61,7 @@ public class InformeDiarioStock {
         HSSFCell celda7;
         HSSFCell celda8;
         HSSFCell celda9;
+        HSSFCell celda10;
         HSSFFont fuente=libro.createFont();
         //fuente.setFontHeight((short)21);
         fuente.setFontName(fuente.FONT_ARIAL);
@@ -188,7 +189,12 @@ public class InformeDiarioStock {
             celda8=fila.createCell(8);
             celda8.setCellStyle(titulo);
             celda8.setCellValue("Cliente");
-            
+            celda9=fila.createCell(9);
+            celda9.setCellStyle(titulo);
+            celda9.setCellValue("Total");
+            celda10=fila.createCell(10);
+            celda10.setCellStyle(titulo);
+            celda10.setCellValue("idMovimiento");
             
             
             }
@@ -244,7 +250,9 @@ public class InformeDiarioStock {
             Double tto=0.00;
             tto=rs.getDouble("precioServicio")+ rs.getDouble("precioDeVenta");
             celda9.setCellValue(tto);
-            
+            celda10=fila.createCell(10);
+            celda10.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            celda10.setCellValue(rs.getInt("id"));
         }
             rs.close();
         

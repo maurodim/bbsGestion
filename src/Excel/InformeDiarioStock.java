@@ -147,7 +147,7 @@ public class InformeDiarioStock {
             // hoja 2
             
         form=null;
-        sql="SELECT cantidad,preciodecosto,preciodeventa,precioservicio,fecha,numerocomprobante,(select listcli.RAZON_SOCI from listcli where listcli.codMmd=movimientosarticulos.numeroCliente)as nombreC,(select articulos.NOMBRE from articulos where articulos.ID=movimientosarticulos.idArticulo)as descA,(select usuarios.nombre from usuarios where usuarios.numero=movimientosarticulos.numeroUsuario) as nombreU FROM movimientosarticulos where tipoMovimiento =1 and idcaja="+Inicio.caja.getNumero();
+        sql="SELECT id,cantidad,preciodecosto,preciodeventa,precioservicio,fecha,numerocomprobante,(select listcli.RAZON_SOCI from listcli where listcli.codMmd=movimientosarticulos.numeroCliente)as nombreC,(select articulos.NOMBRE from articulos where articulos.ID=movimientosarticulos.idArticulo)as descA,(select usuarios.nombre from usuarios where usuarios.numero=movimientosarticulos.numeroUsuario) as nombreU FROM movimientosarticulos where tipoMovimiento =1 and idcaja="+Inicio.caja.getNumero();
         //System.out.println(sql);
         //tra=new Conecciones();
         rs=tra.leerConjuntoDeRegistros(sql);

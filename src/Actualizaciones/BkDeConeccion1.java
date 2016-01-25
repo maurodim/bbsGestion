@@ -72,7 +72,7 @@ public class BkDeConeccion1 implements Backpeable{
         Boolean ver5=false;
         Sentencias sentencia;
         
-        String sql="select * from movimientosarticulos where estado is null";
+        String sql="select * from movimientosarticulos where estado is null order by id limit 0,3000";
         //String sentencia="";
         ResultSet rs=tt.leerConjuntoDeRegistros(sql);
         try {
@@ -91,28 +91,42 @@ public class BkDeConeccion1 implements Backpeable{
             listadoSentenciasArt.add(sentencia);
             rs.close();
             
-            
-            sql="select * from movimientoscaja where estado is null";
+            cantidad=0;
+            textoSentencia="";
+            sql="select * from movimientoscaja where estado is null order by id limit 0,3000";
             rs=tt.leerConjuntoDeRegistros(sql);
+            sentencia=new Sentencias();
+            textoSentencia="insert into movimientoscaja (numeroUsuario,idCliente,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,cantidad,pagado,observaciones,tipoCliente,idOriginal) values ";
             while(rs.next()){
-                sentencia=new Sentencias();
-                sentencia.setTexto("insert into movimientoscaja (numeroUsuario,idCliente,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,cantidad,pagado,observaciones,tipoCliente,idOriginal) values ("+rs.getInt("numerousuario")+","+rs.getInt("idcliente")+","+rs.getInt("numerosucursal")+","+rs.getInt("numerocomprobante")+","+rs.getInt("tipocomprobante")+","+rs.getDouble("monto")+","+rs.getInt("tipomovimiento")+","+rs.getInt("idcaja")+","+rs.getDouble("cantidad")+","+rs.getInt("pagado")+",'"+rs.getString("observaciones")+"',"+rs.getInt("tipocliente")+","+rs.getInt("id")+")");
+                
+                textoSentencia+="("+rs.getInt("numerousuario")+","+rs.getInt("idcliente")+","+rs.getInt("numerosucursal")+","+rs.getInt("numerocomprobante")+","+rs.getInt("tipocomprobante")+","+rs.getDouble("monto")+","+rs.getInt("tipomovimiento")+","+rs.getInt("idcaja")+","+rs.getDouble("cantidad")+","+rs.getInt("pagado")+",'"+rs.getString("observaciones")+"',"+rs.getInt("tipocliente")+","+rs.getInt("id")+"),";
                 sentencia.setId(rs.getInt("id"));
-                System.out.println(sentencia.getTexto());
-                listadoSentenciasCaja.add(sentencia);
+                //System.out.println(sentencia.getTexto());
+                //listadoSentenciasCaja.add(sentencia);
             }
+            cantidad=textoSentencia.length();
+            textoSentencia=textoSentencia.substring(0, cantidad -1);
+            sentencia.setTexto(textoSentencia);
+            listadoSentenciasCaja.add(sentencia);
             rs.close();
 
-            sql="select * from movimientosclientes where estado is null";
+            sql="select * from movimientosclientes where estado is null order by id limit 0,3000";
             //aca tengo que poner un group by numero de comprobantes and numeroProveedor
             
             rs=tt.leerConjuntoDeRegistros(sql);
+            sentencia=new Sentencias();
+            cantidad=0;
+            textoSentencia="insert into movimientosclientes (numeroProveedor,monto,pagado,numeroComprobante,idRemito,idUsuario,idCaja,tipoComprobante,idSucursal,idOriginal) values ";
             while(rs.next()){
-                sentencia=new Sentencias();
-                sentencia.setTexto("insert into movimientosclientes (numeroProveedor,monto,pagado,numeroComprobante,idRemito,idUsuario,idCaja,tipoComprobante,idSucursal,idOriginal) values ("+rs.getInt("numeroproveedor")+","+rs.getDouble("monto")+","+rs.getInt("pagado")+","+rs.getInt("numerocomprobante")+","+rs.getInt("idRemito")+","+rs.getInt("idusuario")+","+rs.getInt("idcaja")+","+rs.getInt("tipocomprobante")+","+rs.getInt("idsucursal")+","+rs.getInt("id")+")");
+                
+                textoSentencia+="("+rs.getInt("numeroproveedor")+","+rs.getDouble("monto")+","+rs.getInt("pagado")+","+rs.getInt("numerocomprobante")+","+rs.getInt("idRemito")+","+rs.getInt("idusuario")+","+rs.getInt("idcaja")+","+rs.getInt("tipocomprobante")+","+rs.getInt("idsucursal")+","+rs.getInt("id")+"),";
                 sentencia.setId(rs.getInt("id"));
-                listadoSentenciasClientes.add(sentencia);
+                //listadoSentenciasClientes.add(sentencia);
             }
+            cantidad=textoSentencia.length();
+            textoSentencia=textoSentencia.substring(0, cantidad -1);
+            sentencia.setTexto(textoSentencia);
+            listadoSentenciasClientes.add(sentencia);
             rs.close();
             
             sql="select * from movimientosproveedores where estado is null";
@@ -150,12 +164,13 @@ public class BkDeConeccion1 implements Backpeable{
             while(itA.hasNext()){
                 st=(Sentencias)itA.next();
                 if(tra.guardarRegistro(st.getTexto())){
-                    sql="update movimientosarticulos set estado=1 where id="+st.getId();
+                    sql="update movimientosarticulos set estado=1 where estado is null and id < "+st.getId();
                     System.out.println(st.getTexto());
             tt.guardarRegistro(sql);  
                 }
             }
             }
+            
             Iterator itCa=listadoSentenciasCaja.listIterator();
             //st="";
             if(ProbarConeccion()){
@@ -163,7 +178,7 @@ public class BkDeConeccion1 implements Backpeable{
             while(itCa.hasNext()){
                 st=(Sentencias)itCa.next();
                 if(tra.guardarRegistro(st.getTexto())){
-                    sql="update movimientoscaja set estado=1 where id="+st.getId();
+                    sql="update movimientoscaja set estado=1 where estado is null and id < "+st.getId();
                     tt.guardarRegistro(sql);
                 }
             }
@@ -176,7 +191,7 @@ public class BkDeConeccion1 implements Backpeable{
             while(itCl.hasNext()){
                 st=(Sentencias)itCl.next();
                 if(tra.guardarRegistro(st.getTexto())){
-                            sql="update movimientosclientes set estado =1 where id="+st.getId();
+                            sql="update movimientosclientes set estado =1 where estado is null and id <"+st.getId();
                             tt.guardarRegistro(sql);    
     
                 }
@@ -204,6 +219,7 @@ public class BkDeConeccion1 implements Backpeable{
                 tra.guardarRegistro(st.getTexto());
             }
             }
+            
             listadoSentenciasArt.clear();
             listadoSentenciasCaja.clear();
             listadoSentenciasClientes.clear();

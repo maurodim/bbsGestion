@@ -4,6 +4,7 @@
  */
 package interfaceGraficas;
 
+import Actualizaciones.Cierre;
 import Conversores.Numeros;
 import Excel.InformeDiarioStock;
 import Impresiones.Impresora;
@@ -427,6 +428,9 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         //ACA DEBE EMITIR EL INFORME DE STOCK PARA CONTROL Y MANDAR EL MAIL CON EL MISMO INFORME
         InformeDiarioStock info=new InformeDiarioStock();
         try {
+            Cierre actu=new Cierre();
+         Thread hilo=new Thread(actu);
+         hilo.start();
             info.GenerrarInformeStock();
         } catch (SQLException ex) {
             Logger.getLogger(ArqueoDeCaja.class.getName()).log(Level.SEVERE, null, ex);

@@ -285,9 +285,10 @@ public class InformeDiarioStock {
         System.out.println(sql);
         Transaccionable tt=new Conecciones();
         String sql1;
-        
+        Double cantVend;
         while(rs.next()){
-            if(rs.getDouble("cantidadVendida") < 0){
+            cantVend=rs.getDouble("cantidadVendida");
+            if(cantVend < 0){
         sql1="insert into movimientosarticulosF (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroCliente,numerousuario,precioDeVenta,precioServicio,idcaja) values (1,"+rs.getInt("id")+",floor("+rs.getDouble("cantidadVendida")+" * 0.1),"+Inicio.deposito.getNumero()+",1,1,"+Inicio.usuario.getNumeroId()+","+rs.getDouble("precio")+","+rs.getDouble("servicio")+","+Inicio.caja.getNumero()+")";
         System.out.println(sql1);
         tt.guardarRegistro(sql1);

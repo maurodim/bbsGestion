@@ -72,6 +72,11 @@ public class BkDeConeccion1 implements Backpeable{
         Boolean ver5=false;
         Sentencias sentencia;
         
+        listadoSentenciasArt.clear();
+        listadoSentenciasCaja.clear();
+        listadoSentenciasClientes.clear();
+        listadoSentenciasProveedores.clear();
+        listadoSentenciasComprobantes.clear();
         String sql="select * from movimientosarticulos where estado is null order by id limit 0,3000";
         //String sentencia="";
         ResultSet rs=tt.leerConjuntoDeRegistros(sql);

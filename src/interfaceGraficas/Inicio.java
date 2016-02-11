@@ -168,6 +168,7 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenuItem21 = new javax.swing.JMenuItem();
         jMenuItem24 = new javax.swing.JMenuItem();
+        jMenuItem25 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
@@ -270,6 +271,14 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem24);
+
+        jMenuItem25.setText("Empresas");
+        jMenuItem25.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem25ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem25);
 
         jMenuBar1.add(jMenu1);
 
@@ -677,6 +686,13 @@ public class Inicio extends javax.swing.JFrame {
         bkC.limpiarBasesLocal();
     }//GEN-LAST:event_jMenuItem24ActionPerformed
 
+    private void jMenuItem25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem25ActionPerformed
+        AbmEmpresas empresa=new AbmEmpresas();
+        jDesktopPane1.add(empresa);
+        empresa.setVisible(true);
+        empresa.toFront();
+    }//GEN-LAST:event_jMenuItem25ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -760,6 +776,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem22;
     private javax.swing.JMenuItem jMenuItem23;
     private javax.swing.JMenuItem jMenuItem24;
+    private javax.swing.JMenuItem jMenuItem25;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

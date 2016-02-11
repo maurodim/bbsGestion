@@ -38,6 +38,16 @@ public class FacturaProveedor implements Comprobable,Facturar,Adeudable{
     private Integer idSucursal;
     private static Integer numeroRecibo;
     private static Integer numeroFacturaP;
+    private Integer idEmpresa;
+
+    public Integer getIdEmpresa() {
+        return idEmpresa;
+    }
+
+    public void setIdEmpresa(Integer idEmpresa) {
+        this.idEmpresa = idEmpresa;
+    }
+    
 
     public Integer getIdSucursal() {
         return idSucursal;
@@ -186,7 +196,7 @@ public class FacturaProveedor implements Comprobable,Facturar,Adeudable{
     public Integer nuevoComprobante(Object objeto) {
         FacturaProveedor fact=(FacturaProveedor)objeto;
         Integer idFactura=0;
-        String sql="insert into movimientosproveedores (numeroProveedor,monto,numeroComprobante,idRemito,idUsuario,tipoComprobante,idSucursal) values ("+fact.getNumeroProveedor()+","+fact.getMontoFinal()+",'"+fact.getNumeroFactura()+"',"+fact.getIdRemito()+","+fact.getIdUsuario()+",5,"+fact.getIdSucursal()+")";
+        String sql="insert into movimientosproveedores (numeroProveedor,monto,numeroComprobante,idRemito,idUsuario,tipoComprobante,idSucursal,idempresa) values ("+fact.getNumeroProveedor()+","+fact.getMontoFinal()+",'"+fact.getNumeroFactura()+"',"+fact.getIdRemito()+","+fact.getIdUsuario()+",5,"+fact.getIdSucursal()+","+fact.getIdEmpresa()+")";
         Transaccionable tra=new Conecciones();
         if(tra.guardarRegistro(sql)){
             sql="select LAST_INSERT_ID()";
@@ -251,7 +261,7 @@ public class FacturaProveedor implements Comprobable,Facturar,Adeudable{
         if(tra.guardarRegistro(sql))//System.out.println(sql);
         sql="update movimientosproveedores set pagado="+fact.getPagada()+",fechaPago ='"+fact.getFecha()+"',idCaja="+fact.getIdCaja()+" where id="+fact.getId();
         if(tra.guardarRegistro(sql));//System.out.println(sql);       
-        
+        //ACA DEBERIA GENERAR EL COMPROBANTE DE RECIBO
         return verif;
         
         

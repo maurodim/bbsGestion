@@ -11,7 +11,9 @@ import Conversores.Numeros;
 import Depositos.RemitosInternos;
 import interfaces.Adeudable;
 import interfaces.Comprobable;
+import interfaces.Editables;
 import interfaces.Personalizable;
+import interfaces.Visibles;
 import interfacesPrograma.Facturar;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
@@ -20,10 +22,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import objetos.Articulos;
 import objetos.Comprobantes;
+import objetos.RazonesSocial;
 import tablas.MiModeloTablaFacturacion;
 
 /**
@@ -37,6 +41,9 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
     private ArrayList listaProv=new ArrayList();
     private Articulos arti;
     private Proveedores proveedor;
+    private RazonesSocial razon=new RazonesSocial();
+    private DefaultComboBoxModel modelo1=new DefaultComboBoxModel();
+    private ArrayList listadoRazones=new ArrayList();
     /**
      * Creates new form IngresoDeMercaderia
      */
@@ -45,6 +52,12 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         remito=new RemitosInternos();
         facturaProveedor=new FacturaProveedor();
         initComponents();
+        Editables editar=new RazonesSocial();
+        Visibles vista=new RazonesSocial();
+        listadoRazones=editar.ListarPorSucursal(razon);
+        modelo1=vista.ListadoCombo(listadoRazones);
+        this.jComboBox2.setModel(modelo1);
+        
     }
 
     /**
@@ -80,6 +93,8 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         jButton4 = new javax.swing.JButton();
         jCheckBox3 = new javax.swing.JCheckBox();
         jCheckBox4 = new javax.swing.JCheckBox();
+        jLabel10 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -236,6 +251,10 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
 
         jCheckBox4.setText("Paga?");
 
+        jLabel10.setText("Empresa");
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -274,18 +293,25 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
                                             .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                                    .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jTextField2)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
-                                    .addComponent(jCheckBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(37, 37, 37)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jCheckBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(200, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,7 +327,9 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
                         .addComponent(jCheckBox1)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel3)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel10)
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -516,7 +544,8 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         if(facturaProveedor.getNumeroProveedor()==0){
            facturaProveedor.setNumeroProveedor(1);
            Personalizable per=new Proveedores();
-           proveedor=(Proveedores) per.buscarPorNumero(1); 
+           proveedor=(Proveedores) per.buscarPorNumero(1);
+           
         }
         comprobante.setIdProveedor(proveedor.getNumero());
         comprobante.setNumeroDeposito(Inicio.deposito.getNumero());
@@ -543,6 +572,10 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
             facturaProveedor.setIdSucursal(Inicio.sucursal.getNumero());
             Double monto=Double.parseDouble(this.jTextField2.getText());
             facturaProveedor.setMontoFinal(monto);
+            RazonesSocial razon=new RazonesSocial();
+           razon=(RazonesSocial)listadoRazones.get(this.jComboBox2.getSelectedIndex());
+           int idEmpresa=razon.getId();
+           facturaProveedor.setIdEmpresa(idEmpresa);
             Comprobable fac=new FacturaProveedor();
             Integer idFactura=0;
             idFactura=fac.nuevoComprobante(facturaProveedor);
@@ -768,7 +801,9 @@ private void cargarLista(){
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
     private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

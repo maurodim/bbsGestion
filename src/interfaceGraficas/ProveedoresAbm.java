@@ -6,6 +6,9 @@ package interfaceGraficas;
 
 import Compras.Proveedores;
 import interfaces.Personalizable;
+import interfaces.Visibles;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -159,9 +162,16 @@ public class ProveedoresAbm extends javax.swing.JInternalFrame {
             //interface para cargar uno nuevo
             per.agregar(proveedores);
         }
+        IngresoDeMercaderia ingreso=new IngresoDeMercaderia();
+        Inicio.jDesktopPane1.add(ingreso);
+        //ArrayList frames=new ArrayList();
+        //frames=Inicio.jDesktopPane1.getAllFramesInLayer(WIDTH);
+        
+        ingreso.setVisible(true);
+        ingreso.toFront();
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

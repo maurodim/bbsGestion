@@ -49,6 +49,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
      */
     public IngresoDeMercaderia() {
         //Articulos.CargarMap();
+        listaProv.clear();
         remito=new RemitosInternos();
         facturaProveedor=new FacturaProveedor();
         initComponents();
@@ -105,7 +106,27 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Ingreso de Mercadería");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameActivated(evt);
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
         addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
             }
@@ -586,7 +607,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
                 facturaProveedor.setPagada(1);
                 facturaProveedor.setFecha(Date.valueOf(fecha2));
                 facturaProveedor.setIdCaja(Inicio.numeroCajaAdministradora);
-                fact.guardar(facturaProveedor);
+                //fact.guardar(facturaProveedor);
                 monto=monto * (-1);
                 facturaProveedor.setMontoFinal(monto);
                 Adeudable ade=new FacturaProveedor();
@@ -608,6 +629,8 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
             this.jTextField5.setText("");
             this.jTextField6.setText("");
             this.jLabel7.setText("1.00");
+            this.jCheckBox1.setSelected(false);
+            this.jCheckBox4.setSelected(false);
             listadoArt.clear();
             agregarRenglonTabla();
             this.jTable1.removeAll();
@@ -667,6 +690,7 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         Inicio.jDesktopPane1.add(provA);
         provA.setVisible(true);
         provA.toFront();
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
@@ -705,6 +729,14 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
         }
                 */
     }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        System.out.println("aca cargo");
+    }//GEN-LAST:event_formComponentResized
+
+    private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
+        System.out.println("aca cargo");
+    }//GEN-LAST:event_formInternalFrameActivated
 private void agregarRenglonTabla(){
         MiModeloTablaFacturacion busC=new MiModeloTablaFacturacion();
         this.jTable1.removeAll();
@@ -764,6 +796,7 @@ public void recargarBox(){
     }
 
 }
+
 private void cargarLista(){
     DefaultListModel modelo=new DefaultListModel();
     ArrayList lista=new ArrayList();

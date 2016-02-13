@@ -7,6 +7,7 @@ package Compras;
 import interfaceGraficas.Inicio;
 import interfaces.Personalizable;
 import interfaces.Transaccionable;
+import interfaces.Visibles;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,6 +18,9 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
 import objetos.Articulos;
 import objetos.ConeccionLocal;
 import objetos.Conecciones;
@@ -25,7 +29,7 @@ import objetos.Conecciones;
  *
  * @author mauro
  */
-public class Proveedores implements Personalizable{
+public class Proveedores implements Personalizable,Visibles{
     private int numero;
     private String nombre;
     private String direccion;
@@ -143,7 +147,7 @@ public class Proveedores implements Personalizable{
             //    tra=new Conecciones();
             //    sql="select *,(select sum(movimientosproveedores.monto) from movimientosproveedores where pagado=0 and movimientosproveedores.numeroProveedor=proveedores.ID)as saldo from proveedores order by NOMBRE";
             //}else{
-                tra=new ConeccionLocal();
+                tra=new Conecciones();
                 sql="select * from proveedores order by NOMBRE";
             //}
             ResultSet rr=tra.leerConjuntoDeRegistros(sql);
@@ -155,7 +159,7 @@ public class Proveedores implements Personalizable{
                 prov.setLocalidad(rr.getString("LOCALIDAD"));
                 prov.setMail(rr.getString("mail"));
                 prov.setTelefono(rr.getString("TELEFONO"));
-                prov.setSaldo(rr.getDouble("saldo"));
+                //prov.setSaldo(rr.getDouble("saldo"));
               //  if(Inicio.coneccionRemota)prov.setSaldo(rr.getDouble("saldo"));
                 //prov.setCondicionDeIva(rr.getInt("condicionIva"));
                 //prov.setNumeroDeCuit(rr.getString("numeroCuit"));
@@ -448,6 +452,28 @@ public class Proveedores implements Personalizable{
             Logger.getLogger(Proveedores.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listado;
+    }
+
+    @Override
+    public DefaultComboBoxModel ListadoCombo(ArrayList componentes) {
+        DefaultComboBoxModel modelo=new DefaultComboBoxModel();
+        Iterator listado=componentes.listIterator();
+        Proveedores proveedor=new Proveedores();
+        while(listado.hasNext()){
+            proveedor=(Proveedores)listado.next();
+            modelo.addElement(proveedor.getNombre());
+        }
+        return modelo;
+    }
+
+    @Override
+    public DefaultListModel ListadoEnList(ArrayList componentes) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultTableModel ListadoEnTabla(ArrayList componentes, ArrayList encabezadosColumnas, String formatoTabla) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

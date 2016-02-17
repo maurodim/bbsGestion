@@ -57,7 +57,7 @@ public class InformeProveedores {
         fuente.setFontName(fuente.FONT_ARIAL);
         fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         String form=null;
-        String sql="SELECT *,(select proveedores.nombre from proveedores where proveedores.numero=movimientosproveedores.numeroProveedor)as nombreP,if(pagado=0,'pendiente','pagado')as estado FROM movimientosproveedores where fecha between '"+desde+"' and '"+hasta+"'";
+        String sql="SELECT *,(select proveedores.nombre from proveedores where proveedores.numero=movimientosproveedores.numeroProveedor)as nombreP,if(pagado=0,'pendiente','pagado')as estado,(select empresas.nombre from empresas where empresas.id=movimientosproveedores.idempresa)as empresa FROM movimientosproveedores where fecha between '"+desde+"' and '"+hasta+"'";
         System.out.println(sql);
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
@@ -92,6 +92,9 @@ public class InformeProveedores {
             celda6=fila.createCell(6);
             celda6.setCellStyle(titulo);
             celda6.setCellValue("idCaja");
+            celda7=fila.createCell(7);
+            celda7.setCellStyle(titulo);
+            celda7.setCellValue("Empresa");
             }
             while(rs.next()){
             a++;
@@ -132,6 +135,9 @@ public class InformeProveedores {
             celda6=fila.createCell(6);
             celda6.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
             celda6.setCellValue(rs.getInt("idCaja"));
+            celda7=fila.createCell(7);
+            celda7.setCellType(HSSFCell.CELL_TYPE_STRING);
+            celda7.setCellValue(rs.getString("empresa"));
         }
           /*
            * segunda hoja
@@ -259,7 +265,7 @@ public class InformeProveedores {
            * cuarta hoja
            */  
            
-            sql="select numeroProveedor,fecha,monto,numeroComprobante,idRemito,tipoComprobante,(select proveedores.nombre from proveedores where proveedores.numero=movimientosproveedores.numeroProveedor)as nombreP,(select tipocomprobantes.descripcion from tipocomprobantes where tipocomprobantes.numero=movimientosproveedores.tipoComprobante)as comprobante from movimientosproveedores where fecha between '"+desde+"' and '"+hasta+"' order by numeroProveedor";
+            sql="select numeroProveedor,fecha,monto,numeroComprobante,idRemito,tipoComprobante,(select proveedores.nombre from proveedores where proveedores.numero=movimientosproveedores.numeroProveedor)as nombreP,(select tipocomprobantes.descripcion from tipocomprobantes where tipocomprobantes.numero=movimientosproveedores.tipoComprobante)as comprobante,(select empresas.nombre from empresas where empresas.id=movimientosproveedores.idempresa)as empresa from movimientosproveedores where fecha between '"+desde+"' and '"+hasta+"' order by numeroProveedor";
             System.out.println(sql);
         //fuente.setFontHeight((short)21);
         fuente.setFontName(fuente.FONT_ARIAL);
@@ -293,6 +299,9 @@ public class InformeProveedores {
             celda4=fila.createCell(4);
             celda4.setCellStyle(titulo);
             celda4.setCellValue("Comprobante Relacionado");
+            celda5=fila.createCell(5);
+            celda5.setCellStyle(titulo);
+            celda5.setCellValue("Empresa");
             }
             while(rs.next()){
             a++;
@@ -323,6 +332,9 @@ public class InformeProveedores {
             celda4=fila.createCell(4);
             celda4.setCellType(HSSFCell.CELL_TYPE_STRING);
             celda4.setCellValue(rs.getString("numeroComprobante"));
+            celda5=fila.createCell(5);
+            celda5.setCellType(HSSFCell.CELL_TYPE_STRING);
+            celda5.setCellValue(rs.getString("empresa"));
             }
             
         rs.close();

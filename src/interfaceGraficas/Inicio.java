@@ -73,11 +73,13 @@ public class Inicio extends javax.swing.JFrame {
         //if(coneccionRemota){
         //Articulos.CargarMap();
         Inicio.coneccionRemota=false;
+        /*
         if(Inicio.coneccionRemota){
             Proveedores.cargarListadoProv1();
         }else{
             Proveedores.cargarListadoProv();
         }
+        */
         ClientesTango.cargarMap();
         actualizacionesClientes=2;
         ListasDePrecios.cargarMap();

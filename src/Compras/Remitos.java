@@ -143,7 +143,7 @@ public class Remitos implements Comprobable{
                     System.out.println("entro: "+sql);
                 }
                 sql1="update articulos set COSTO="+art.getPrecioDeCosto()+" where id="+art.getNumeroId();
-                if(tra.guardarRegistro(sql1));//System.out.println(sql1);
+                if(tra.guardarRegistro(sql1))System.out.println(sql1);
                 
                 
                 

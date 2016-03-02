@@ -372,23 +372,32 @@ public class Proveedores implements Personalizable,Visibles{
     @Override
     public ArrayList listar() {
         ArrayList listado=new ArrayList();
-        /*
-         * Enumeration<Articulos> elementos=listadoNom.elements();
-       * while(elementos.hasMoreElements()){
-        *    articulo=(Articulos)elementos.nextElement();
-         */
-            Enumeration<Proveedores> elementos=listadoProv.elements();
-            //System.out.println(" ELEMENTOS PROVEEDORES "+listadoProv.size());
-            while(elementos.hasMoreElements()){
-                Proveedores prov=(Proveedores)elementos.nextElement();
-                //System.out.println(" PROVEEDORES "+prov.getNombre());
-                //prov.setCondicionDeIva(rr.getInt("condicionIva"));
-                //prov.setNumeroDeCuit(rr.getString("numeroCuit"));
-                //prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
-                //prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
+        
+        try {
+            String sql="select * from proveedores order by nombre";
+            Transaccionable tra=new Conecciones();
+            ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+            while(rr.next()){
+                Proveedores prov=new Proveedores();
+                prov.setNumero(rr.getInt("numero"));
+                prov.setNombre(rr.getString("NOMBRE"));
+                prov.setDireccion(rr.getString("DOMICILIO"));
+                prov.setLocalidad(rr.getString("LOCALIDAD"));
+                prov.setMail(rr.getString("mail"));
+                prov.setTelefono(rr.getString("TELEFONO"));
                 listado.add(prov);
+                /*
+                prov.setCondicionDeIva(rr.getInt("condicionIva"));
+                prov.setNumeroDeCuit(rr.getString("numeroCuit"));
+                prov.setCondicionIngresosBrutos(rr.getInt("condicionIb"));
+                prov.setNumeroIngresosBrutos(rr.getString("numeroIb"));
+                */ 
             }
-            //Collections.sort(listado);
+            rr.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Proveedores.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return listado;
     }
 

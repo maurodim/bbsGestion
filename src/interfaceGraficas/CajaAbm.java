@@ -393,6 +393,8 @@ public class CajaAbm extends javax.swing.JInternalFrame {
         switch(operaciones.getId()){
             case 11:
                 ListarProveedores();
+                this.jLabel2.setVisible(true);
+        this.jComboBox2.setVisible(true);
                 break;
             case 13:
                 ListarClientes();

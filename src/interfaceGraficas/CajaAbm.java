@@ -497,9 +497,12 @@ public class CajaAbm extends javax.swing.JInternalFrame {
     this.jLabel8.setText("T. EFECT EN CAJA "+totalEfect);
     }
     private void ListarProveedores(){
+        //listadoP.clear();
+        this.jComboBox2.removeAllItems();
         Proveedores fact=new Proveedores();
         listadoP=new ArrayList();
         //Adeudable ade=new FacturaProveedor();
+        //if(listadoP)
         Personalizable ade=new Proveedores();
         listadoP=ade.listar();
         Iterator ilP=listadoP.listIterator();
@@ -515,6 +518,7 @@ public class CajaAbm extends javax.swing.JInternalFrame {
     }
     private void ListarClientes(){
       ClientesTango fact=new ClientesTango();
+      this.jComboBox2.removeAllItems();
         listadoP=new ArrayList();
         //Adeudable ade=new FacturaProveedor();
         Busquedas ade=new ClientesTango();

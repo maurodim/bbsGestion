@@ -432,7 +432,7 @@ public class Articulos implements Facturar,Editables{
                 sql="select *,(0.00)as stock from articulos where INHABILITADO=0 order by ID";
                 break;
             case 2:
-                sql="select *,(select sum(cantidad) from movimientosarticulos where movimientosarticulos.numerodeposito="+Inicio.deposito.getNumero()+" and movimientosarticulos.idArticulo=articulosmodificacion.ID)as stock from articulosmodificacion";
+                sql="select *,(select sum(cantidad) from movimientosarticulos where movimientosarticulos.numerodeposito="+Inicio.deposito.getNumero()+" and movimientosarticulos.idArticulo=articulos.ID)as stock from articulosmodificacion";
                 break;
             case 3:
                 sql="select *,(select sum(cantidad) from movimientosarticulos where movimientosarticulos.numerodeposito="+Inicio.deposito.getNumero()+" and movimientosarticulos.idArticulo=articulosnuevos.ID)as stock from articulosnuevos";
@@ -577,7 +577,7 @@ public class Articulos implements Facturar,Editables{
                 sql="insert into articulos (id,nombre,barras,servicio,costo,precio,minimo,stock,equivalencia,modificaprecio,modificaservicio,recargo,inhabilitado,idrubro,servicio1,idcombo) values ("+articulo.getNumeroId()+",'"+articulo.getDescripcionArticulo()+"','"+articulo.getCodigoDeBarra()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getStockMinimo()+","+articulo.getStockActual()+","+articulo.getEquivalencia()+","+mod+","+serv+","+articulo.getRecargo()+",0,0,"+articulo.getPrecioServicio1()+","+articulo.getIdCombo()+")";
                 break;
             case 4:
-                sql="delete from articulos wher id="+articulo.getNumeroId();
+                //sql="delete from articulos wher id="+articulo.getNumeroId();
                 break;
             default:
                 System.out.println("OJO QUE NO ENTRO EN NINGUNA OPCION");
@@ -909,11 +909,11 @@ public class Articulos implements Facturar,Editables{
     public Boolean EliminacionDeObjeto(Object objeto) {
         Articulos articulo=(Articulos)objeto;
         Boolean verif=false;
-        String sql="update articulos set INHABILITADO=1, actualizacion=4 where ID="+articulo.getNumeroId();
+        String sql="update articulos set INHABILITADO=1 where ID="+articulo.getNumeroId();
         Transaccionable tra=new Conecciones();
         verif=tra.guardarRegistro(sql);
-        sql="insert into actualizaciones (iddeposito,idobjeto,estado) values (1,1,4),(2,1,4),(3,1,4),(4,1,4),(5,1,4),(6,1,4),(7,1,4)";
-        tra.guardarRegistro(sql);
+        //sql="insert into actualizaciones (iddeposito,idobjeto,estado) values (1,1,4),(2,1,4),(3,1,4),(4,1,4),(5,1,4),(6,1,4),(7,1,4)";
+        //tra.guardarRegistro(sql);
         
         return verif;
     }

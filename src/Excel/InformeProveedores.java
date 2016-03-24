@@ -4,6 +4,7 @@
  */
 package Excel;
 
+import Conversores.Numeros;
 import interfaces.Transaccionable;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -240,6 +241,7 @@ public class InformeProveedores {
             celda1.setCellValue("Saldo");
             
             }
+            String saldoP;
             while(rs.next()){
             a++;
             //col=rs.getInt("tipoMovimiento");
@@ -258,8 +260,10 @@ public class InformeProveedores {
             celda.setCellValue(rs.getString("nombreP"));
             celda1=fila.createCell(1);
             ttx=ttx;
-            celda1.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-            celda1.setCellValue(rs.getDouble("saldoP"));
+            celda1.setCellType(HSSFCell.CELL_TYPE_STRING);
+            saldoP=Numeros.ConvertirNumeroExcell(rs.getDouble("saldoP"));
+            celda1.setCellValue(saldoP);
+            
             }
             /*
            * cuarta hoja

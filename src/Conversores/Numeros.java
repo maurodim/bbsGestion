@@ -6,6 +6,7 @@ package Conversores;
 
 import interfaceGraficas.Inicio;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,6 +26,13 @@ public class Numeros {
     
     public static String ConvertirNumero(Double num){
         DecimalFormat formato=new DecimalFormat("####.#");
+        doble=formato.format(num);
+        return doble;
+    }
+    public static String ConvertirNumeroExcell(Double num){
+        DecimalFormatSymbols simbolo=new DecimalFormatSymbols();
+        simbolo.setDecimalSeparator(',');
+        DecimalFormat formato=new DecimalFormat("####.#",simbolo);
         doble=formato.format(num);
         return doble;
     }

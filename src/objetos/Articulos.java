@@ -550,8 +550,8 @@ public class Articulos implements Facturar,Editables{
                 comboOk=1;
         }
         if(funcion==1){
-            sql="truncate table articulos";
-                tt.guardarRegistro(sql);
+            //sql="truncate table articulos";
+             //   tt.guardarRegistro(sql);
                 
         }
         while(elementos.hasMoreElements()){

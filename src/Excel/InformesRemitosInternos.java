@@ -56,7 +56,7 @@ public class InformesRemitosInternos {
         fuente.setFontName(fuente.FONT_ARIAL);
         fuente.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         String form=null;
-        String sql="SELECT *,(select depositos.descripcion from depositos where depositos.numero=movimientosdesucursales.depOrigen)as depor,(select depositos.descripcion from depositos where depositos.numero=movimientosdesucursales.depDestino)as depod,(select articulos.NOMBRE from articulos where articulos.ID=movimientosdesucursales.idArticulo)as descA,(select articulos.COSTO from articulos where articulos.ID=movimientosdesucursales.idArticulo)as costo  FROM movimientosdesucursales where fecha between '"+desde+"' and '"+hasta+"'";
+        String sql="SELECT *,(select depositos.descripcion from depositos where depositos.numero=movimientosdesucursales.depOrigen)as depor,(select depositos.descripcion from depositos where depositos.numero=movimientosdesucursales.depDestino)as depod,(select articulos.NOMBRE from articulos where articulos.ID=movimientosdesucursales.idArticulo)as descA  FROM movimientosdesucursales where fecha between '"+desde+"' and '"+hasta+"'";
         System.out.println(sql);
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);

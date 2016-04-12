@@ -120,7 +120,7 @@ public class RemitosInternos implements Comprobable{
     
     public static void numeroActual(){
         Transaccionable tra=new Conecciones();
-        String sql="select * from tipocomprobantes where numero=4";
+        String sql="select * from tipocomprobantes where numero=4 order by numeroActivo desc limit 0,1";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
@@ -142,15 +142,20 @@ public class RemitosInternos implements Comprobable{
         Iterator itRem=remInterno.articulos.listIterator();
         while(itRem.hasNext()){
             Articulos articulo=(Articulos)itRem.next();
-            sql="insert into movimientosdesucursales (depOrigen,depDestino,idArticulo,cantidad,numeroRemito,idUsuario) values ("+remInterno.getDepositoOrigen()+","+remInterno.getDepositoDestino()+","+articulo.getNumeroId()+","+articulo.getCantidad()+","+numeroComprobante+","+Inicio.usuario.getNumeroId()+")";
+            if(tra !=null){
+                
+            }else{
+                tra=new Conecciones();
+            }
+            sql="insert into movimientosdesucursales (depOrigen,depDestino,idArticulo,cantidad,numeroRemito,idUsuario,costo) values ("+remInterno.getDepositoOrigen()+","+remInterno.getDepositoDestino()+","+articulo.getNumeroId()+","+articulo.getCantidad()+","+numeroComprobante+","+Inicio.usuario.getNumeroId()+","+articulo.getPrecioDeCosto()+")";
             tra.guardarRegistro(sql);
             //carga el movimiento en la sucursal
-            sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numerousuario,precioDeCosto,precioDeVenta,idCaja) values (6,"+articulo.getNumeroId()+","+articulo.getCantidad()+","+remInterno.getDepositoDestino()+",4,"+numeroComprobante+",1,'"+Inicio.fechaDia+"',"+Inicio.usuario.getNumeroId()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+Inicio.caja.getNumero()+")";
+            sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numerousuario,precioDeCosto,precioDeVenta,idCaja,idOriginal) values (6,"+articulo.getNumeroId()+","+articulo.getCantidad()+","+remInterno.getDepositoDestino()+",4,"+numeroComprobante+",1,'"+Inicio.fechaDia+"',"+Inicio.usuario.getNumeroId()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+Inicio.caja.getNumero()+",0)";
             System.out.println(sql);
             tra.guardarRegistro(sql);
             //carga el movimiento de resta en el deposito origen
             Double cant=articulo.getCantidad() * -1;
-            sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numerousuario,precioDeCosto,precioDeVenta,idCaja) values (6,"+articulo.getNumeroId()+","+cant+","+remInterno.getDepositoOrigen()+",4,"+numeroComprobante+",1,'"+Inicio.fechaDia+"',"+Inicio.usuario.getNumeroId()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+Inicio.caja.getNumero()+")";
+            sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numerousuario,precioDeCosto,precioDeVenta,idCaja,idOriginal) values (6,"+articulo.getNumeroId()+","+cant+","+remInterno.getDepositoOrigen()+",4,"+numeroComprobante+",1,'"+Inicio.fechaDia+"',"+Inicio.usuario.getNumeroId()+","+articulo.getPrecioDeCosto()+","+articulo.getPrecioUnitarioNeto()+","+Inicio.caja.getNumero()+",0)";
             tra.guardarRegistro(sql);
         }
         sql="update tipocomprobantes set numeroActivo="+numeroComprobante+" where numero=4";

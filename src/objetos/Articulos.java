@@ -643,7 +643,7 @@ public class Articulos implements Facturar,Editables{
             }
         //CargarMap();
     }
-    private ArrayList CargarCombo(Integer id){
+    public ArrayList CargarCombo(Integer id){
         Transaccionable tt=new ConeccionLocal();
         String sql="select * from combo where articuloPadre="+id;
         ArrayList listadoA=new ArrayList();
@@ -727,7 +727,7 @@ public class Articulos implements Facturar,Editables{
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
                 String nom=rr.getString("NOMBRE");
                 articulo.setIdCombo(rr.getInt("idcombo"));
-                if(articulo.getIdCombo() > 0)articulo.setCombo(CargarCombo(articulo.getNumeroId()));
+                //if(articulo.getIdCombo() > 0)articulo.setCombo(CargarCombo(articulo.getNumeroId()));
                 resultado.add(articulo);
             }
             rr.close();

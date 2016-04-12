@@ -23,6 +23,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -59,7 +60,7 @@ public class BkDeConeccion implements Backpeable{
         Boolean verif=false;
     public static Boolean guardarSentencias(String sql){
         Boolean verif=false;
-        Transaccionable tra=new Conecciones();
+        tra=new Conecciones();
         
             verif=tra.guardarRegistro(sql);
         
@@ -337,6 +338,11 @@ public class BkDeConeccion implements Backpeable{
             Logger.getLogger(BkDeConeccion.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println(ex);
             numeroEquipo=0;
+        }
+        if(usu.getSucursal()!=null){
+            
+        }else{
+            JOptionPane.showMessageDialog(null,"USUARIO O CLAVE ERRONEAS");
         }
          return usu;
     }

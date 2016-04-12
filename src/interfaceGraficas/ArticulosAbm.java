@@ -308,6 +308,7 @@ public class ArticulosAbm extends javax.swing.JInternalFrame {
     listadoDeArt.jList1.requestFocus();
     int posicion=listadoDeArt.jList1.getSelectedIndex();
     Articulos articulo=(Articulos)lista.get(posicion);
+    if(articulo.getIdCombo() > 0)articulo.setCombo(articulo.CargarCombo(articulo.getNumeroId()));
     //System.out.println(" codigo elegido "+articulo.getCodigoAsignado());
         ArticulosMod articM=new ArticulosMod(articulo);
         Inicio.jDesktopPane1.add(articM);

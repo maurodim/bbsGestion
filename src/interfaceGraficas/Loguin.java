@@ -114,7 +114,7 @@ public class Loguin extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Usuarios usuario=new Usuarios();
-        Usuarios usuarios=new Usuarios();
+        Usuarios usuarios;
         usuarios=(Usuarios) usuario.validarClave(jTextField1.getText(),new String(jPasswordField1.getPassword()));
         if(usuarios.getNumero()> 0){
         //Inicio in=new Inicio(2);

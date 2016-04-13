@@ -47,7 +47,7 @@ public class ConeccionLocal implements Transaccionable{
 		try{
 			//Class.forName(driver1).newInstance();
                     dataSource.setUser("say3");//maurodim
-                    dataSource.setDatabaseName("say2");//maurodim_lseriea
+                    dataSource.setDatabaseName("say");//maurodim_lseriea
                     dataSource.setPassword("");//mau*2012
                     dataSource.setServerName("localhost");//201.235.253.65
                     con=dataSource.getConnection();
